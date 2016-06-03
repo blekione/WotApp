@@ -7,10 +7,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.StreamingOutput;
 
-@Path("/search")
-public class SearchResource {
 
-	@GET
+public class SearchResource implements SearchResourceI{
+
+	
 	public StreamingOutput getAnswer() {
 		return outputStream -> outputAnswer(outputStream); 	
 	}
