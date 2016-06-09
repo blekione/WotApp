@@ -7,9 +7,7 @@
     <artifactId>WotModularApp</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.krugdev.maven</groupId>
   <artifactId>WotRestApp</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>WotRestApp Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -56,10 +54,16 @@
     </dependency>
     
     <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.2</version>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.2</version>
     </dependency>
+    
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.6.2</version>
+	</dependency>
     
     
   </dependencies>
