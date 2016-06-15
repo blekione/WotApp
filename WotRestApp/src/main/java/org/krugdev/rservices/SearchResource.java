@@ -42,30 +42,33 @@ public class SearchResource implements SearchResourceI{
 		} catch (IOException e) {
 			System.out.println("url not found");
 		} 
-		String pageContent = parsePageContent(page.getContent()).toString();
-		return outputStream -> outputAnswer(outputStream, pageContent);
+		String output = page.toString();
+		return outputStream -> 
+			outputAnswer(outputStream, parsePageContent(output));
 	}
 
-	private StringBuilder parsePageContent(String input) {
+	private List<PlayerBasic> parsePageContent(String input) {
 		JsonParser parser = new JsonParser();
 		JsonElement jsonTree = parser.parse(input);
 		JsonObject element = jsonTree.getAsJsonObject();
 		JsonObject t = element.get("data").getAsJsonObject();
 		String string = t.toString();
 		Gson gson = new Gson();
-		PlayerBasicCointainer container = gson.fromJson(string, PlayerBasicCointainer.class);
+		PlayerBasicCointainer container = 
+				gson.fromJson(string, PlayerBasicCointainer.class);
 		List<PlayerBasic> players = container.getItems();
+		return players;
+	}
+
+	private void outputAnswer(OutputStream out, List<PlayerBasic> players) {
+		PrintStream writer = new PrintStream(out);
 		StringBuilder playersString = new StringBuilder();
 		if (players != null && players.size() > 0) {
 			for (PlayerBasic player: players){
 				playersString.append("<p>" + player.toString() + "</p>");
 			}
 		}
-		return playersString;
-	}
-
-	private void outputAnswer(OutputStream out, String input) {
-		PrintStream writer = new PrintStream(out);
-		writer.println(input);	
+		
+		writer.println(playersString);	
 	}
 }
