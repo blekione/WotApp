@@ -27,6 +27,7 @@ public class SearchResource implements SearchResourceI{
 	
 	public StreamingOutput query(String qry) {
 		URL url;
+		JavaScriptPage page = null;
 		
 		try(final WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
 			url = new URL("https://console.worldoftanks.com/stats/players/search/?search="
@@ -35,20 +36,17 @@ public class SearchResource implements SearchResourceI{
 			WebRequest requestSetting = new WebRequest(url);
 			requestSetting.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
 			webClient.getOptions().setJavaScriptEnabled(true);
-			final JavaScriptPage page = webClient.getPage(requestSetting);
-			String pageCont = page.getContent();			
-			return outputStream -> outputAnswer(outputStream, pageCont, 0);
+			page = webClient.getPage(requestSetting);			
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("url not found");
 		} 
-		
-		return null;
+		String pageContent = parsePageContent(page.getContent()).toString();
+		return outputStream -> outputAnswer(outputStream, pageContent);
 	}
 
-	private void outputAnswer(OutputStream out, String input, int size) {
-		PrintStream writer = new PrintStream(out);
+	private StringBuilder parsePageContent(String input) {
 		JsonParser parser = new JsonParser();
 		JsonElement jsonTree = parser.parse(input);
 		JsonObject element = jsonTree.getAsJsonObject();
@@ -57,8 +55,17 @@ public class SearchResource implements SearchResourceI{
 		Gson gson = new Gson();
 		PlayerBasicCointainer container = gson.fromJson(string, PlayerBasicCointainer.class);
 		List<PlayerBasic> players = container.getItems();
+		StringBuilder playersString = new StringBuilder();
 		if (players != null && players.size() > 0) {
-			writer.println(players.get(0));
-		}	
+			for (PlayerBasic player: players){
+				playersString.append("<p>" + player.toString() + "</p>");
+			}
+		}
+		return playersString;
+	}
+
+	private void outputAnswer(OutputStream out, String input) {
+		PrintStream writer = new PrintStream(out);
+		writer.println(input);	
 	}
 }
