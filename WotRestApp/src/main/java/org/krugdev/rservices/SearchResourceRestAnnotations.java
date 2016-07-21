@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.StreamingOutput;
 
 @Path("/search")
-public interface SearchResourceI {
+public interface SearchResourceRestAnnotations {
 
 	@GET
 	@Path("{qry}")

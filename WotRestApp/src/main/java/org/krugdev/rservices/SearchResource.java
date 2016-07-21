@@ -8,9 +8,15 @@ import java.net.URL;
 import java.util.List;
 
 import javax.ws.rs.core.StreamingOutput;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 
-import org.krugdev.domain.PlayerBasic;
+import org.krugdev.domain.PlayerBasicStatistics;
 import org.krugdev.domain.PlayerBasicCointainer;
+import org.krugdev.domain.Wrapper;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.JavaScriptPage;
@@ -22,53 +28,108 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class SearchResource implements SearchResourceI{
+public class SearchResource implements SearchResourceRestAnnotations{
 
+	private final String REQUEST_URL = "https://console.worldoftanks.com/stats/players/search/?search=";
 	
 	public StreamingOutput query(String qry) {
-		URL url;
-		JavaScriptPage page = null;
-		
-		try(final WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
-			url = new URL("https://console.worldoftanks.com/stats/players/search/?search="
-					+ qry 
-					+ "&page=0&order_by=name");
-			WebRequest requestSetting = new WebRequest(url);
-			requestSetting.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
-			webClient.getOptions().setJavaScriptEnabled(true);
-			page = webClient.getPage(requestSetting);			
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("url not found");
-		} 
-		String output = page.toString();
+		JavaScriptPage jsonPage = queryPage(qry);			
 		return outputStream -> 
-			outputAnswer(outputStream, parsePageContent(output));
+			outputPlayersList(outputStream, getPlayersListFromJson(jsonPage.getContent()));
+	}
+	
+	private JavaScriptPage queryPage(String qry) {
+		WebClient webClient = new WebClient(BrowserVersion.CHROME);
+		WebRequest request = setupRequest(webClient, qry);
+		return sendRequestToWebClient(webClient, request);
 	}
 
-	private List<PlayerBasic> parsePageContent(String input) {
-		JsonParser parser = new JsonParser();
-		JsonElement jsonTree = parser.parse(input);
-		JsonObject element = jsonTree.getAsJsonObject();
-		JsonObject t = element.get("data").getAsJsonObject();
-		String string = t.toString();
-		Gson gson = new Gson();
-		PlayerBasicCointainer container = 
-				gson.fromJson(string, PlayerBasicCointainer.class);
-		List<PlayerBasic> players = container.getItems();
-		return players;
-	}
-
-	private void outputAnswer(OutputStream out, List<PlayerBasic> players) {
-		PrintStream writer = new PrintStream(out);
-		StringBuilder playersString = new StringBuilder();
-		if (players != null && players.size() > 0) {
-			for (PlayerBasic player: players){
-				playersString.append("<p>" + player.toString() + "</p>");
-			}
+	private WebRequest setupRequest(WebClient webClient, String qry) {
+		WebRequest request = null;
+		try {
+			webClient.getOptions().setJavaScriptEnabled(true);
+			URL urlToQuery = addQueryToUrl(qry);
+			request = new WebRequest(urlToQuery);
+			request.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
+		} catch (Exception e) {
+			System.out.println("url not found");
 		}
-		
-		writer.println(playersString);	
+		return request;
+	}
+
+	private URL addQueryToUrl(String qry) {
+		URL url = null;
+		try {
+			url = new URL(REQUEST_URL	+ qry);
+		} catch (MalformedURLException e) {
+			System.out.println("wrong url format");
+		}
+		return url;
+	}
+	
+	private JavaScriptPage sendRequestToWebClient(WebClient webClient, WebRequest request) {
+		JavaScriptPage jsonPage = null;
+		try {
+		jsonPage = webClient.getPage(request);
+		} catch (IOException e) {
+			System.out.println("page request exception");
+		}
+		return jsonPage;
+	}
+
+	private List<PlayerBasicStatistics> getPlayersListFromJson(String jsonAsString) {
+		JsonObject dataElement = extractDataElementFromJson(jsonAsString);		
+		String dataElementAsString = dataElement.toString();
+		return getPlayersList(dataElementAsString);
+	}
+
+	private JsonObject extractDataElementFromJson(String jsonInput) {
+		JsonParser parser = new JsonParser();
+		JsonElement jsonTree = parser.parse(jsonInput);
+		JsonObject rootElement = jsonTree.getAsJsonObject();
+		return rootElement.get("data").getAsJsonObject();
+	}
+
+	private List<PlayerBasicStatistics> getPlayersList(String jsonInput) {
+		Gson gson = new Gson(); 
+		return gson.fromJson(jsonInput, PlayerBasicCointainer.class).getItems();
+	}
+
+	private void outputPlayersList(OutputStream out, List<PlayerBasicStatistics> players) {
+		PrintStream writer = new PrintStream(out);
+		outputPlayersListAsXML(writer, players);	
+	}
+
+	private void outputPlayersListAsXML(PrintStream writer, List<PlayerBasicStatistics> players) {
+			if (playersExist(players)) {
+				marshallToXML(players, "players", writer);
+			}		
+			writer.flush();
+	}
+
+	private boolean playersExist( List<PlayerBasicStatistics> players) {
+		if (players != null && players.size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private static void marshallToXML(List<?> list, String rootElementName, PrintStream writer) {
+		JAXBContext ctx;
+		QName rootElement = new QName(rootElementName);
+		Wrapper<?> wrapper = new Wrapper<>(list);
+        @SuppressWarnings("rawtypes")
+		JAXBElement<Wrapper> jaxbElement = new JAXBElement<Wrapper>(rootElement,
+                Wrapper.class, wrapper);
+		try{
+			ctx = JAXBContext.newInstance(PlayerBasicStatistics.class, Wrapper.class);
+			Marshaller marshaller = ctx.createMarshaller();
+	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	        marshaller.marshal(jaxbElement, writer);
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 }

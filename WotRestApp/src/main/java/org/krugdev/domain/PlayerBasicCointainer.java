@@ -3,17 +3,17 @@ package org.krugdev.domain;
 import java.util.List;
 
 public class PlayerBasicCointainer {
-	private List<PlayerBasic> items;
+	private List<PlayerBasicStatistics> items;
 	
-	public PlayerBasicCointainer(List<PlayerBasic> items) {
+	public PlayerBasicCointainer(List<PlayerBasicStatistics> items) {
 		super();
 		this.items = items;
 	}
 	
-	public List<PlayerBasic> getItems() {
+	public List<PlayerBasicStatistics> getItems() {
 		return items;
 	}
-	public void setItems(List<PlayerBasic> playersBasic) {
+	public void setItems(List<PlayerBasicStatistics> playersBasic) {
 		this.items = playersBasic;
 	}
 }
