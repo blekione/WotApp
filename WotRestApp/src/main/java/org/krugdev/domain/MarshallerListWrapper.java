@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 
-public class Wrapper<T> {
+public class MarshallerListWrapper<T> {
 	private List<T> items;
 	
-	public Wrapper() {
+	public MarshallerListWrapper() {
 		items = new ArrayList<>();
 	}
-	public Wrapper(List<T> items) {
+	public MarshallerListWrapper(List<T> items) {
 		this.items = items;
 	}
 	

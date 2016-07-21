@@ -8,15 +8,9 @@ import java.net.URL;
 import java.util.List;
 
 import javax.ws.rs.core.StreamingOutput;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.namespace.QName;
 
 import org.krugdev.domain.PlayerBasicStatistics;
 import org.krugdev.domain.PlayerBasicCointainer;
-import org.krugdev.domain.Wrapper;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.JavaScriptPage;
@@ -26,7 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 
 public class SearchResource implements SearchResourceRestAnnotations{
 
@@ -102,7 +95,7 @@ public class SearchResource implements SearchResourceRestAnnotations{
 
 	private void outputPlayersListAsXML(PrintStream writer, List<PlayerBasicStatistics> players) {
 			if (playersExist(players)) {
-				marshallToXML(players, "players", writer);
+				XMLMarshaller.marshallListToXML(players, "players", writer);
 			}		
 			writer.flush();
 	}
@@ -113,23 +106,5 @@ public class SearchResource implements SearchResourceRestAnnotations{
 		} else {
 			return false;
 		}
-	}
-	
-	private static void marshallToXML(List<?> list, String rootElementName, PrintStream writer) {
-		JAXBContext ctx;
-		QName rootElement = new QName(rootElementName);
-		Wrapper<?> wrapper = new Wrapper<>(list);
-        @SuppressWarnings("rawtypes")
-		JAXBElement<Wrapper> jaxbElement = new JAXBElement<Wrapper>(rootElement,
-                Wrapper.class, wrapper);
-		try{
-			ctx = JAXBContext.newInstance(PlayerBasicStatistics.class, Wrapper.class);
-			Marshaller marshaller = ctx.createMarshaller();
-	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	        marshaller.marshal(jaxbElement, writer);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 	}
 }
