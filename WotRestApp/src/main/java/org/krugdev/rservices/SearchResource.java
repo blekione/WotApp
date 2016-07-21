@@ -38,36 +38,29 @@ public class SearchResource implements SearchResourceRestAnnotations{
 	}
 
 	private WebRequest setupRequest(WebClient webClient, String qry) {
-		WebRequest request = null;
-		try {
-			webClient.getOptions().setJavaScriptEnabled(true);
-			URL urlToQuery = addQueryToUrl(qry);
-			request = new WebRequest(urlToQuery);
-			request.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
-		} catch (Exception e) {
-			System.out.println("url not found");
-		}
+		webClient.getOptions().setJavaScriptEnabled(true);
+		URL urlToQuery = addQueryToUrl(qry);
+		WebRequest request = new WebRequest(urlToQuery);
+		request.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
 		return request;
 	}
 
 	private URL addQueryToUrl(String qry) {
-		URL url = null;
 		try {
-			url = new URL(REQUEST_URL	+ qry);
+			return new URL(REQUEST_URL	+ qry);
 		} catch (MalformedURLException e) {
 			System.out.println("wrong url format");
+			return null;
 		}
-		return url;
 	}
 	
 	private JavaScriptPage sendRequestToWebClient(WebClient webClient, WebRequest request) {
-		JavaScriptPage jsonPage = null;
 		try {
-		jsonPage = webClient.getPage(request);
+			return webClient.getPage(request);
 		} catch (IOException e) {
 			System.out.println("page request exception");
+			return null;
 		}
-		return jsonPage;
 	}
 
 	private List<PlayerBasicStatistics> getPlayersListFromJson(String jsonAsString) {
@@ -96,15 +89,16 @@ public class SearchResource implements SearchResourceRestAnnotations{
 	private void outputPlayersListAsXML(PrintStream writer, List<PlayerBasicStatistics> players) {
 			if (playersExist(players)) {
 				XMLMarshaller.marshallListToXML(players, "players", writer);
-			}		
+			} else {
+				writer.append("no players found");// TODO change to request(response?) exception
+			}
 			writer.flush();
 	}
 
 	private boolean playersExist( List<PlayerBasicStatistics> players) {
 		if (players != null && players.size() > 0) {
 			return true;
-		} else {
-			return false;
-		}
+		} 
+		return false;
 	}
 }
