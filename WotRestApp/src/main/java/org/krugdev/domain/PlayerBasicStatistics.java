@@ -1,9 +1,16 @@
 package org.krugdev.domain;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.gargoylesoftware.htmlunit.JavaScriptPage;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 @XmlRootElement(name="player")
@@ -31,18 +38,33 @@ public class PlayerBasicStatistics {
 		this.profileUrl = profileUrl;
 		this.name = name;
 	}
+
+	public static List<PlayerBasicStatistics> searchPlayers(String query) {
+		JavaScriptPage jsonWithPlayers = WotWebsiteRequest.requestPage(query);
+		return getPlayersListFromJson(jsonWithPlayers.getContent());
+	}
 	
-	public int getAccountId() {	return accountId; }
-	public double getWins() { return wins; }
-	public String getPlatform() { return platform; }
-	public int getBattlesCount() { return battlesCount;	}
-	public String getProfileUrl() { return profileUrl; }
-	public String getName() { return name; }
-	
+	private static List<PlayerBasicStatistics> getPlayersListFromJson(String jsonAsString) {
+		JsonObject dataElement = extractDataElementFromJson(jsonAsString);		
+		String dataElementAsString = dataElement.toString();
+		return getPlayersList(dataElementAsString);
+	}
+
+	private static JsonObject extractDataElementFromJson(String jsonInput) {
+		JsonParser parser = new JsonParser();
+		JsonElement jsonTree = parser.parse(jsonInput);
+		JsonObject rootElement = jsonTree.getAsJsonObject();
+		return rootElement.get("data").getAsJsonObject();
+	}
+
+	private static List<PlayerBasicStatistics> getPlayersList(String jsonInput) {
+		Gson gson = new Gson(); 
+		return gson.fromJson(jsonInput, PlayerBasicCointainer.class).getItems();
+	}
+
 	@Override
 	public String toString() {
 		return "PlayerBasic [accountId=" + accountId + ", wins=" + wins + ", platform=" + platform + ", battlesCount="
 				+ battlesCount + ", profileUrl=" + profileUrl + ", name=" + name + "]";
-	}
-	
+	}	
 }
