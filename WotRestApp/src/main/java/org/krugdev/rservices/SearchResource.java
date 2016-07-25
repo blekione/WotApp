@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.core.StreamingOutput;
 
 import org.krugdev.domain.PlayerBasicStatistics;
+import org.krugdev.domain.XMLMarshaller;
 import org.jboss.resteasy.spi.NotFoundException;
 
 public class SearchResource implements SearchResourceRestAnnotations{

@@ -1,4 +1,4 @@
-package org.krugdev.rservices;
+package org.krugdev.domain;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -9,12 +9,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
-import org.krugdev.domain.PlayerBasicStatistics;
-import org.krugdev.domain.MarshallerListWrapper;
-
 public class XMLMarshaller {
 
-	static void marshallListToXML(List<?> list, String rootElementName, PrintStream writer) {
+	public static void marshallListToXML(List<?> list, String rootElementName, PrintStream writer) {
 		JAXBContext ctx;
 		QName rootElement = new QName(rootElementName);
 		MarshallerListWrapper<?> wrapper = new MarshallerListWrapper<>(list);

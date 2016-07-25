@@ -41,25 +41,36 @@ public class PlayerBasicStatistics {
 
 	public static List<PlayerBasicStatistics> searchPlayers(String query) {
 		JavaScriptPage jsonWithPlayers = WotWebsiteRequest.requestPage(query);
-		return getPlayersListFromJson(jsonWithPlayers.getContent());
+		return getPlayersListFromJsonString(jsonWithPlayers.getContent());
 	}
 	
-	private static List<PlayerBasicStatistics> getPlayersListFromJson(String jsonAsString) {
-		JsonObject dataElement = extractDataElementFromJson(jsonAsString);		
-		String dataElementAsString = dataElement.toString();
-		return getPlayersList(dataElementAsString);
+	private static List<PlayerBasicStatistics> getPlayersListFromJsonString(String jsonAsString) {
+		JsonObject playersAsJsonArray = extractItemsElementFromJson(jsonAsString);		
+		return getPlayersList(playersAsJsonArray);
 	}
 
-	private static JsonObject extractDataElementFromJson(String jsonInput) {
+	private static JsonObject extractItemsElementFromJson(String jsonAsString) {
+		/*
+		 * json from wot website comes in format:
+		 * {"data":
+		 * 		{"items":
+		 * 			[ 
+		 * 			list of players matched query
+		 * 			]}
+		 * 		...
+		 * }
+		 * this method purpose is to extract "items" json array from it  
+		 */
+		
 		JsonParser parser = new JsonParser();
-		JsonElement jsonTree = parser.parse(jsonInput);
+		JsonElement jsonTree = parser.parse(jsonAsString);
 		JsonObject rootElement = jsonTree.getAsJsonObject();
 		return rootElement.get("data").getAsJsonObject();
 	}
 
-	private static List<PlayerBasicStatistics> getPlayersList(String jsonInput) {
-		Gson gson = new Gson(); 
-		return gson.fromJson(jsonInput, PlayerBasicCointainer.class).getItems();
+	private static List<PlayerBasicStatistics> getPlayersList(JsonObject playersJsonArray) {
+		Gson gson = new Gson();
+		return gson.fromJson(playersJsonArray, PlayerBasicCointainer.class).getItems();
 	}
 
 	@Override
