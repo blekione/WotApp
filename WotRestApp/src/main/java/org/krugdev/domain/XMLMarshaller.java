@@ -9,6 +9,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
+import org.krugdev.domain.search.PlayerBasicStatistics;
+
 public class XMLMarshaller {
 
 	public static void marshallListToXML(List<?> list, String rootElementName, PrintStream writer) {

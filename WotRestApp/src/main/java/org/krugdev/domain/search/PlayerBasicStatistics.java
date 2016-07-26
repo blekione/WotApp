@@ -1,4 +1,4 @@
-package org.krugdev.domain;
+package org.krugdev.domain.search;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.krugdev.domain.WotWebsiteRequest;
 
 import com.gargoylesoftware.htmlunit.JavaScriptPage;
 import com.google.gson.Gson;
@@ -53,7 +55,7 @@ public class PlayerBasicStatistics {
 
 	private static JsonArray extractPlayersArrayFromJson(String jsonAsString) {
 		/*
-		 * json from wot website comes in format:
+		 * JSON from WoT website comes in format:
 		 * {"data":
 		 * 		{"items":
 		 * 			[ 
@@ -61,7 +63,7 @@ public class PlayerBasicStatistics {
 		 * 			]}
 		 * 		...
 		 * }
-		 * this method purpose is to extract array from it above json structure
+		 * this method purpose is to extract array from above JSON structure
 		 */
 		
 		JsonParser parser = new JsonParser();
