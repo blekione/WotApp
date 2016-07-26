@@ -1,5 +1,6 @@
 package org.krugdev.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.gargoylesoftware.htmlunit.JavaScriptPage;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -45,32 +47,34 @@ public class PlayerBasicStatistics {
 	}
 	
 	private static List<PlayerBasicStatistics> getPlayersListFromJsonString(String jsonAsString) {
-		JsonObject playersAsJsonArray = extractItemsElementFromJson(jsonAsString);		
-		return getPlayersList(playersAsJsonArray);
+		JsonArray players = extractPlayersArrayFromJson(jsonAsString);		
+		return getPlayersList(players);
 	}
 
-	private static JsonObject extractItemsElementFromJson(String jsonAsString) {
+	private static JsonArray extractPlayersArrayFromJson(String jsonAsString) {
 		/*
 		 * json from wot website comes in format:
 		 * {"data":
 		 * 		{"items":
 		 * 			[ 
-		 * 			list of players matched query
+		 * 			array of players matched query
 		 * 			]}
 		 * 		...
 		 * }
-		 * this method purpose is to extract "items" json array from it  
+		 * this method purpose is to extract array from it above json structure
 		 */
 		
 		JsonParser parser = new JsonParser();
 		JsonElement jsonTree = parser.parse(jsonAsString);
 		JsonObject rootElement = jsonTree.getAsJsonObject();
-		return rootElement.get("data").getAsJsonObject();
+		JsonObject data = rootElement.get("data").getAsJsonObject(); 
+		return data.get("items").getAsJsonArray();
 	}
 
-	private static List<PlayerBasicStatistics> getPlayersList(JsonObject playersJsonArray) {
-		Gson gson = new Gson();
-		return gson.fromJson(playersJsonArray, PlayerBasicCointainer.class).getItems();
+	private static List<PlayerBasicStatistics> getPlayersList(JsonArray playersJsonArray) {
+		PlayerBasicStatistics[] players = 
+				new Gson().fromJson(playersJsonArray, PlayerBasicStatistics.class);
+ 		return Arrays.asList(players);
 	}
 
 	@Override

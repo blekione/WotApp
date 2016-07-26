@@ -24,19 +24,12 @@ public class SearchResource implements SearchResourceRestAnnotations{
 	}
 
 	private void outputPlayersListAsXML(PrintStream writer, List<PlayerBasicStatistics> players) {
-			if (playersExist(players)) {
+			if (!players.isEmpty()) {
 				XMLMarshaller.marshallListToXML(players, "players", writer);
 				writer.flush();
 			}
 			else {
 				throw new NotFoundException("no players");
 			}
-	}
-
-	private boolean playersExist( List<PlayerBasicStatistics> players) {
-		if (players != null && players.size() > 0) {
-			return true;
-		} 
-		return false;
 	}
 }
