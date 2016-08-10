@@ -27,5 +27,6 @@
 
   <modules>
     <module>WotRestApp</module>
+    <module>WotWebApp</module>
   </modules>
 </project>

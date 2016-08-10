@@ -26,6 +26,8 @@ public class PlayerAdvancedStatistics {
 	public PlayerAdvancedStatistics() {
 	}
 
+	
+	
 	public PlayerDetails getPlayerDetails() {
 		return playerDetails;
 	}

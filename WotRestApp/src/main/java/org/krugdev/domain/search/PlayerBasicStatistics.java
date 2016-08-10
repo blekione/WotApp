@@ -1,6 +1,7 @@
 package org.krugdev.domain.search;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,8 +45,13 @@ public class PlayerBasicStatistics {
 	}
 
 	public static List<PlayerBasicStatistics> searchPlayers(String query) {
-		JavaScriptPage jsonWithPlayers = WotWebsiteRequest.requestPage(query);
-		return getPlayersListFromJsonString(jsonWithPlayers.getContent());
+		try {
+			WotWebsiteRequest jsonRequest = new WotWebsiteRequest();
+			JavaScriptPage jsonWithPlayers = (JavaScriptPage) jsonRequest.requestPage("search", query);
+			return getPlayersListFromJsonString(jsonWithPlayers.getContent());
+		} catch (NullPointerException e) {
+			return Collections.emptyList();
+		}
 	}
 	
 	private static List<PlayerBasicStatistics> getPlayersListFromJsonString(String jsonAsString) {
@@ -75,7 +81,7 @@ public class PlayerBasicStatistics {
 
 	private static List<PlayerBasicStatistics> getPlayersList(JsonArray playersJsonArray) {
 		PlayerBasicStatistics[] players = 
-				new Gson().fromJson(playersJsonArray, PlayerBasicStatistics.class);
+				new Gson().fromJson(playersJsonArray, PlayerBasicStatistics[].class);
  		return Arrays.asList(players);
 	}
 
