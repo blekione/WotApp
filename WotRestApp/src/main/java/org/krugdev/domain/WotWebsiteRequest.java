@@ -1,75 +1,81 @@
 package org.krugdev.domain;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
-
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class WotWebsiteRequest {
 
-	private String requestingService;
-	private final static String SEARCH_URL = "https://console.worldoftanks.com/stats/players/search/?search=";
-	private final static String PLAYER_URL = "https://console.worldoftanks.com/stats/players/";
-	
-	public Object requestPage(String requestService, String query) {
-		requestingService = requestService;
-		try(WebClient webClient = setupWebClient()) {
-		WebRequest request = setupRequest(webClient, query);
-		return sendRequest(webClient, request);
-		} catch (IOException e) {
-			System.out.println("problem with request");
-		} catch (FailingHttpStatusCodeException e) {
-			System.out.println("problem with request");
-		}
-		return null;
+	private Platforms platform;
+	private RequestingServices requestingService;
+	private final static String APPLICATION_ID = "9d54f44c84a927987630b25b62efdd2c";
+
+	public WotWebsiteRequest(Platforms platform, RequestingServices requestingService) {
+		this.platform = platform;
+		this.requestingService = requestingService;
 	}
 	
-	private WebClient setupWebClient() {
-		WebClient webClient = new WebClient(BrowserVersion.CHROME);
-		switch (requestingService) {
-		case "search":
-			webClient.getOptions().setJavaScriptEnabled(true);
-			break;
-		case "playerProfile":
-			webClient.getOptions().setCssEnabled(false);
-			webClient.getOptions().setAppletEnabled(false);
-			webClient.getOptions().setJavaScriptEnabled(false);
-			break;
-		}
-		return webClient;
-	}
-
-	private WebRequest setupRequest(WebClient webClient, String qry) {
-		URL urlToQuery = addQueryToUrl(qry);
-		WebRequest request = new WebRequest(urlToQuery);
-		if (requestingService.equals("search")) {
-			request.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
-		}
-		return request;
-	}
-
-	private URL addQueryToUrl(String qry) {
+	public String getJsonWithPLayers(String query) {
+		
 		try {
-			return new URL(getServiceUrl() + qry); 
-		} catch (MalformedURLException e) {
-			throw new IllegalStateException(e);
-		} 
+			URL requestURL = buildUrlToQuery(query).get();
+			InputStreamReader inputStream = getDataInput(requestURL);
+			BufferedReader in = new BufferedReader(inputStream);
+			StringBuffer response = new StringBuffer();
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			return response.toString();
+		} catch (NoSuchElementException e) {
+			System.out.println("problem with url builder");
+		} catch (ProtocolException e) {
+			System.out.println("problem with request");
+		} catch (IOException e) {
+			System.out.println("IOException - not connected to WoT server");
+		}
+		return "{}";
 	}
-
-	private String getServiceUrl() {
-		switch (requestingService) {
-		case "search": return SEARCH_URL;
-		case "playerProfile": return PLAYER_URL;
-		default: 
-			throw new IllegalStateException("Unexpected requestingService value= " + requestingService);
+	
+	private InputStreamReader getDataInput(URL requestURL) {
+		HttpURLConnection connection = null;
+		try {
+			connection = (HttpURLConnection) requestURL.openConnection();
+			connection.setRequestMethod("GET");
+			return new InputStreamReader(connection.getInputStream());
+		} catch (IOException e) {
+			System.out.println("IOException - not connected to WoT server");
+			return new InputStreamReader(connection.getErrorStream());
 		}
 	}
-	private Object sendRequest(WebClient webClient, WebRequest request) 
-			throws FailingHttpStatusCodeException, IOException {
-			return (Object)webClient.getPage(request);
+
+	private Optional<URL> buildUrlToQuery(String qry) {
+		try {
+			switch (requestingService){
+			case SEARCH:
+			default:
+				URL url = new URL(getPlatformAPIDomain() 
+						+ "list/?application_id=" + APPLICATION_ID
+						+ "&search=" + qry);
+				return Optional.of(url);
+			}
+		} catch (MalformedURLException e) {
+			return Optional.empty();		}
+
+	}
+
+	private String getPlatformAPIDomain() {
+		switch (platform) {
+		case XBOX: return RequestURL.XBOX_API_URL.toString();
+		case PLAY_STATION:
+		default:
+			return RequestURL.PS_API_URL.toString();
+		}
 	}
 }

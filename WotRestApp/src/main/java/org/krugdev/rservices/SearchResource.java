@@ -6,16 +6,23 @@ import java.util.List;
 
 import javax.ws.rs.core.StreamingOutput;
 
+import org.krugdev.domain.Platforms;
 import org.krugdev.domain.XMLMarshaller;
 import org.krugdev.domain.search.PlayerBasicStatistics;
 import org.jboss.resteasy.spi.NotFoundException;
 
 public class SearchResource implements SearchResourceRestAnnotations{
 	
-	public StreamingOutput query(String qry) {
-		List<PlayerBasicStatistics> players = PlayerBasicStatistics.searchPlayers(qry);			
-		return outputStream -> 
-			outputPlayersList(outputStream, players);
+	public StreamingOutput query(String platform, String qry) {
+		switch(platform) {
+		case "playstation":
+			return outputStream -> 
+			outputPlayersList(outputStream, PlayerBasicStatistics.getPlayers(Platforms.PLAY_STATION, qry));
+		case "xbox": 
+		default:
+			return outputStream -> 
+			outputPlayersList(outputStream, PlayerBasicStatistics.getPlayers(Platforms.XBOX, qry));
+		}
 	}
 	
 		private void outputPlayersList(OutputStream out, List<PlayerBasicStatistics> players) {

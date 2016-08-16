@@ -9,6 +9,6 @@ import javax.ws.rs.core.StreamingOutput;
 public interface SearchResourceRestAnnotations {
 
 	@GET
-	@Path("{qry}")
-	public StreamingOutput query(@PathParam("qry") String qry);
+	@Path("{platform}/{qry}")
+	public StreamingOutput query(@PathParam("platform") String platform ,@PathParam("qry") String qry);
 }

@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.krugdev.domain.Platforms;
+import org.krugdev.domain.RequestingServices;
 import org.krugdev.domain.WotWebsiteRequest;
 
-import com.gargoylesoftware.htmlunit.JavaScriptPage;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
@@ -24,59 +24,54 @@ public class PlayerBasicStatistics {
 	
 	@SerializedName("account_id")
 	private int accountId;
+	@SerializedName("nickname")
 	private String name;
-	private double wins;
 	private String platform;
 	@SerializedName("battles_count")
 	private int battlesCount;
-	@SerializedName("profile_url")
-	private String profileUrl;
 	
 	public PlayerBasicStatistics() {
 	}
 
-	public PlayerBasicStatistics(int accountId, double wins, String platform, int battlesCount, String profileUrl, String name) {
+	public PlayerBasicStatistics(int accountId, String name) {
 		this.accountId = accountId;
-		this.wins = wins;
-		this.platform = platform;
-		this.battlesCount = battlesCount;
-		this.profileUrl = profileUrl;
 		this.name = name;
 	}
 
-	public static List<PlayerBasicStatistics> searchPlayers(String query) {
+	public static List<PlayerBasicStatistics> getPlayers(Platforms platform, String query) {
 		try {
-			WotWebsiteRequest jsonRequest = new WotWebsiteRequest();
-			JavaScriptPage jsonWithPlayers = (JavaScriptPage) jsonRequest.requestPage("search", query);
-			return getPlayersListFromJsonString(jsonWithPlayers.getContent());
+			String jsonWithPlayers = getJsonWithPlayersFromWotAPI(platform, query);
+			List<PlayerBasicStatistics> players = getPlayersListFromJsonString(jsonWithPlayers);
+			players = setPlatform(players, platform);
+			return players;
 		} catch (NullPointerException e) {
 			return Collections.emptyList();
 		}
 	}
 	
+	public static String getJsonWithPlayersFromWotAPI(Platforms platform, String query) {
+		WotWebsiteRequest jsonRequest = new WotWebsiteRequest(platform, RequestingServices.SEARCH);
+		String jsonWithPlayers = jsonRequest.getJsonWithPLayers(query);
+		return jsonWithPlayers;
+		
+	}
+	
+	private static List<PlayerBasicStatistics> setPlatform(List<PlayerBasicStatistics> players, Platforms platform) {
+		for(PlayerBasicStatistics player : players) {
+			player.setPlatform(platform.toString());
+		}
+		return players;
+	}
+
 	private static List<PlayerBasicStatistics> getPlayersListFromJsonString(String jsonAsString) {
 		JsonArray players = extractPlayersArrayFromJson(jsonAsString);		
 		return getPlayersList(players);
 	}
 
 	private static JsonArray extractPlayersArrayFromJson(String jsonAsString) {
-		/*
-		 * JSON from WoT website comes in format:
-		 * {"data":
-		 * 		{"items":
-		 * 			[ 
-		 * 			array of players matched query
-		 * 			]}
-		 * 		...
-		 * }
-		 * this method purpose is to extract array from above JSON structure
-		 */
-		
 		JsonParser parser = new JsonParser();
-		JsonElement jsonTree = parser.parse(jsonAsString);
-		JsonObject rootElement = jsonTree.getAsJsonObject();
-		JsonObject data = rootElement.get("data").getAsJsonObject(); 
-		return data.get("items").getAsJsonArray();
+		JsonObject jsonObject = parser.parse(jsonAsString).getAsJsonObject();
+		return jsonObject.get("data").getAsJsonArray();
 	}
 
 	private static List<PlayerBasicStatistics> getPlayersList(JsonArray playersJsonArray) {
@@ -85,9 +80,10 @@ public class PlayerBasicStatistics {
  		return Arrays.asList(players);
 	}
 
-	@Override
-	public String toString() {
-		return "PlayerBasic [accountId=" + accountId + ", wins=" + wins + ", platform=" + platform + ", battlesCount="
-				+ battlesCount + ", profileUrl=" + profileUrl + ", name=" + name + "]";
-	}	
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
+	public String getPlatform() {
+		return this.platform;
+	}
 }
