@@ -14,15 +14,14 @@ public class WotWebsiteRequest {
 
 	private Platforms platform;
 	private RequestingServices requestingService;
-	private final static String APPLICATION_ID = "9d54f44c84a927987630b25b62efdd2c";
+	private final static String APP_ID_URL_PARAMETER = "?application_id=9d54f44c84a927987630b25b62efdd2c";
 
 	public WotWebsiteRequest(Platforms platform, RequestingServices requestingService) {
 		this.platform = platform;
 		this.requestingService = requestingService;
 	}
 	
-	public String getJsonWithPLayers(String query) {
-		
+	public String getJsonFromWotAPI(String query) {		
 		try {
 			URL requestURL = buildUrlToQuery(query).get();
 			InputStreamReader inputStream = getDataInput(requestURL);
@@ -55,19 +54,12 @@ public class WotWebsiteRequest {
 		}
 	}
 
-	private Optional<URL> buildUrlToQuery(String qry) {
+	private Optional<URL> buildUrlToQuery(String query) {
 		try {
-			switch (requestingService){
-			case SEARCH:
-			default:
-				URL url = new URL(getPlatformAPIDomain() 
-						+ "list/?application_id=" + APPLICATION_ID
-						+ "&search=" + qry);
-				return Optional.of(url);
-			}
+			URL url = new URL(getPlatformAPIDomain() + buildPathToRequestedResource(query));
+			return Optional.of(url);
 		} catch (MalformedURLException e) {
 			return Optional.empty();		}
-
 	}
 
 	private String getPlatformAPIDomain() {
@@ -76,6 +68,18 @@ public class WotWebsiteRequest {
 		case PLAY_STATION:
 		default:
 			return RequestURL.PS_API_URL.toString();
+		}
+	}
+	
+	private String buildPathToRequestedResource(String query) {
+		switch (requestingService){
+		case PLAYER_PROFILE:
+			return new String("info/" + APP_ID_URL_PARAMETER
+					+ "&account_id=+" + query);
+		case SEARCH:
+		default:	
+			return new String ("list/" + APP_ID_URL_PARAMETER
+					+ "&search=" + query);
 		}
 	}
 }

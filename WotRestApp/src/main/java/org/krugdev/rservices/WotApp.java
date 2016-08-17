@@ -12,6 +12,7 @@ public class WotApp extends Application {
 	public Set<Class<?>> getClasses() {
 		HashSet<Class<?>> set = new HashSet<>();
 		set.add(SearchResource.class);
+		set.add(PlayerProfileResource.class);
 		return set;
 	}
 }

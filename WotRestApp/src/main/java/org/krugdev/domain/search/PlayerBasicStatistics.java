@@ -27,8 +27,6 @@ public class PlayerBasicStatistics {
 	@SerializedName("nickname")
 	private String name;
 	private String platform;
-	@SerializedName("battles_count")
-	private int battlesCount;
 	
 	public PlayerBasicStatistics() {
 	}
@@ -51,7 +49,7 @@ public class PlayerBasicStatistics {
 	
 	public static String getJsonWithPlayersFromWotAPI(Platforms platform, String query) {
 		WotWebsiteRequest jsonRequest = new WotWebsiteRequest(platform, RequestingServices.SEARCH);
-		String jsonWithPlayers = jsonRequest.getJsonWithPLayers(query);
+		String jsonWithPlayers = jsonRequest.getJsonFromWotAPI(query);
 		return jsonWithPlayers;
 		
 	}
