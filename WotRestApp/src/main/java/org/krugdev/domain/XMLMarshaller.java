@@ -9,7 +9,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
-import org.krugdev.domain.search.PlayerBasicStatistics;
+import org.krugdev.domain.search.PlayerProfileBasic;
 
 public class XMLMarshaller {
 
@@ -21,7 +21,7 @@ public class XMLMarshaller {
 		JAXBElement<MarshallerListWrapper> jaxbElement = new JAXBElement<MarshallerListWrapper>(rootElement,
                 MarshallerListWrapper.class, wrapper);
 		try{
-			ctx = JAXBContext.newInstance(PlayerBasicStatistics.class, MarshallerListWrapper.class);
+			ctx = JAXBContext.newInstance(PlayerProfileBasic.class, MarshallerListWrapper.class);
 			Marshaller marshaller = ctx.createMarshaller();
 	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	        marshaller.marshal(jaxbElement, writer);

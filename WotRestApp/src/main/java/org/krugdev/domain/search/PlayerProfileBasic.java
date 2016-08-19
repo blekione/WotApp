@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName;
 
 @XmlRootElement(name="player")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PlayerBasicStatistics {
+public class PlayerProfileBasic {
 	
 	@SerializedName("account_id")
 	private int accountId;
@@ -28,19 +28,19 @@ public class PlayerBasicStatistics {
 	private String name;
 	private String platform;
 	
-	public PlayerBasicStatistics() {
+	public PlayerProfileBasic() {
 	}
 
-	public PlayerBasicStatistics(int accountId, String name) {
+	public PlayerProfileBasic(int accountId, String name) {
 		this.accountId = accountId;
 		this.name = name;
 	}
 
-	public static List<PlayerBasicStatistics> getPlayers(Platforms platform, String query) {
+	public static List<PlayerProfileBasic> getPlayers(Platforms platform, String query) {
 		try {
 			String jsonWithPlayers = getJsonWithPlayersFromWotAPI(platform, query);
-			List<PlayerBasicStatistics> players = getPlayersListFromJsonString(jsonWithPlayers);
-			players = setPlatform(players, platform);
+			List<PlayerProfileBasic> players = getPlayersListFromJsonString(jsonWithPlayers);
+			players = setPlayersPlatform(players, platform);
 			return players;
 		} catch (NullPointerException e) {
 			return Collections.emptyList();
@@ -54,14 +54,7 @@ public class PlayerBasicStatistics {
 		
 	}
 	
-	private static List<PlayerBasicStatistics> setPlatform(List<PlayerBasicStatistics> players, Platforms platform) {
-		for(PlayerBasicStatistics player : players) {
-			player.setPlatform(platform.toString());
-		}
-		return players;
-	}
-
-	private static List<PlayerBasicStatistics> getPlayersListFromJsonString(String jsonAsString) {
+	private static List<PlayerProfileBasic> getPlayersListFromJsonString(String jsonAsString) {
 		JsonArray players = extractPlayersArrayFromJson(jsonAsString);		
 		return getPlayersList(players);
 	}
@@ -72,9 +65,9 @@ public class PlayerBasicStatistics {
 		return jsonObject.get("data").getAsJsonArray();
 	}
 
-	private static List<PlayerBasicStatistics> getPlayersList(JsonArray playersJsonArray) {
-		PlayerBasicStatistics[] players = 
-				new Gson().fromJson(playersJsonArray, PlayerBasicStatistics[].class);
+	private static List<PlayerProfileBasic> getPlayersList(JsonArray playersJsonArray) {
+		PlayerProfileBasic[] players = 
+				new Gson().fromJson(playersJsonArray, PlayerProfileBasic[].class);
  		return Arrays.asList(players);
 	}
 
@@ -84,4 +77,12 @@ public class PlayerBasicStatistics {
 	public String getPlatform() {
 		return this.platform;
 	}
+	
+	private static List<PlayerProfileBasic> setPlayersPlatform(List<PlayerProfileBasic> players, Platforms platform) {
+		for(PlayerProfileBasic player : players) {
+			player.setPlatform(platform.toString());
+		}
+		return players;
+	}
+
 }
