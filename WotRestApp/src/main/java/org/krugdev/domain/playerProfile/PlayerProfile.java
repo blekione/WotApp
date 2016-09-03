@@ -31,37 +31,45 @@ public class PlayerProfile {
 	/* tanks */
 	private List<String> tanksPlayed;
 	private List<TankItems> tankItems;
+	
+	private static Platforms platform;
+	private static MyJsonParser parser = new MyJsonParser();
 
 	public PlayerProfile() {
 	}	
 
-	public static PlayerProfile getPlayerProfile(Platforms platform, String id) {
-		MyJsonParser parser = new MyJsonParser();
-		WotWebsiteRequest request = new WotWebsiteRequest(platform, RequestingServices.PLAYER_PROFILE);
-		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
-		JsonObject playerProfileIDDataJson = parser.trimJsonFromRedundantData(playerProfileJsonAsString, id);
+	public static PlayerProfile getPlayerProfile(Platforms aPlatform, String id) {
+		platform = aPlatform; 		
 		
-		request.setRequestingService(RequestingServices.PLAYER_CLAN);
-		String playerClanJsonAsString = request.getJsonFromWotAPI(id);
-		JsonObject playerClanIDDataJson = parser.trimJsonFromRedundantData(playerClanJsonAsString, id);
-		
-		
-		Player playerData = (Player)parser.getClassDataFromJson(playerProfileIDDataJson, Player.class);
-		PlayerClan playerClan = (PlayerClan)parser.getClassDataFromJson(playerClanIDDataJson, PlayerClan.class);
-		
-		request.setRequestingService(RequestingServices.CLAN);
-		String clanId = Integer.toString(playerClan.getClanId());
-		String clanJsonAsString = request.getJsonFromWotAPI(clanId);
-		JsonObject clanProfileIDDataJson = parser.trimJsonFromRedundantData(clanJsonAsString, clanId);
-		Clan clan = (Clan)parser.getClassDataFromJson(clanProfileIDDataJson, Clan.class);
 		PlayerProfile playerProfile = new PlayerProfile();
-		playerProfile.populateWithData(playerData, playerClan, clan);
+		playerProfile.populateWithData(getPlayerDataFromWotApi(id));
 		playerProfile.getPlayerDetails().setPlatform(platform);
 		return playerProfile;
 	}
+
+	private static WotData getPlayerDataFromWotApi(String id) {
+		WotData data = new WotData();
+		data.setPlayer((Player)getObjectData(RequestingServices.PLAYER_PROFILE, id, Player.class));
+		data.setPlayerClan((PlayerClan)getObjectData(RequestingServices.PLAYER_CLAN, id, PlayerClan.class));
+		String clanId = Integer.toString(data.getPlayerClan().getClanId());
+		data.setClan((Clan)getObjectData(RequestingServices.CLAN, clanId, Clan.class));		
+		return data;
+	}
+
+	public static Object getObjectData(RequestingServices requestingService, String id, Class<?> class1) {
+		JsonObject playerJson = getJsonFromWot(requestingService, id);
+		return parser.getClassDataFromJson(playerJson, class1);
+	}
 	
-	private void populateWithData(Player playerData, PlayerClan playerClan, Clan clan) {
-		
+	private static JsonObject getJsonFromWot(RequestingServices requestingService, String id) {
+		WotWebsiteRequest request = new WotWebsiteRequest(platform, requestingService);		
+		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
+		return parser.trimJsonFromRedundantData(playerProfileJsonAsString, id);
+	}
+
+	private void populateWithData(WotData data) {
+		playerDetails = new PlayerDetails();
+		playerDetails.populateWithDataFromJsonDataHolders(data);
 	}
 
 	public PlayerDetails getPlayerDetails() {
