@@ -13,7 +13,6 @@ public class WotWebsiteRequestTest {
 	public void testIfSearchRequestReturnsPage() {
 		WotWebsiteRequest request = new WotWebsiteRequest(Platforms.XBOX, RequestingServices.SEARCH);
 		String response = request.getJsonFromWotAPI("mr flen");
-//		System.out.println(response);
 		assertEquals("ok", getResponseStatus(response));
 	}
 	
@@ -24,6 +23,21 @@ public class WotWebsiteRequestTest {
 		assertEquals("ok", getResponseStatus(response));
 	}
 
+	@Test
+	public void testIfPlayerClanReturnsPage() {
+		WotWebsiteRequest request = new WotWebsiteRequest(Platforms.XBOX, RequestingServices.PLAYER_CLAN);
+		String response = request.getJsonFromWotAPI("6479371");
+		assertEquals("ok", getResponseStatus(response));
+	}
+	
+	@Test
+	public void testIfClanReturnsPage() {
+		WotWebsiteRequest request = new WotWebsiteRequest(Platforms.XBOX, RequestingServices.CLAN);
+		String response = request.getJsonFromWotAPI("1713");
+		assertEquals("ok", getResponseStatus(response));
+	}
+	
+	
 	private String getResponseStatus(String response) {
 		JsonParser parser = new JsonParser();
 		JsonObject jsonObject = parser.parse(response).getAsJsonObject();

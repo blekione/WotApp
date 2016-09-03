@@ -2,5 +2,7 @@ package org.krugdev.domain;
 
 public enum RequestingServices {
 	PLAYER_PROFILE,
-	SEARCH;
+	SEARCH,
+	PLAYER_CLAN,
+	CLAN;
 }

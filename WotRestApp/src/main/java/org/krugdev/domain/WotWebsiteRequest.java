@@ -23,15 +23,15 @@ public class WotWebsiteRequest {
 	
 	public String getJsonFromWotAPI(String query) {		
 		try {
-			URL requestURL = buildUrlToQuery(query).get();
-			InputStreamReader inputStream = getDataInput(requestURL);
-			BufferedReader in = new BufferedReader(inputStream);
-			StringBuffer response = new StringBuffer();
+			URL requestURLToWotAPI = buildUrlToQuery(query).get();
+			InputStreamReader inputStreamFromWotAPI = getDataInput(requestURLToWotAPI);
+			BufferedReader inputReaderFromWotAPI = new BufferedReader(inputStreamFromWotAPI);
+			StringBuilder jsonStringFromWotAPI = new StringBuilder();
 			String inputLine;
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
+			while ((inputLine = inputReaderFromWotAPI.readLine()) != null) {
+				jsonStringFromWotAPI.append(inputLine);
 			}
-			return response.toString();
+			return jsonStringFromWotAPI.toString();
 		} catch (NoSuchElementException e) {
 			System.out.println("problem with url builder");
 		} catch (ProtocolException e) {
@@ -73,13 +73,23 @@ public class WotWebsiteRequest {
 	
 	private String buildPathToRequestedResource(String query) {
 		switch (requestingService){
+		case CLAN:
+			return new String("clans/info/" + APP_ID_URL_PARAMETER + 
+					"&clan_id=" + query);
+		case PLAYER_CLAN:
+			return new String("clans/accountinfo/" + APP_ID_URL_PARAMETER
+					+ "&account_id=" + query);
 		case PLAYER_PROFILE:
-			return new String("info/" + APP_ID_URL_PARAMETER
+			return new String("account/info/" + APP_ID_URL_PARAMETER
 					+ "&account_id=+" + query);
 		case SEARCH:
 		default:	
-			return new String ("list/" + APP_ID_URL_PARAMETER
+			return new String ("account/list/" + APP_ID_URL_PARAMETER
 					+ "&search=" + query);
 		}
+	}
+
+	public void setRequestingService(RequestingServices requestingService) {
+		this.requestingService = requestingService;
 	}
 }

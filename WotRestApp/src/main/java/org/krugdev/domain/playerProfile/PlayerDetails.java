@@ -3,7 +3,7 @@ package org.krugdev.domain.playerProfile;
 import java.util.Date;
 
 import org.krugdev.domain.Platforms;
-import org.krugdev.domain.playerProfile.dataFromJSON.PlayerProfileData;
+import org.krugdev.domain.playerProfile.JsonDataBeans.Player;
 
 public class PlayerDetails { 
 	
@@ -11,18 +11,18 @@ public class PlayerDetails {
 	private String nickname;
 	private Platforms platform;
 	private String clan;
+	private int clanID;
 	private long personalRating;
 	private int daysInGame;
 
 	public PlayerDetails() {
 	}
 
-	public static PlayerDetails populateWithData(PlayerProfileData playerData, Platforms platform) {
+	public static PlayerDetails populateWithData(Player playerData, Platforms platform) {
 		PlayerDetails playerDetails = new PlayerDetails();
 		playerDetails.accountId = playerData.getAccountId();
 		playerDetails.nickname = playerData.getNickname();
 		playerDetails.platform = platform;
-//		TODO playerDetails.clan
 		playerDetails.personalRating = playerData.getGlobalRating();
 		playerDetails.daysInGame = calculateDaysInGame(playerData.getCreatedAt());
 		return playerDetails;
@@ -53,9 +53,25 @@ public class PlayerDetails {
 	public Platforms getPlatform() {
 		return platform;
 	}
+	
+	public void setPlatform(Platforms platform) {
+		this.platform = platform;
+	}
 
 	public String getClan() {
 		return clan;
+	}
+	
+	public void setClan(String clan) {
+		this.clan = clan;
+	}
+	
+	public int getClanID() {
+		return clanID;
+	}
+
+	public void setClanID(int clanID) {
+		this.clanID = clanID;
 	}
 
 	public long getPersonalRating() {

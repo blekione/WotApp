@@ -1,4 +1,4 @@
-package org.krugdev.domain.playerProfile.dataFromJSON;
+package org.krugdev.domain.playerProfile.JsonDataBeans;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -15,10 +15,10 @@ public class Statistics {
 	@SerializedName("max_xp")
 	private int maxXp;
 	private long piercings;
-	private StatisticsFor company;
 	@SerializedName("trees_cut")
 	private long treesCut;
-	private StatisticsFor all;
+	private StatisticsForGameMode company;
+	private StatisticsForGameMode all;
 	@SerializedName("piercings_received")
 	private long piercingsReceived;
 	@SerializedName("no_damage_direct_hits_received")
@@ -65,7 +65,7 @@ public class Statistics {
 		return piercings;
 	}
 
-	public StatisticsFor getCompany() {
+	public StatisticsForGameMode getCompany() {
 		return company;
 	}
 
@@ -73,7 +73,7 @@ public class Statistics {
 		return treesCut;
 	}
 
-	public StatisticsFor getAll() {
+	public StatisticsForGameMode getAll() {
 		return all;
 	}
 
