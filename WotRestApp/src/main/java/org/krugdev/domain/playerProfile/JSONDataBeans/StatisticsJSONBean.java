@@ -1,8 +1,8 @@
-package org.krugdev.domain.playerProfile.JsonDataBeans;
+package org.krugdev.domain.playerProfile.JSONDataBeans;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Statistics {
+public class StatisticsJSONBean {
 
 	@SerializedName("max_frags_tank_id")
 	private int maxFragsTankId;
@@ -17,8 +17,8 @@ public class Statistics {
 	private long piercings;
 	@SerializedName("trees_cut")
 	private long treesCut;
-	private StatisticsForGameMode company;
-	private StatisticsForGameMode all;
+	private GameModeStatisticsJSONBean company;
+	private GameModeStatisticsJSONBean all;
 	@SerializedName("piercings_received")
 	private long piercingsReceived;
 	@SerializedName("no_damage_direct_hits_received")
@@ -37,7 +37,7 @@ public class Statistics {
 	@SerializedName("damage_assisted_radio")
 	private long damageAssistedRadio;
 	
-	public Statistics() {
+	public StatisticsJSONBean() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -65,7 +65,7 @@ public class Statistics {
 		return piercings;
 	}
 
-	public StatisticsForGameMode getCompany() {
+	public GameModeStatisticsJSONBean getCompany() {
 		return company;
 	}
 
@@ -73,7 +73,7 @@ public class Statistics {
 		return treesCut;
 	}
 
-	public StatisticsForGameMode getAll() {
+	public GameModeStatisticsJSONBean getAll() {
 		return all;
 	}
 

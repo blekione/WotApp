@@ -1,40 +1,39 @@
 package org.krugdev.domain.playerProfile;
 
-import org.krugdev.domain.RequestingServices;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Clan;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Player;
-import org.krugdev.domain.playerProfile.JsonDataBeans.PlayerClan;
+import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 
 public class WotData {
 
-	Player player;
-	PlayerClan playerClan;
-	Clan clan;
+	PlayerJSONBean player;
+	PlayerClanJSONBean playerClan;
+	ClanJSONBean clan;
 	
 	public WotData() {
 	}
 
-	public Player getPlayer() {
+	public PlayerJSONBean getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(PlayerJSONBean player) {
 		this.player = player;
 	}
 
-	public PlayerClan getPlayerClan() {
+	public PlayerClanJSONBean getPlayerClan() {
 		return playerClan;
 	}
 
-	public void setPlayerClan(PlayerClan playerClan) {
+	public void setPlayerClan(PlayerClanJSONBean playerClan) {
 		this.playerClan = playerClan;
 	}
 
-	public Clan getClan() {
+	public ClanJSONBean getClan() {
 		return clan;
 	}
 
-	public void setClan(Clan clan) {
+	public void setClan(ClanJSONBean clan) {
 		this.clan = clan;
 	}
 }

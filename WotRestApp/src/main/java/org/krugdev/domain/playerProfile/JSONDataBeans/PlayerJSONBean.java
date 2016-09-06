@@ -1,10 +1,10 @@
-package org.krugdev.domain.playerProfile.JsonDataBeans;
+package org.krugdev.domain.playerProfile.JSONDataBeans;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Player {
+public class PlayerJSONBean {
 	
-	private Statistics statistics;
+	private StatisticsJSONBean statistics;
 	@SerializedName("account_id")
 	private long accountId;
 	@SerializedName("created_at")
@@ -17,11 +17,11 @@ public class Player {
 	private long lastBattleTime;
 	private String nickname;
 		
-	public Player() {
+	public PlayerJSONBean() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Statistics getStatistics() {
+	public StatisticsJSONBean getStatistics() {
 		return statistics;
 	}
 

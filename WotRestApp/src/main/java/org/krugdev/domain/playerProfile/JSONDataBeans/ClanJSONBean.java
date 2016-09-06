@@ -1,10 +1,10 @@
-package org.krugdev.domain.playerProfile.JsonDataBeans;
+package org.krugdev.domain.playerProfile.JSONDataBeans;
 
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Clan {
+public class ClanJSONBean {
 
 	@SerializedName("creator_id")
 	private int creatorId;
@@ -34,7 +34,7 @@ public class Clan {
 	@SerializedName("old_name")
 	private String oldName;
 	@SerializedName("joining_options")
-	private ClanJoiningOptions joiningOptions;
+	private ClanJoiningOptionsJSONBean joiningOptions;
 	@SerializedName("leader_id")
 	private int leaderId;
 	private String motto;
@@ -44,7 +44,7 @@ public class Clan {
 	private String oldTag;
 	private String name;
 	
-	public Clan() {
+	public ClanJSONBean() {
 	}
 
 	public List<Integer> getMembersIds() {
@@ -111,7 +111,7 @@ public class Clan {
 		return oldName;
 	}
 
-	public ClanJoiningOptions getJoiningOptions() {
+	public ClanJoiningOptionsJSONBean getJoiningOptions() {
 		return joiningOptions;
 	}
 

@@ -1,8 +1,8 @@
-package org.krugdev.domain.playerProfile.JsonDataBeans;
+package org.krugdev.domain.playerProfile.JSONDataBeans;
 
 import com.google.gson.annotations.SerializedName;
 
-public class StatisticsForGameMode {
+public class GameModeStatisticsJSONBean {
 	
 	private long spotted;
 	private long hits;
@@ -23,7 +23,7 @@ public class StatisticsForGameMode {
 	@SerializedName("dropped_capture_points")
 	private long droppedCapturePoints;
 	
-	public StatisticsForGameMode() {
+	public GameModeStatisticsJSONBean() {
 		// TODO Auto-generated constructor stub
 	}
 

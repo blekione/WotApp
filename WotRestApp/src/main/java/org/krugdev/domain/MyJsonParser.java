@@ -1,4 +1,4 @@
-package org.krugdev.domain.playerProfile;
+package org.krugdev.domain;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

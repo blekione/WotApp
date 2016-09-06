@@ -1,8 +1,8 @@
-package org.krugdev.domain.playerProfile.JsonDataBeans;
+package org.krugdev.domain.playerProfile.JSONDataBeans;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PlayerClan {
+public class PlayerClanJSONBean {
 	@SerializedName("in_clan_cooldown_till")
 	private long inClanCooldownTill;
 	@SerializedName("joined_at")
@@ -12,7 +12,7 @@ public class PlayerClan {
 	@SerializedName("role")
 	private String clanRole;
 	
-	public PlayerClan() {
+	public PlayerClanJSONBean() {
 	}
 
 	public long getInClanCooldownTill() {

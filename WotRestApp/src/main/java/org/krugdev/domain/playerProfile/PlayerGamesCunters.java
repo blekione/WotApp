@@ -20,6 +20,10 @@ public class PlayerGamesCunters {
 		this.battlesDraws = battlesDraws;
 		this.battlesSurvived = battlesSurvived;
 	}
-	
-	
+
+	public void populateWithDataFromJsonDataHolders(WotData data) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

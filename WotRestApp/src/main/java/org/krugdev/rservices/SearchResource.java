@@ -36,7 +36,7 @@ public class SearchResource implements SearchResourceRestAnnotations{
 				writer.flush();
 			}
 			else {
-				throw new NotFoundException("no players");
+				throw new NotFoundException("no players found");
 			}
 	}
 }

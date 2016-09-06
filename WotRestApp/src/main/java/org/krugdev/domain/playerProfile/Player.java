@@ -3,11 +3,11 @@ package org.krugdev.domain.playerProfile;
 import java.util.Date;
 
 import org.krugdev.domain.Platforms;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Clan;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Player;
-import org.krugdev.domain.playerProfile.JsonDataBeans.PlayerClan;
+import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 
-public class PlayerDetails { 
+public class Player { 
 	
 	private long accountId;
 	private String nickname;
@@ -20,13 +20,13 @@ public class PlayerDetails {
 	private long personalRating;
 	private int daysInGame;
 
-	public PlayerDetails() {
+	public Player() {
 	}
 
 	public void populateWithDataFromJsonDataHolders(WotData data) {
-		Player player = data.getPlayer();
-		PlayerClan playerClan = data.getPlayerClan();
-		Clan clan = data.getClan();
+		PlayerJSONBean player = data.getPlayer();
+		PlayerClanJSONBean playerClan = data.getPlayerClan();
+		ClanJSONBean clan = data.getClan();
 		this.accountId = player.getAccountId();
 		this.nickname = player.getNickname();
 		this.clan = clan.getName();

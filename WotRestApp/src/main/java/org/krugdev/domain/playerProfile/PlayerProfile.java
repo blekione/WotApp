@@ -6,12 +6,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.krugdev.domain.MyJsonParser;
 import org.krugdev.domain.Platforms;
 import org.krugdev.domain.RequestingServices;
 import org.krugdev.domain.WotWebsiteRequest;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Clan;
-import org.krugdev.domain.playerProfile.JsonDataBeans.PlayerClan;
-import org.krugdev.domain.playerProfile.JsonDataBeans.Player;
+import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
+import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
 
 import com.google.gson.JsonObject;
 
@@ -19,7 +20,7 @@ import com.google.gson.JsonObject;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerProfile {
 
-	private PlayerDetails playerDetails;
+	private Player playerDetails;
 	private PlayerGamesCunters gamesCounters;
 	private PlayerKillsDeaths killsDeaths;
 	private PlayerDamage damage;
@@ -49,10 +50,10 @@ public class PlayerProfile {
 
 	private static WotData getPlayerDataFromWotApi(String id) {
 		WotData data = new WotData();
-		data.setPlayer((Player)getObjectData(RequestingServices.PLAYER_PROFILE, id, Player.class));
-		data.setPlayerClan((PlayerClan)getObjectData(RequestingServices.PLAYER_CLAN, id, PlayerClan.class));
+		data.setPlayer((PlayerJSONBean)getObjectData(RequestingServices.PLAYER_PROFILE, id, PlayerJSONBean.class));
+		data.setPlayerClan((PlayerClanJSONBean)getObjectData(RequestingServices.PLAYER_CLAN, id, PlayerClanJSONBean.class));
 		String clanId = Integer.toString(data.getPlayerClan().getClanId());
-		data.setClan((Clan)getObjectData(RequestingServices.CLAN, clanId, Clan.class));		
+		data.setClan((ClanJSONBean)getObjectData(RequestingServices.CLAN, clanId, ClanJSONBean.class));		
 		return data;
 	}
 
@@ -68,15 +69,18 @@ public class PlayerProfile {
 	}
 
 	private void populateWithData(WotData data) {
-		playerDetails = new PlayerDetails();
+		playerDetails = new Player();
 		playerDetails.populateWithDataFromJsonDataHolders(data);
+		
+		gamesCounters = new PlayerGamesCunters();
+		gamesCounters.populateWithDataFromJsonDataHolders(data);
 	}
 
-	public PlayerDetails getPlayerDetails() {
+	public Player getPlayerDetails() {
 		return playerDetails;
 	}
 
-	public void setPlayerDetails(PlayerDetails playerDetails) {
+	public void setPlayerDetails(Player playerDetails) {
 		this.playerDetails = playerDetails;
 	}
 
