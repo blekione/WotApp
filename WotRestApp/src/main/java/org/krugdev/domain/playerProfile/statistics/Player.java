@@ -1,17 +1,15 @@
-package org.krugdev.domain.playerProfile;
+package org.krugdev.domain.playerProfile.statistics;
 
 import java.util.Date;
 
-import org.krugdev.domain.Platforms;
+import org.krugdev.domain.playerProfile.WotData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 
-public class Player { 
+public class Player implements PlayerStatistics{ 
 	
-	private long accountId;
 	private String nickname;
-	private Platforms platform;
 	private String clan;
 	private String clanTag;
 	private int clanID;
@@ -19,6 +17,9 @@ public class Player {
 	private int daysInClan;
 	private long personalRating;
 	private int daysInGame;
+	private long vehiclesSpotted;
+	private long baseCapturePoints;
+	private long baseDefensePoints;
 
 	public Player() {
 	}
@@ -27,7 +28,6 @@ public class Player {
 		PlayerJSONBean player = data.getPlayer();
 		PlayerClanJSONBean playerClan = data.getPlayerClan();
 		ClanJSONBean clan = data.getClan();
-		this.accountId = player.getAccountId();
 		this.nickname = player.getNickname();
 		this.clan = clan.getName();
 		this.clanTag = clan.getTag();
@@ -36,6 +36,9 @@ public class Player {
 		this.daysInClan = changeTimeToDays(playerClan.getJoinedAt());
 		this.personalRating = player.getGlobalRating();
 		this.daysInGame = changeTimeToDays(player.getCreatedAt());
+		this.vehiclesSpotted = player.getStatistics().getAll().getSpotted();
+		this.baseDefensePoints = player.getStatistics().getAll().getDroppedCapturePoints();
+		this.baseCapturePoints = player.getStatistics().getAll().getCapturePoints();
 	}
 
 	private static int changeTimeToDays(long timeInMs) {
@@ -53,18 +56,6 @@ public class Player {
 	
 	public int getDaysInGame() {
 		return daysInGame;
-	}
-
-	public long getAccountId() {
-		return accountId;
-	}
-
-	public Platforms getPlatform() {
-		return platform;
-	}
-	
-	public void setPlatform(Platforms platform) {
-		this.platform = platform;
 	}
 
 	public String getClan() {
@@ -108,10 +99,6 @@ public class Player {
 		this.daysInClan = daysInClan;
 	}
 
-	public void setAccountId(long accountId) {
-		this.accountId = accountId;
-	}
-
 	public void setPersonalRating(long personalRating) {
 		this.personalRating = personalRating;
 	}
@@ -119,6 +106,17 @@ public class Player {
 	public void setDaysInGame(int daysInGame) {
 		this.daysInGame = daysInGame;
 	}
-	
+
+	public long getVehiclesSpotted() {
+		return vehiclesSpotted;
+	}
+
+	public long getBaseCapturePoints() {
+		return baseCapturePoints;
+	}
+
+	public long getBaseDefensePoints() {
+		return baseDefensePoints;
+	}
 	
 }

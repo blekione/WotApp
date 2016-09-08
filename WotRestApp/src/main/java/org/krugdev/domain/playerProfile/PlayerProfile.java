@@ -1,6 +1,8 @@
 package org.krugdev.domain.playerProfile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,133 +15,94 @@ import org.krugdev.domain.WotWebsiteRequest;
 import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
+import org.krugdev.domain.playerProfile.statistics.Player;
+import org.krugdev.domain.playerProfile.statistics.PlayerDamage;
+import org.krugdev.domain.playerProfile.statistics.PlayerExperience;
+import org.krugdev.domain.playerProfile.statistics.PlayerGamesCounters;
+import org.krugdev.domain.playerProfile.statistics.PlayerKillsDeaths;
+import org.krugdev.domain.playerProfile.statistics.PlayerStatistics;
 
 import com.google.gson.JsonObject;
 
 @XmlRootElement(name="player")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerProfile {
+	private static MyJsonParser parser = new MyJsonParser();
 
-	private Player playerDetails;
-	private PlayerGamesCunters gamesCounters;
-	private PlayerKillsDeaths killsDeaths;
-	private PlayerDamage damage;
-	private PlayerExperience experience;
-	private int vehiclesSpotted;
-	private int baseCapturePoints;
-	private int baseDefensePoints;
+	
+	private Map<String, PlayerStatistics> statistics;
+	private Platforms platform;
+	private String playerId;
 
 	/* tanks */
 	private List<String> tanksPlayed;
 	private List<TankItems> tankItems;
 	
-	private static Platforms platform;
-	private static MyJsonParser parser = new MyJsonParser();
-
 	public PlayerProfile() {
+		statistics = new HashMap<>();
 	}	
-
-	public static PlayerProfile getPlayerProfile(Platforms aPlatform, String id) {
-		platform = aPlatform; 		
-		
-		PlayerProfile playerProfile = new PlayerProfile();
-		playerProfile.populateWithData(getPlayerDataFromWotApi(id));
-		playerProfile.getPlayerDetails().setPlatform(platform);
-		return playerProfile;
+	
+	public PlayerProfile(Platforms platform, String playerId) {
+		statistics = new HashMap<>();
+		this.platform = platform;
+		this.playerId = playerId;
 	}
 
-	private static WotData getPlayerDataFromWotApi(String id) {
+	public static PlayerProfile getPlayerProfile(Platforms platform, String id) {
+		PlayerProfile playerProfile = new PlayerProfile(platform, id);
+		playerProfile.populateWithData();
+		return playerProfile;
+	}
+	
+	private void populateWithData() {
+		
+		WotData data = getPlayerDataFromWotApi();
+		
+		statistics.put("player", new Player());
+		statistics.put("games_counters", new PlayerGamesCounters());
+		statistics.put("kills_deaths", new PlayerKillsDeaths());
+		statistics.put("damage", new PlayerDamage());
+		statistics.put("experience", new PlayerExperience());
+		
+		statistics.forEach((k, v) -> v.populateWithDataFromJsonDataHolders(data));
+	}
+	
+	private WotData getPlayerDataFromWotApi() {
 		WotData data = new WotData();
-		data.setPlayer((PlayerJSONBean)getObjectData(RequestingServices.PLAYER_PROFILE, id, PlayerJSONBean.class));
-		data.setPlayerClan((PlayerClanJSONBean)getObjectData(RequestingServices.PLAYER_CLAN, id, PlayerClanJSONBean.class));
+		data.setPlayer(
+				(PlayerJSONBean)getObjectData(
+						RequestingServices.PLAYER_PROFILE, playerId, PlayerJSONBean.class));
+		data.setPlayerClan(
+				(PlayerClanJSONBean)getObjectData(
+						RequestingServices.PLAYER_CLAN, playerId, PlayerClanJSONBean.class));
 		String clanId = Integer.toString(data.getPlayerClan().getClanId());
-		data.setClan((ClanJSONBean)getObjectData(RequestingServices.CLAN, clanId, ClanJSONBean.class));		
+		data.setClan(
+				(ClanJSONBean)getObjectData(
+						RequestingServices.CLAN, clanId, ClanJSONBean.class));		
 		return data;
 	}
 
-	public static Object getObjectData(RequestingServices requestingService, String id, Class<?> class1) {
+	public Object getObjectData(RequestingServices requestingService, String id, Class<?> class1) {
 		JsonObject playerJson = getJsonFromWot(requestingService, id);
 		return parser.getClassDataFromJson(playerJson, class1);
 	}
 	
-	private static JsonObject getJsonFromWot(RequestingServices requestingService, String id) {
+	private JsonObject getJsonFromWot(RequestingServices requestingService, String id) {
 		WotWebsiteRequest request = new WotWebsiteRequest(platform, requestingService);		
 		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
 		return parser.trimJsonFromRedundantData(playerProfileJsonAsString, id);
 	}
 
-	private void populateWithData(WotData data) {
-		playerDetails = new Player();
-		playerDetails.populateWithDataFromJsonDataHolders(data);
-		
-		gamesCounters = new PlayerGamesCunters();
-		gamesCounters.populateWithDataFromJsonDataHolders(data);
+	public String getNickname() {
+		Player player = (Player) statistics.get("player");
+		return player.getNickname();
 	}
 
-	public Player getPlayerDetails() {
-		return playerDetails;
-	}
-
-	public void setPlayerDetails(Player playerDetails) {
-		this.playerDetails = playerDetails;
-	}
-
-	public PlayerGamesCunters getGamesCounters() {
-		return gamesCounters;
-	}
-
-	public void setGamesCounters(PlayerGamesCunters gamesCounters) {
-		this.gamesCounters = gamesCounters;
-	}
-
-	public PlayerKillsDeaths getKillsDeaths() {
-		return killsDeaths;
-	}
-
-	public void setKillsDeaths(PlayerKillsDeaths killsDeaths) {
-		this.killsDeaths = killsDeaths;
-	}
-
-	public PlayerDamage getDamage() {
-		return damage;
-	}
-
-	public void setDamage(PlayerDamage damage) {
-		this.damage = damage;
-	}
-
-	public PlayerExperience getExperience() {
-		return experience;
-	}
-
-	public void setExperience(PlayerExperience experience) {
-		this.experience = experience;
-	}
-
-	public int getVehiclesSpotted() {
-		return vehiclesSpotted;
-	}
-
-	public void setVehiclesSpotted(int vehiclesSpotted) {
-		this.vehiclesSpotted = vehiclesSpotted;
-	}
-
-	public int getBaseCapturePoints() {
-		return baseCapturePoints;
-	}
-
-	public void setBaseCapturePoints(int baseCapturePoints) {
-		this.baseCapturePoints = baseCapturePoints;
-	}
-
-	public int getBaseDefensePoints() {
-		return baseDefensePoints;
-	}
-
-	public void setBaseDefensePoints(int baseDefensePoints) {
-		this.baseDefensePoints = baseDefensePoints;
-	}
-
+	public Object getDaysInGame() {
+		Player player = (Player) statistics.get("player");
+		return player.getDaysInGame();
+	} 
+	
 	public List<String> getTanksPlayed() {
 		return tanksPlayed;
 	}
@@ -155,5 +118,24 @@ public class PlayerProfile {
 	public void setTankItems(List<TankItems> tankItems) {
 		this.tankItems = tankItems;
 	}
+
+	public int getGamesPlayedCounter() {
+		PlayerGamesCounters counters = (PlayerGamesCounters) statistics.get("games_counters");
+		return counters.getBattlesCount();
+	}
+
+	public long getKills() {
+		PlayerKillsDeaths killsDeadths = (PlayerKillsDeaths) statistics.get("kills_deaths");
+		return killsDeadths.getKills();
+	}
 	
+	public long getDamageDealt() {
+		PlayerDamage damage = (PlayerDamage) statistics.get("damage");
+		return damage.getDamageDealt();
+	}
+
+	public int getHighestExperience() {
+		PlayerExperience exp = (PlayerExperience) statistics.get("experience");
+		return exp.getHighestExperience();
+	}
 }

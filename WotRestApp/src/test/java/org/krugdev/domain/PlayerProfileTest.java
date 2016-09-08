@@ -21,14 +21,33 @@ public class PlayerProfileTest {
 	
 	@Test
 	public void testIfProfileIsReceived() {
-		assertEquals("Mr Flen", playerProfile.getPlayerDetails().getNickname());
+		assertEquals("Mr Flen", playerProfile.getNickname());
 	}
 	
 	@Test
 	public void testIfDaysInGameAreSetCorrectly() {
 		Date date = new Date();
-		long expectedValue = ((date.getTime() / 1000) - 1438330823) / 86400;
-		assertEquals(expectedValue, playerProfile.getPlayerDetails().getDaysInGame());
+		int expectedValue = (int)((date.getTime() / 1000) - 1438330823) / 86400;
+		assertEquals(expectedValue, playerProfile.getDaysInGame());
 	}
 
+	@Test
+	public void testIfGamesCountersAreSet() {
+		assertTrue(5000 < playerProfile.getGamesPlayedCounter());
+	}
+	
+	@Test
+	public void testIfKillsDeathsAreSet() {
+		assertTrue(5000l < playerProfile.getKills());
+	}
+	
+	@Test
+	public void testIfDamagesAreSet() {
+		assertTrue(100000 < playerProfile.getDamageDealt());
+	}
+	
+	@Test
+	public void testIfExperienceIsSet() {
+		assertTrue(1000 < playerProfile.getHighestExperience());
+	}
 }
