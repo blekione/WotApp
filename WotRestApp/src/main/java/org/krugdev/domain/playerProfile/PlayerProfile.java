@@ -27,8 +27,8 @@ import com.google.gson.JsonObject;
 @XmlRootElement(name="player")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerProfile {
+	
 	private static MyJsonParser parser = new MyJsonParser();
-
 	
 	private Map<Stat, PlayerStatistics> statistics;
 	private Platforms platform;
@@ -46,14 +46,14 @@ public class PlayerProfile {
 		statistics = new HashMap<>();
 	}
 	
-	
 	public PlayerProfile(Platforms platform, String playerId) {
 		statistics = new HashMap<>();
 		this.platform = platform;
 		this.playerId = playerId.replaceFirst("^0+(?!$)", ""); // trims leading zeros
 	}
 
-	public static PlayerProfile getPlayerProfile(Platforms platform, String id) throws PlayerNotFoundException {
+	public static PlayerProfile getPlayerProfile(Platforms platform, String id) 
+			throws PlayerNotFoundException {
 		PlayerProfile playerProfile = new PlayerProfile(platform, id);
 		playerProfile.populateWithData();
 		return playerProfile;
@@ -88,13 +88,15 @@ public class PlayerProfile {
 		return data;
 	}
 
-	public Object getObjectData(RequestingServices requestingService, String id, Class<?> class1) throws PlayerNotFoundException {
-		JsonObject playerJson = getJsonFromWot(requestingService, id);
+	public Object getObjectData(RequestingServices service, String id, Class<?> class1) 
+			throws PlayerNotFoundException {
+		JsonObject playerJson = getJsonFromWot(service, id);
 		return parser.getClassDataFromJson(playerJson, class1);
 	}
 	
-	private JsonObject getJsonFromWot(RequestingServices requestingService, String id) throws PlayerNotFoundException {
-		WotWebsiteRequest request = new WotWebsiteRequest(platform, requestingService);		
+	private JsonObject getJsonFromWot(RequestingServices service, String id) 
+			throws PlayerNotFoundException {
+		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);		
 		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
 		return parser.trimJsonFromRedundantData(playerProfileJsonAsString, id);
 	}
