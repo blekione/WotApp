@@ -9,12 +9,12 @@ import javax.ws.rs.core.StreamingOutput;
 public interface PlayerProfileResourceRestAnnotations {
 
 	@GET
-	@Path("item/{player_id}")
-	public StreamingOutput getPlayer(@PathParam("player_id") int playerId);
+	@Path("item/{platform}/{player_id}")
+	public StreamingOutput getPlayer(@PathParam("platform") String platform, @PathParam("player_id") String playerId);
 	
 	@GET
-	@Path("tanks/{player_id}")
-	public StreamingOutput getPlayerTanks(@PathParam("player_id") int playerId);
+	@Path("tanks/{platform}/{player_id}")
+	public StreamingOutput getPlayerTanks(@PathParam("platform") String platform, @PathParam("player_id") String playerId);
 	
 	@GET
 	@Path("search/{platform}/{qry}")

@@ -13,7 +13,6 @@ import org.krugdev.domain.playerProfile.PlayerProfile;
 
 public class PlayerProfileTest {
 
-	
 	static PlayerProfile playerProfile;
 	
 	@Rule

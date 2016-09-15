@@ -1,11 +1,12 @@
 package org.krugdev.domain.playerProfile;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.krugdev.domain.MyJsonParser;
 import org.krugdev.domain.Platforms;
@@ -24,30 +25,26 @@ import org.krugdev.domain.playerProfile.statistics.PlayerStatistics;
 
 import com.google.gson.JsonObject;
 
-@XmlRootElement(name="player")
+@XmlRootElement(name="player_profile")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayerProfile {
 	
+	@XmlTransient
 	private static MyJsonParser parser = new MyJsonParser();
 	
-	private Map<Stat, PlayerStatistics> statistics;
 	private Platforms platform;
 	private String playerId;
-
-	private enum Stat {
-		PLAYER,
-		GAMES,
-		FRAGS,
-		DAMAGE,
-		EXP;
-	}
+	
+	private Player player;
+	private PlayerDamage playerDamage;
+	private PlayerExperience playerExperience;
+	private PlayerGamesCounters playerGames;
+	private PlayerKillsDeaths playerFrags;
 	
 	public PlayerProfile() {
-		statistics = new HashMap<>();
 	}
 	
 	public PlayerProfile(Platforms platform, String playerId) {
-		statistics = new HashMap<>();
 		this.platform = platform;
 		this.playerId = playerId.replaceFirst("^0+(?!$)", ""); // trims leading zeros
 	}
@@ -63,13 +60,15 @@ public class PlayerProfile {
 		
 		WotData data = getPlayerDataFromWotApi();
 		
-		statistics.put(Stat.PLAYER, new Player());
-		statistics.put(Stat.GAMES, new PlayerGamesCounters());
-		statistics.put(Stat.FRAGS, new PlayerKillsDeaths());
-		statistics.put(Stat.DAMAGE, new PlayerDamage());
-		statistics.put(Stat.EXP, new PlayerExperience());
+		List<PlayerStatistics> statistics= new ArrayList<>();
 		
-		statistics.forEach((k, v) -> v.populateWithDataFromJsonDataHolders(data));
+		statistics.add(player = new Player());
+		statistics.add( playerGames = new PlayerGamesCounters());
+		statistics.add(playerFrags = new PlayerKillsDeaths());
+		statistics.add(playerDamage = new PlayerDamage());
+		statistics.add(playerExperience = new PlayerExperience());
+		
+		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolders(data));
 	}
 	
 	private WotData getPlayerDataFromWotApi() throws PlayerNotFoundException {
@@ -102,32 +101,26 @@ public class PlayerProfile {
 	}
 
 	public String getNickname() {
-		Player player = (Player) statistics.get(Stat.PLAYER);
 		return player.getNickname();
 	}
 
-	public Object getDaysInGame() {
-		Player player = (Player) statistics.get(Stat.PLAYER);
+	public int getDaysInGame() {
 		return player.getDaysInGame();
 	} 
 
 	public int getGamesPlayedCounter() {
-		PlayerGamesCounters counters = (PlayerGamesCounters) statistics.get(Stat.GAMES);
-		return counters.getBattlesCount();
+		return playerGames.getBattlesCount();
 	}
 
-	public long getKills() {
-		PlayerKillsDeaths killsDeadths = (PlayerKillsDeaths) statistics.get(Stat.FRAGS);
-		return killsDeadths.getKills();
+	public Long getKills() {
+		return playerFrags.getKills();
 	}
 	
-	public long getDamageDealt() {
-		PlayerDamage damage = (PlayerDamage) statistics.get(Stat.DAMAGE);
-		return damage.getDamageDealt();
+	public Long getDamageDealt() {
+		return playerDamage.getDamageDealt();
 	}
 
 	public int getHighestExperience() {
-		PlayerExperience exp = (PlayerExperience) statistics.get(Stat.EXP);
-		return exp.getHighestExperience();
+		return playerExperience.getHighestExperience();
 	}
 }

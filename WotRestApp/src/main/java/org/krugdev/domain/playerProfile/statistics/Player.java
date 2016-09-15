@@ -2,12 +2,15 @@ package org.krugdev.domain.playerProfile.statistics;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.krugdev.domain.playerProfile.WotData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 
-public class Player implements PlayerStatistics{ 
+@XmlRootElement
+public class Player extends PlayerStatistics { 
 	
 	private String nickname;
 	private String clan;
@@ -15,11 +18,11 @@ public class Player implements PlayerStatistics{
 	private int clanID;
 	private String clanRole;
 	private int daysInClan;
-	private long personalRating;
+	private Long personalRating;
 	private int daysInGame;
-	private long vehiclesSpotted;
-	private long baseCapturePoints;
-	private long baseDefensePoints;
+	private Long vehiclesSpotted;
+	private Long baseCapturePoints;
+	private Long baseDefensePoints;
 
 	public Player() {
 	}
@@ -44,7 +47,7 @@ public class Player implements PlayerStatistics{
 	private static int changeTimeToDays(long timeInMs) {
 		Date date = new Date();
 		return (int)((date.getTime() / 1000) - timeInMs) / 86400;
-	}	
+	}
 
 	public String getNickname() {
 		return nickname;
@@ -53,15 +56,11 @@ public class Player implements PlayerStatistics{
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
-	public int getDaysInGame() {
-		return daysInGame;
-	}
 
 	public String getClan() {
 		return clan;
 	}
-	
+
 	public void setClan(String clan) {
 		this.clan = clan;
 	}
@@ -69,18 +68,17 @@ public class Player implements PlayerStatistics{
 	public String getClanTag() {
 		return clanTag;
 	}
-	
-	
+
+	public void setClanTag(String clanTag) {
+		this.clanTag = clanTag;
+	}
+
 	public int getClanID() {
 		return clanID;
 	}
 
 	public void setClanID(int clanID) {
 		this.clanID = clanID;
-	}
-
-	public long getPersonalRating() {
-		return personalRating;
 	}
 
 	public String getClanRole() {
@@ -99,24 +97,44 @@ public class Player implements PlayerStatistics{
 		this.daysInClan = daysInClan;
 	}
 
-	public void setPersonalRating(long personalRating) {
+	public Long getPersonalRating() {
+		return personalRating;
+	}
+
+	public void setPersonalRating(Long personalRating) {
 		this.personalRating = personalRating;
+	}
+
+	public int getDaysInGame() {
+		return daysInGame;
 	}
 
 	public void setDaysInGame(int daysInGame) {
 		this.daysInGame = daysInGame;
 	}
 
-	public long getVehiclesSpotted() {
+	public Long getVehiclesSpotted() {
 		return vehiclesSpotted;
 	}
 
-	public long getBaseCapturePoints() {
+	public void setVehiclesSpotted(Long vehiclesSpotted) {
+		this.vehiclesSpotted = vehiclesSpotted;
+	}
+
+	public Long getBaseCapturePoints() {
 		return baseCapturePoints;
 	}
 
-	public long getBaseDefensePoints() {
+	public void setBaseCapturePoints(Long baseCapturePoints) {
+		this.baseCapturePoints = baseCapturePoints;
+	}
+
+	public Long getBaseDefensePoints() {
 		return baseDefensePoints;
 	}
-	
+
+	public void setBaseDefensePoints(Long baseDefensePoints) {
+		this.baseDefensePoints = baseDefensePoints;
+	}	
+
 }

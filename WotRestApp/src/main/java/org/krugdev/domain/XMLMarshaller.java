@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
+import org.krugdev.domain.playerProfile.PlayerProfile;
 import org.krugdev.domain.search.PlayerProfileBasic;
 
 public class XMLMarshaller {
@@ -20,7 +21,7 @@ public class XMLMarshaller {
         @SuppressWarnings("rawtypes")
 		JAXBElement<MarshallerListWrapper> jaxbElement = new JAXBElement<MarshallerListWrapper>(rootElement,
                 MarshallerListWrapper.class, wrapper);
-		try{
+		try {
 			ctx = JAXBContext.newInstance(PlayerProfileBasic.class, MarshallerListWrapper.class);
 			Marshaller marshaller = ctx.createMarshaller();
 	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -31,4 +32,17 @@ public class XMLMarshaller {
 		} 
 	}
 
+	public static void marshallObjectToXML(PlayerProfile playerProfile, PrintStream writer) {
+		JAXBContext ctx;
+		try {
+			ctx = JAXBContext.newInstance(PlayerProfile.class);
+			Marshaller marshaller = ctx.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(playerProfile, writer);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
+

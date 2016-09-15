@@ -1,19 +1,16 @@
 package org.krugdev.domain.playerProfile.statistics;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.krugdev.domain.playerProfile.WotData;
 
-public class PlayerKillsDeaths implements PlayerStatistics {
+@XmlRootElement
+public class PlayerKillsDeaths extends PlayerStatistics {
 	
 	private long kills;
 	private long deaths;
 	
 	public PlayerKillsDeaths() {
-	}
-
-	public PlayerKillsDeaths(long kills, long deaths) {
-		super();
-		this.kills = kills;
-		this.deaths = deaths;
 	}
 
 	public void populateWithDataFromJsonDataHolders(WotData data) {
@@ -31,8 +28,16 @@ public class PlayerKillsDeaths implements PlayerStatistics {
 		return kills;
 	}
 
+	public void setKills(long kills) {
+		this.kills = kills;
+	}
+
 	public long getDeaths() {
 		return deaths;
+	}
+
+	public void setDeaths(long deaths) {
+		this.deaths = deaths;
 	}
 
 }

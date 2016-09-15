@@ -1,20 +1,23 @@
 package org.krugdev.domain.playerProfile.statistics;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.krugdev.domain.playerProfile.WotData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.StatisticsJSONBean;
 
-public class PlayerDamage implements PlayerStatistics {
+@XmlRootElement
+public class PlayerDamage extends PlayerStatistics {
 
-	private long damageDealt;
-	private long damageAfterTrack;
-	private long damageAfterSpot;
-	private long damageReceived;
+	private Long damageDealt;
+	private Long damageAfterTrack;
+	private Long damageAfterSpot;
+	private Long damageReceived;
 	
 	public PlayerDamage() {
 	}
 
-	public PlayerDamage(int damageDealt, int damageAfterTrack, int damageAfterSpot, 
-			int damageReceived) {
+	public PlayerDamage(Long damageDealt, Long damageAfterTrack, Long damageAfterSpot, 
+			Long damageReceived) {
 		super();
 		this.damageDealt = damageDealt;
 		this.damageAfterTrack = damageAfterTrack;
@@ -30,20 +33,37 @@ public class PlayerDamage implements PlayerStatistics {
 		damageAfterSpot = statistics.getDamageAssistedRadio();
 		damageReceived = statistics.getAll().getDamageReceived();
 	}
-	
-	public long getDamageDealt() {
+
+	public Long getDamageDealt() {
 		return damageDealt;
 	}
 
-	public long getDamageAfterTrack() {
+	public void setDamageDealt(Long damageDealt) {
+		this.damageDealt = damageDealt;
+	}
+
+	public Long getDamageAfterTrack() {
 		return damageAfterTrack;
 	}
 
-	public long getDamageAfterSpot() {
+	public void setDamageAfterTrack(Long damageAfterTrack) {
+		this.damageAfterTrack = damageAfterTrack;
+	}
+
+	public Long getDamageAfterSpot() {
 		return damageAfterSpot;
 	}
 
-	public long getDamageReceived() {
+	public void setDamageAfterSpot(Long damageAfterSpot) {
+		this.damageAfterSpot = damageAfterSpot;
+	}
+
+	public Long getDamageReceived() {
 		return damageReceived;
 	}
+
+	public void setDamageReceived(Long damageReceived) {
+		this.damageReceived = damageReceived;
+	}
+
 }

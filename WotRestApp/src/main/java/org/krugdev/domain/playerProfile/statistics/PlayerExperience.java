@@ -1,21 +1,18 @@
 package org.krugdev.domain.playerProfile.statistics;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.krugdev.domain.playerProfile.WotData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.StatisticsJSONBean;
 
-public class PlayerExperience implements PlayerStatistics {
+@XmlRootElement
+public class PlayerExperience extends PlayerStatistics {
 	
-	private long totalExperience;
+	private Long totalExperience;
 	private int highestExperience;
 	private int highestExpTankId; 
 
 	public PlayerExperience() {
-	}
-
-	public PlayerExperience(int totalExp, int highestExp) {
-		super();
-		this.totalExperience = totalExp;
-		this.highestExperience = highestExp;
 	}
 
 	@Override
@@ -26,15 +23,28 @@ public class PlayerExperience implements PlayerStatistics {
 		highestExpTankId = statistics.getMaxXpTankId();
 	}
 
-	public long getTotalExperience() {
+	public Long getTotalExperience() {
 		return totalExperience;
+	}
+
+	public void setTotalExperience(Long totalExperience) {
+		this.totalExperience = totalExperience;
 	}
 
 	public int getHighestExperience() {
 		return highestExperience;
 	}
 
+	public void setHighestExperience(int highestExperience) {
+		this.highestExperience = highestExperience;
+	}
+
 	public int getHighestExpTankId() {
 		return highestExpTankId;
 	}
+
+	public void setHighestExpTankId(int highestExpTankId) {
+		this.highestExpTankId = highestExpTankId;
+	}
+	
 }
