@@ -4,5 +4,6 @@ public enum RequestingServices {
 	PLAYER_PROFILE,
 	SEARCH,
 	PLAYER_CLAN,
-	CLAN;
+	CLAN,
+	PLAYER_TANKS;
 }

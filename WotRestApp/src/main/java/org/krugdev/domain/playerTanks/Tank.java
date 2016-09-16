@@ -1,4 +1,4 @@
-package org.krugdev.domain.playerProfile;
+package org.krugdev.domain.playerTanks;
 
 public class Tank {
 	

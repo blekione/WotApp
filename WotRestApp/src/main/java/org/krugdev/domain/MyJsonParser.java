@@ -2,31 +2,32 @@ package org.krugdev.domain;
 
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class MyJsonParser {
 	
-	public Object getClassDataFromJson(JsonObject playerProfileIDDataJson, Class<?> cls) {
+	public Object getClassDataFromJson(JsonObject jsonObject, Class<?> cls) {
 		Gson gson = new Gson();
-		Object playerProfileData = gson.fromJson(playerProfileIDDataJson, cls);
-		return playerProfileData;		
+		Object parsedDataObject = gson.fromJson(jsonObject, cls);
+		return parsedDataObject;		
 	}
 	
-	public JsonObject trimJsonFromRedundantData(String jsonFromWotApi, String id) throws PlayerNotFoundException {
+	public JsonElement trimJsonFromRedundantData(String jsonFromWotApi, String id) throws PlayerNotFoundException {
 		JsonParser parser = new JsonParser();
-		JsonObject playerProfileJson = parser.parse(jsonFromWotApi).getAsJsonObject();
-		if (checkIfJsonStatusIsOK(playerProfileJson)) {
-			return getDataElementFromJson(playerProfileJson, id);		
+		JsonObject wotJsonObject = parser.parse(jsonFromWotApi).getAsJsonObject();
+		if (checkIfJsonStatusIsOK(wotJsonObject)) {
+			return getDataElementFromJson(wotJsonObject, id);		
 		} else {
-			throw new PlayerNotFoundException("json status" + playerProfileJson.get("status").getAsString());
+			throw new PlayerNotFoundException("json status" + wotJsonObject.get("status").getAsString());
 		}
 	}
 
-	private JsonObject getDataElementFromJson(JsonObject playerProfileJson, String id) throws PlayerNotFoundException {
-		JsonObject playerProfileDataJson = playerProfileJson.get("data").getAsJsonObject();
-		if (!playerProfileDataJson.get(id).isJsonNull()) {
-			return playerProfileDataJson.get(id).getAsJsonObject();
+	private JsonElement getDataElementFromJson(JsonObject playerProfileJson, String id) throws PlayerNotFoundException {
+		JsonObject wotDataJsonObject = playerProfileJson.get("data").getAsJsonObject();
+		if (!wotDataJsonObject.get(id).isJsonNull()) {
+			return wotDataJsonObject.get(id);
 		} else {
 			throw new PlayerNotFoundException("no data for player id" + id);
 		}		
@@ -39,6 +40,4 @@ public class MyJsonParser {
 			return false;
 		}
 	}
-	
-	
 }

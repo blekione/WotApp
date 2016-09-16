@@ -1,6 +1,6 @@
-package org.krugdev.domain.playerProfile;
+package org.krugdev.domain.playerTanks;
 
-public class TankItems {
+public class TankItem {
 
 	private Tank tank;
 	private int gamesCount;

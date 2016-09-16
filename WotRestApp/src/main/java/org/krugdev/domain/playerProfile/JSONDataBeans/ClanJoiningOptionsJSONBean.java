@@ -14,6 +14,7 @@ public class ClanJoiningOptionsJSONBean {
 	private double battlesSurvived;
 	@SerializedName("hitsRatio")
 	private double hitsRatio;
+	@SerializedName("battles")
 	private int battles;
 	@SerializedName("xp_per_battle")
 	private int xpPerBattle;

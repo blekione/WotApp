@@ -2,7 +2,7 @@ package org.krugdev.domain.playerProfile.statistics;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.playerProfile.WotData;
+import org.krugdev.domain.playerProfile.WotPlayerData;
 
 @XmlRootElement
 public class PlayerGamesCounters extends PlayerStatistics {
@@ -16,7 +16,7 @@ public class PlayerGamesCounters extends PlayerStatistics {
 	public PlayerGamesCounters() {
 	}
 
-	public void populateWithDataFromJsonDataHolders(WotData data) {
+	public void populateWithDataFromJsonDataHolders(WotPlayerData data) {
 		battlesCount = data.getPlayer().getStatistics().getAll().getBattles();
 		battlesWins = data.getPlayer().getStatistics().getAll().getWins();
 		battlesLosses = data.getPlayer().getStatistics().getAll().getLosses();

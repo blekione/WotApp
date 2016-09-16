@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.playerProfile.WotData;
+import org.krugdev.domain.playerProfile.WotPlayerData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
@@ -27,7 +27,7 @@ public class Player extends PlayerStatistics {
 	public Player() {
 	}
 
-	public void populateWithDataFromJsonDataHolders(WotData data) {
+	public void populateWithDataFromJsonDataHolders(WotPlayerData data) {
 		PlayerJSONBean player = data.getPlayer();
 		PlayerClanJSONBean playerClan = data.getPlayerClan();
 		ClanJSONBean clan = data.getClan();

@@ -2,7 +2,7 @@ package org.krugdev.domain.playerProfile.statistics;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.playerProfile.WotData;
+import org.krugdev.domain.playerProfile.WotPlayerData;
 
 @XmlRootElement
 public class PlayerKillsDeaths extends PlayerStatistics {
@@ -13,12 +13,12 @@ public class PlayerKillsDeaths extends PlayerStatistics {
 	public PlayerKillsDeaths() {
 	}
 
-	public void populateWithDataFromJsonDataHolders(WotData data) {
+	public void populateWithDataFromJsonDataHolders(WotPlayerData data) {
 		kills = data.getPlayer().getStatistics().getAll().getFrags();
 		deaths = calculateDeaths(data);
 	}
 
-	private long calculateDeaths(WotData data) {
+	private long calculateDeaths(WotPlayerData data) {
 		long gamePlayed = data.getPlayer().getStatistics().getAll().getBattles();
 		long gameSurvived = data.getPlayer().getStatistics().getAll().getSurvivedBattles();
 		return gamePlayed - gameSurvived;

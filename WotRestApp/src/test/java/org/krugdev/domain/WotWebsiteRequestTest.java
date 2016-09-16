@@ -35,8 +35,16 @@ public class WotWebsiteRequestTest {
 		WotWebsiteRequest request = new WotWebsiteRequest(Platforms.XBOX, RequestingServices.CLAN);
 		String response = request.getJsonFromWotAPI("1713");
 		assertEquals("ok", getResponseStatus(response));
+		
 	}
 	
+	@Test
+	public void testIfPlayersTanksReturnsPage() {
+		WotWebsiteRequest request = 
+				new WotWebsiteRequest(Platforms.XBOX, RequestingServices.PLAYER_TANKS);
+		String response = request.getJsonFromWotAPI("6479371");
+		assertEquals("ok", getResponseStatus(response));
+	}
 	
 	private String getResponseStatus(String response) {
 		JsonParser parser = new JsonParser();

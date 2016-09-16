@@ -73,6 +73,9 @@ public class WotWebsiteRequest {
 	
 	private String buildPathToRequestedResource(String query) {
 		switch (requestingService){
+		case PLAYER_TANKS:
+			return new String("tanks/stats/"+ APP_ID_URL_PARAMETER + 
+					"&account_id=" + query);
 		case CLAN:
 			return new String("clans/info/" + APP_ID_URL_PARAMETER + 
 					"&clan_id=" + query);

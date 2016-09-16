@@ -23,6 +23,7 @@ import org.krugdev.domain.playerProfile.statistics.PlayerGamesCounters;
 import org.krugdev.domain.playerProfile.statistics.PlayerKillsDeaths;
 import org.krugdev.domain.playerProfile.statistics.PlayerStatistics;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 @XmlRootElement(name="player_profile")
@@ -49,16 +50,16 @@ public class PlayerProfile {
 		this.playerId = playerId.replaceFirst("^0+(?!$)", ""); // trims leading zeros
 	}
 
-	public static PlayerProfile getPlayerProfile(Platforms platform, String id) 
+	public static PlayerProfile getPlayerProfile(Platforms platform, String playerId) 
 			throws PlayerNotFoundException {
-		PlayerProfile playerProfile = new PlayerProfile(platform, id);
+		PlayerProfile playerProfile = new PlayerProfile(platform, playerId);
 		playerProfile.populateWithData();
 		return playerProfile;
 	}
 	
 	private void populateWithData() throws PlayerNotFoundException {
 		
-		WotData data = getPlayerDataFromWotApi();
+		WotPlayerData data = getPlayerDataFromWotApi();
 		
 		List<PlayerStatistics> statistics= new ArrayList<>();
 		
@@ -71,8 +72,8 @@ public class PlayerProfile {
 		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolders(data));
 	}
 	
-	private WotData getPlayerDataFromWotApi() throws PlayerNotFoundException {
-		WotData data = new WotData();
+	private WotPlayerData getPlayerDataFromWotApi() throws PlayerNotFoundException {
+		WotPlayerData data = new WotPlayerData();
 		
 		data.setPlayer(
 				(PlayerJSONBean)getObjectData(
@@ -89,11 +90,11 @@ public class PlayerProfile {
 
 	public Object getObjectData(RequestingServices service, String id, Class<?> class1) 
 			throws PlayerNotFoundException {
-		JsonObject playerJson = getJsonFromWot(service, id);
+		JsonObject playerJson = getJsonFromWot(service, id).getAsJsonObject();
 		return parser.getClassDataFromJson(playerJson, class1);
 	}
 	
-	private JsonObject getJsonFromWot(RequestingServices service, String id) 
+	private JsonElement getJsonFromWot(RequestingServices service, String id) 
 			throws PlayerNotFoundException {
 		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);		
 		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);

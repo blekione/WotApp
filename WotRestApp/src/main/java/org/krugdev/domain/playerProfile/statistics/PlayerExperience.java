@@ -2,7 +2,7 @@ package org.krugdev.domain.playerProfile.statistics;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.playerProfile.WotData;
+import org.krugdev.domain.playerProfile.WotPlayerData;
 import org.krugdev.domain.playerProfile.JSONDataBeans.StatisticsJSONBean;
 
 @XmlRootElement
@@ -16,7 +16,7 @@ public class PlayerExperience extends PlayerStatistics {
 	}
 
 	@Override
-	public void populateWithDataFromJsonDataHolders(WotData data) {
+	public void populateWithDataFromJsonDataHolders(WotPlayerData data) {
 		StatisticsJSONBean statistics = data.getPlayer().getStatistics();
 		totalExperience = statistics.getAll().getXp();
 		highestExperience = statistics.getMaxXp();

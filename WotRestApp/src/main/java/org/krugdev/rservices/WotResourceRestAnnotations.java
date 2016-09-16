@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.StreamingOutput;
 
 @Path("/player")
-public interface PlayerProfileResourceRestAnnotations {
+public interface WotResourceRestAnnotations {
 
 	@GET
 	@Path("item/{platform}/{player_id}")

@@ -13,7 +13,7 @@ import org.krugdev.domain.XMLMarshaller;
 import org.krugdev.domain.playerProfile.PlayerProfile;
 import org.krugdev.domain.search.PlayerProfileBasic;
 
-public class PlayerProfileResource implements PlayerProfileResourceRestAnnotations {
+public class WotResource implements WotResourceRestAnnotations {
 
 	Platforms platform;
 	

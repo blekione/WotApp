@@ -4,13 +4,13 @@ import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.playerProfile.JSONDataBeans.PlayerClanJSONBean;
 
-public class WotData {
+public class WotPlayerData {
 
 	PlayerJSONBean player;
 	PlayerClanJSONBean playerClan;
 	ClanJSONBean clan;
 	
-	public WotData() {
+	public WotPlayerData() {
 	}
 
 	public PlayerJSONBean getPlayer() {
