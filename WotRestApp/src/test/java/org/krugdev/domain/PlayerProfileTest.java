@@ -23,7 +23,7 @@ public class PlayerProfileTest {
 		try {
 		playerProfile = 
 				PlayerProfile.getPlayerProfile(Platforms.XBOX, "6479371");
-		} catch (PlayerNotFoundException e){
+		} catch (ResourceNotFoundException e){
 			System.out.println("player not found");
 		}
 	}
@@ -61,8 +61,8 @@ public class PlayerProfileTest {
 	}
 	
 	@Test
-	public void testIfExceptionThrownWhenPlayerNotFound() throws PlayerNotFoundException {
-		exception.expect(PlayerNotFoundException.class);
+	public void testIfExceptionThrownWhenPlayerNotFound() throws ResourceNotFoundException {
+		exception.expect(ResourceNotFoundException.class);
 			playerProfile = PlayerProfile.getPlayerProfile(Platforms.XBOX, "0000099");
 	}
 }

@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.krugdev.domain.MyJsonParser;
 import org.krugdev.domain.Platforms;
-import org.krugdev.domain.PlayerNotFoundException;
+import org.krugdev.domain.ResourceNotFoundException;
 import org.krugdev.domain.RequestingServices;
 import org.krugdev.domain.WotWebsiteRequest;
 import org.krugdev.domain.playerProfile.JSONDataBeans.ClanJSONBean;
@@ -51,13 +51,13 @@ public class PlayerProfile {
 	}
 
 	public static PlayerProfile getPlayerProfile(Platforms platform, String playerId) 
-			throws PlayerNotFoundException {
+			throws ResourceNotFoundException {
 		PlayerProfile playerProfile = new PlayerProfile(platform, playerId);
 		playerProfile.populateWithData();
 		return playerProfile;
 	}
 	
-	private void populateWithData() throws PlayerNotFoundException {
+	private void populateWithData() throws ResourceNotFoundException {
 		
 		WotPlayerData data = getPlayerDataFromWotApi();
 		
@@ -72,7 +72,7 @@ public class PlayerProfile {
 		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolders(data));
 	}
 	
-	private WotPlayerData getPlayerDataFromWotApi() throws PlayerNotFoundException {
+	private WotPlayerData getPlayerDataFromWotApi() throws ResourceNotFoundException {
 		WotPlayerData data = new WotPlayerData();
 		
 		data.setPlayer(
@@ -89,13 +89,13 @@ public class PlayerProfile {
 	}
 
 	public Object getObjectData(RequestingServices service, String id, Class<?> class1) 
-			throws PlayerNotFoundException {
+			throws ResourceNotFoundException {
 		JsonObject playerJson = getJsonFromWot(service, id).getAsJsonObject();
 		return parser.getClassDataFromJson(playerJson, class1);
 	}
 	
 	private JsonElement getJsonFromWot(RequestingServices service, String id) 
-			throws PlayerNotFoundException {
+			throws ResourceNotFoundException {
 		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);		
 		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
 		return parser.trimJsonFromRedundantData(playerProfileJsonAsString, id);

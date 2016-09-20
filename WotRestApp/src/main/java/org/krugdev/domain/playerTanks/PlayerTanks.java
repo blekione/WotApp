@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.krugdev.domain.MyJsonParser;
 import org.krugdev.domain.Platforms;
-import org.krugdev.domain.PlayerNotFoundException;
+import org.krugdev.domain.ResourceNotFoundException;
 import org.krugdev.domain.RequestingServices;
 import org.krugdev.domain.WotWebsiteRequest;
 
@@ -43,7 +43,7 @@ public class PlayerTanks {
 			try {
 				JsonArray tankJson = PARSER.trimJsonFromRedundantData(playerTanksJsonAsString, playerId).getAsJsonArray();
 				System.out.println(tankJson.toString());
-			} catch (PlayerNotFoundException e) {
+			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

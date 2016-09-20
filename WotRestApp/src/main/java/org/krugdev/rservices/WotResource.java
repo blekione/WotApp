@@ -2,21 +2,39 @@ package org.krugdev.rservices;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.List;
 
 import javax.ws.rs.core.StreamingOutput;
 
 import org.jboss.resteasy.spi.NotFoundException;
 import org.krugdev.domain.Platforms;
-import org.krugdev.domain.PlayerNotFoundException;
+import org.krugdev.domain.ResourceNotFoundException;
+import org.krugdev.domain.Resource;
+import org.krugdev.domain.ResourceFactory;
 import org.krugdev.domain.XMLMarshaller;
 import org.krugdev.domain.playerProfile.PlayerProfile;
-import org.krugdev.domain.search.PlayerProfileBasic;
 
 public class WotResource implements WotResourceRestAnnotations {
 
 	Platforms platform;
-	
+	String resourceParam;
+
+	@Override
+	public StreamingOutput getResource(String platform, String resourceName, String query) {
+		setPlatform(platform);
+		ResourceFactory resourceFactory = new ResourceFactory();
+		Resource resource = resourceFactory.createResource(resourceName);
+		try {
+		resource.get(this.platform, query);
+		return outputStream -> 
+			resource.outputResourceAsXML(outputStream);
+		} catch (ResourceNotFoundException e) {
+			throw new NotFoundException("query: " + query 
+					+ " returns no data for resource: " + resourceName 
+					+ " at platform: " + platform);
+
+		}
+	}
+
 	@Override
 	public StreamingOutput getPlayer(String platformString, String playerId) {
 		setPlatform(platformString);
@@ -24,7 +42,7 @@ public class WotResource implements WotResourceRestAnnotations {
 			PlayerProfile playerProfile = PlayerProfile.getPlayerProfile(platform, playerId);
 			return outputStream -> 
 				outputPlayerProfileAsXML(outputStream, playerProfile);
-		} catch (PlayerNotFoundException e) {
+		} catch (ResourceNotFoundException e) {
 			throw new NotFoundException("no data for player with id " + playerId + " and platform " + platform);
 		}
 	}
@@ -41,24 +59,6 @@ public class WotResource implements WotResourceRestAnnotations {
 		return null;
 	}
 	
-	@Override
-	public StreamingOutput search(String platformString, String qry) {
-		setPlatform(platformString);	
-			return outputStream -> 
-			outputPlayersListAsXML(outputStream, PlayerProfileBasic.getPlayers(platform, qry));
-	}	
-	
-	private void outputPlayersListAsXML(OutputStream outputStream, List<PlayerProfileBasic> players) {
-		PrintStream writer = new PrintStream(outputStream);
-		if (!players.isEmpty()) {
-				XMLMarshaller.marshallListToXML(players, "players", writer);
-				writer.flush();
-			}
-			else {
-				throw new NotFoundException("no players found");
-			}
-	}
-
 	private void setPlatform(String platform) {
 		switch(platform) {
 		case "playstation":
@@ -69,5 +69,4 @@ public class WotResource implements WotResourceRestAnnotations {
 			this.platform = Platforms.XBOX;
 		}		
 	}
-
 }

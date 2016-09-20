@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAnyElement;
 
 public class MarshallerListWrapper<T> {
+	
 	private List<T> items;
 	
 	public MarshallerListWrapper() {

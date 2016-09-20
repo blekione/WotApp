@@ -14,22 +14,22 @@ public class MyJsonParser {
 		return parsedDataObject;		
 	}
 	
-	public JsonElement trimJsonFromRedundantData(String jsonFromWotApi, String id) throws PlayerNotFoundException {
+	public JsonElement trimJsonFromRedundantData(String jsonFromWotApi, String id) throws ResourceNotFoundException {
 		JsonParser parser = new JsonParser();
 		JsonObject wotJsonObject = parser.parse(jsonFromWotApi).getAsJsonObject();
 		if (checkIfJsonStatusIsOK(wotJsonObject)) {
 			return getDataElementFromJson(wotJsonObject, id);		
 		} else {
-			throw new PlayerNotFoundException("json status" + wotJsonObject.get("status").getAsString());
+			throw new ResourceNotFoundException("json status" + wotJsonObject.get("status").getAsString());
 		}
 	}
 
-	private JsonElement getDataElementFromJson(JsonObject playerProfileJson, String id) throws PlayerNotFoundException {
+	private JsonElement getDataElementFromJson(JsonObject playerProfileJson, String id) throws ResourceNotFoundException {
 		JsonObject wotDataJsonObject = playerProfileJson.get("data").getAsJsonObject();
 		if (!wotDataJsonObject.get(id).isJsonNull()) {
 			return wotDataJsonObject.get(id);
 		} else {
-			throw new PlayerNotFoundException("no data for player id" + id);
+			throw new ResourceNotFoundException("no data for player id" + id);
 		}		
 	}
 
