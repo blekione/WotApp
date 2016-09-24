@@ -14,10 +14,6 @@ public interface WotResourceRestAnnotations {
 			@PathParam("resource") String resourceName, @PathParam("query") String query);
 
 	@GET
-	@Path("item/{platform}/{player_id}")
-	public StreamingOutput getPlayer(@PathParam("platform") String platform, @PathParam("player_id") String playerId);
-	
-	@GET
 	@Path("tanks/{platform}/{player_id}")
 	public StreamingOutput getPlayerTanks(@PathParam("platform") String platform, @PathParam("player_id") String playerId);
 	
