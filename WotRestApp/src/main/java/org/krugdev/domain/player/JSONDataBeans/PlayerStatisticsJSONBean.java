@@ -37,10 +37,6 @@ public class PlayerStatisticsJSONBean {
 	@SerializedName("damage_assisted_radio")
 	private long damageAssistedRadio;
 	
-	public PlayerStatisticsJSONBean() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public int getMaxFragsTankId() {
 		return maxFragsTankId;
 	}

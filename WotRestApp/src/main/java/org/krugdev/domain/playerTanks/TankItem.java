@@ -1,31 +1,24 @@
 package org.krugdev.domain.playerTanks;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.krugdev.domain.playerTanks.JSONDataBeans.TankGameModeStatistics;
 import org.krugdev.domain.playerTanks.JSONDataBeans.TankJSONBean;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TankItem {
 
-	@XmlElement
 	private int tankId;
-	@XmlElement
 	private String tankName;
-	@XmlElement
 	private int gamesCount;
-	@XmlElement
 	private int frags;
-	@XmlElement
 	private long damageDealt;
-	@XmlElement
 	private int spottedTanks;
-	@XmlElement
 	private int kills;
-	@XmlElement
 	private int defencePoints;
-	@XmlElement
 	private double winRatio;
 	
 	public TankItem populateWithDataFromJSONDataHolder(TankJSONBean dataHolder) {

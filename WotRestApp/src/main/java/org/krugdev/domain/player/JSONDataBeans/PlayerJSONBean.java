@@ -16,10 +16,6 @@ public class PlayerJSONBean {
 	@SerializedName("last_battle_time")
 	private long lastBattleTime;
 	private String nickname;
-		
-	public PlayerJSONBean() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	public PlayerStatisticsJSONBean getStatistics() {
 		return statistics;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,8 +20,8 @@ import org.krugdev.domain.playerTanks.JSONDataBeans.TankJSONBean;
 import com.google.gson.JsonArray;
 
 @XmlRootElement(name="tanks")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PlayersTanks implements Resource {
-	
 	
 	private Platform platform;
 	private String playerId;

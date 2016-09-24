@@ -23,10 +23,6 @@ public class PlayerGameModeStatisticsJSONBean {
 	@SerializedName("dropped_capture_points")
 	private long droppedCapturePoints;
 	
-	public PlayerGameModeStatisticsJSONBean() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public long getSpotted() {
 		return spotted;
 	}

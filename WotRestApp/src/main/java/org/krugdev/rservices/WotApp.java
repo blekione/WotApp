@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/")
+@ApplicationPath("/wotAPI")
 public class WotApp extends Application {
 	
 	public Set<Class<?>> getClasses() {
