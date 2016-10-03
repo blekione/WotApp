@@ -23,9 +23,9 @@ public class PlayerTest {
 	public static void setPlayer() {
 		player = new Player();
 		try {
-		player.getFromAPI(Platform.XBOX, "6479371");
+			player.getFromAPI(Platform.XBOX, "6479371");
 		} catch (ResourceNotFoundException e){
-			System.out.println("player not found");
+			fail("player not found");
 		}
 	}
 	
