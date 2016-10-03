@@ -96,7 +96,7 @@ public class Player implements Resource {
 	
 	private JsonElement getJsonFromWot(RequestingServices service, String id) 
 			throws ResourceNotFoundException {
-		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);		
+		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);
 		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
 		return JSONParserUtils.trimJsonFromRedundantData(playerProfileJsonAsString, id);
 	}

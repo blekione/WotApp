@@ -1,7 +1,5 @@
 package org.krugdev.auxiliary;
 
-
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -13,14 +11,14 @@ public class JSONParserUtils {
 	public static Object getClassDataFromJson(JsonObject jsonObject, Class<?> cls) {
 		Gson gson = new Gson();
 		Object parsedDataObject = gson.fromJson(jsonObject, cls);
-		return parsedDataObject;		
+		return parsedDataObject;
 	}
 	
 	public static JsonElement trimJsonFromRedundantData(String jsonFromWotApi, String id) throws ResourceNotFoundException {
 		JsonParser parser = new JsonParser();
 		JsonObject wotJsonObject = parser.parse(jsonFromWotApi).getAsJsonObject();
 		if (checkIfJsonStatusIsOK(wotJsonObject)) {
-			return getDataElementFromJson(wotJsonObject, id);		
+			return getDataElementFromJson(wotJsonObject, id);
 		} else {
 			throw new ResourceNotFoundException("json status" + wotJsonObject.get("status").getAsString());
 		}
@@ -32,11 +30,11 @@ public class JSONParserUtils {
 			return wotDataJsonObject.get(id);
 		} else {
 			throw new ResourceNotFoundException("no data for player id" + id);
-		}		
+		}
 	}
 	
-	public static Object[] getList(JsonArray jsonArray, Class<?> cls) { 
-		Object[] objects = new Gson().fromJson(jsonArray, cls);
+	public static Object[] getList(JsonArray jsonArray, Class<?> cls) {
+		Object[] objects = (Object[])new Gson().fromJson(jsonArray, cls);
 		return objects;
 	}
 
