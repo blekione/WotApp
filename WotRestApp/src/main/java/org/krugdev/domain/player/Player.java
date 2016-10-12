@@ -23,6 +23,7 @@ import org.krugdev.domain.player.statistics.PlayerKillsDeaths;
 import org.krugdev.domain.player.statistics.PlayerMisc;
 import org.krugdev.domain.player.statistics.PlayerStatistics;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -73,25 +74,20 @@ public class Player implements Resource {
 	private WotPlayerData getPlayerDataFromWotApi() throws ResourceNotFoundException {
 		WotPlayerData data = new WotPlayerData();
 		
-		data.setPlayer(
-				(PlayerJSONBean)getObjectData(
-						RequestingServices.PLAYER_PROFILE, playerId, PlayerJSONBean.class));
+		JsonObject playerJson = 
+				getJsonFromWot(RequestingServices.PLAYER_PROFILE, playerId).getAsJsonObject();
+		data.setPlayer(new Gson().fromJson(playerJson, PlayerJSONBean.class));
 		
-		data.setPlayerClan(
-				(PlayerClanJSONBean)getObjectData(
-						RequestingServices.PLAYER_CLAN, playerId, PlayerClanJSONBean.class));
+		JsonObject playerClanJSON = 
+				getJsonFromWot(RequestingServices.PLAYER_CLAN, playerId).getAsJsonObject();
+		data.setPlayerClan(new Gson().fromJson(playerClanJSON, PlayerClanJSONBean.class));
 		
 		String clanId = Integer.toString(data.getPlayerClan().getClanId());
-		data.setClan(
-				(ClanJSONBean)getObjectData(
-						RequestingServices.CLAN, clanId, ClanJSONBean.class));
+		if (!clanId.equals("0")){
+			JsonObject clanJSON = getJsonFromWot(RequestingServices.CLAN, clanId).getAsJsonObject();
+		data.setClan(new Gson().fromJson(clanJSON, ClanJSONBean.class));
+		}
 		return data;
-	}
-
-	public Object getObjectData(RequestingServices service, String id, Class<?> class1) 
-			throws ResourceNotFoundException {
-		JsonObject playerJson = getJsonFromWot(service, id).getAsJsonObject();
-		return JSONParserUtils.getClassDataFromJson(playerJson, class1);
 	}
 	
 	private JsonElement getJsonFromWot(RequestingServices service, String id) 

@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.auxiliary.JSONParserUtils;
 import org.krugdev.auxiliary.Platform;
 import org.krugdev.auxiliary.RequestingServices;
 import org.krugdev.auxiliary.Resource;
 import org.krugdev.auxiliary.ResourceNotFoundException;
 import org.krugdev.auxiliary.WotWebsiteRequest;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -45,8 +45,8 @@ public class SearchPlayersResult implements Resource {
 	}
 	
 	private List<PlayerBasic> getPlayersFromJSONString(String jsonPlayersString) {
-		JsonArray playersJsonArray = trimJsonToGetArray(jsonPlayersString);	
-		PlayerBasic[] players = (PlayerBasic[])JSONParserUtils.getList(playersJsonArray, PlayerBasic[].class);
+		JsonArray playersJsonArray = trimJsonToGetArray(jsonPlayersString);
+		PlayerBasic[] players = new Gson().fromJson(playersJsonArray, PlayerBasic[].class);
 		return Arrays.asList(players);
 	}
 	
