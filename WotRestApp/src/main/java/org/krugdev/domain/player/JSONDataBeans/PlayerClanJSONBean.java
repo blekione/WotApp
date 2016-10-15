@@ -8,7 +8,7 @@ public class PlayerClanJSONBean {
 	@SerializedName("joined_at")
 	private long joinedAt;
 	@SerializedName("clan_id")
-	private int clanId;
+	private String clanId;
 	@SerializedName("role")
 	private String clanRole;
 	
@@ -31,11 +31,11 @@ public class PlayerClanJSONBean {
 		this.joinedAt = joinedAt;
 	}
 
-	public int getClanId() {
+	public String getClanId() {
 		return clanId;
 	}
 
-	public void setClanId(int clanId) {
+	public void setClanId(String clanId) {
 		this.clanId = clanId;
 	}
 

@@ -2,7 +2,8 @@ package org.krugdev.domain.player.statistics;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.player.WotPlayerData;
+import org.krugdev.domain.player.JSONDataBeans.PlayerGameModeStatisticsJSONBean;
+import org.krugdev.domain.player.JSONDataBeans.PlayerJSONBean;
 
 @XmlRootElement
 public class PlayerGamesCounters extends PlayerStatistics {
@@ -13,14 +14,12 @@ public class PlayerGamesCounters extends PlayerStatistics {
 	private int battlesDraws;
 	private int battlesSurvived;
 	
-	public PlayerGamesCounters() {
-	}
-
-	public void populateWithDataFromJsonDataHolder(WotPlayerData data) {
-		battlesCount = data.getPlayer().getStatistics().getAll().getBattles();
-		battlesWins = data.getPlayer().getStatistics().getAll().getWins();
-		battlesLosses = data.getPlayer().getStatistics().getAll().getLosses();
-		battlesSurvived = data.getPlayer().getStatistics().getAll().getSurvivedBattles();
+	public void populateWithDataFromJsonDataHolder(PlayerJSONBean playerJSONBean) {
+		PlayerGameModeStatisticsJSONBean allGamesStats = playerJSONBean.getStatistics().getAll();
+		battlesCount = allGamesStats.getBattles();
+		battlesWins = allGamesStats.getWins();
+		battlesLosses = allGamesStats.getLosses();
+		battlesSurvived = allGamesStats.getSurvivedBattles();
 		battlesDraws = battlesCount - (battlesWins + battlesLosses);
 	}
 

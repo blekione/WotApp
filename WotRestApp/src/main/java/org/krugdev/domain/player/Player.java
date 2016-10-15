@@ -13,7 +13,6 @@ import org.krugdev.auxiliary.RequestingServices;
 import org.krugdev.auxiliary.Resource;
 import org.krugdev.auxiliary.ResourceNotFoundException;
 import org.krugdev.auxiliary.WotWebsiteRequest;
-import org.krugdev.domain.player.JSONDataBeans.ClanJSONBean;
 import org.krugdev.domain.player.JSONDataBeans.PlayerClanJSONBean;
 import org.krugdev.domain.player.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.player.statistics.PlayerDamage;
@@ -38,9 +37,7 @@ public class Player implements Resource {
 	private PlayerExperience playerExperience;
 	private PlayerGamesCounters playerGames;
 	private PlayerKillsDeaths playerFrags;
-	
-	public Player() {
-	}
+	private PlayerClanJSONBean playerClan;
 	
 	public Player getFromAPI(Platform platform, String playerId) 
 			throws ResourceNotFoundException {
@@ -56,38 +53,35 @@ public class Player implements Resource {
 
 	private void populateWithData() throws ResourceNotFoundException {
 		
-		WotPlayerData data = getPlayerDataFromWotApi();
+		PlayerJSONBean playerJSONBean = getPlayerDataFromWotApi();
 		
 		List<PlayerStatistics> statistics= new ArrayList<>();
-		
 		statistics.add(playerMisc = new PlayerMisc());
 		statistics.add( playerGames = new PlayerGamesCounters());
 		statistics.add(playerFrags = new PlayerKillsDeaths());
 		statistics.add(playerDamage = new PlayerDamage());
 		statistics.add(playerExperience = new PlayerExperience());
+		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolder(playerJSONBean));
 		
-		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolder(data));
+		playerClan = getPlayerClanDataFromWotAPI();
 		
 	}
 	
-	private WotPlayerData getPlayerDataFromWotApi() throws ResourceNotFoundException {
-		WotPlayerData data = new WotPlayerData();
-		
+	private  PlayerJSONBean getPlayerDataFromWotApi() throws ResourceNotFoundException {		
 		JsonObject playerJson = 
 				getJsonFromWot(RequestingServices.PLAYER_PROFILE, playerId).getAsJsonObject();
-		data.setPlayer(JSONParserUtils.getObject(playerJson, new PlayerJSONBean()));
-		
+		PlayerJSONBean playerJsonBean = JSONParserUtils.getObject(playerJson, new PlayerJSONBean());
+		return playerJsonBean;
+	}
+	
+	private PlayerClanJSONBean getPlayerClanDataFromWotAPI() throws ResourceNotFoundException {
 		JsonObject playerClanJSON = 
 				getJsonFromWot(RequestingServices.PLAYER_CLAN, playerId).getAsJsonObject();
-		data.setPlayerClan(JSONParserUtils.getObject(playerClanJSON, new PlayerClanJSONBean()));
-		
-		String clanId = Integer.toString(data.getPlayerClan().getClanId());
-		if (!clanId.equals("0")){
-			JsonObject clanJSON = getJsonFromWot(RequestingServices.CLAN, clanId).getAsJsonObject();
-		data.setClan(JSONParserUtils.getObject(clanJSON, new ClanJSONBean()));
-		}
-		return data;
+		PlayerClanJSONBean playerClanJSONBean = 
+				JSONParserUtils.getObject(playerClanJSON, new PlayerClanJSONBean());
+		return playerClanJSONBean;
 	}
+
 	
 	private JsonElement getJsonFromWot(RequestingServices service, String id) 
 			throws ResourceNotFoundException {
@@ -118,5 +112,9 @@ public class Player implements Resource {
 
 	public int getHighestExperience() {
 		return playerExperience.getHighestExperience();
+	}
+	
+	public String getPlayerClanId() {
+		return playerClan.getClanId();
 	}
 }

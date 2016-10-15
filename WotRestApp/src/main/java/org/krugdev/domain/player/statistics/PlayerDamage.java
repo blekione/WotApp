@@ -2,7 +2,7 @@ package org.krugdev.domain.player.statistics;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.domain.player.WotPlayerData;
+import org.krugdev.domain.player.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.player.JSONDataBeans.PlayerStatisticsJSONBean;
 
 @XmlRootElement
@@ -13,21 +13,9 @@ public class PlayerDamage extends PlayerStatistics {
 	private Long damageAfterSpot;
 	private Long damageReceived;
 	
-	public PlayerDamage() {
-	}
-
-	public PlayerDamage(Long damageDealt, Long damageAfterTrack, Long damageAfterSpot, 
-			Long damageReceived) {
-		super();
-		this.damageDealt = damageDealt;
-		this.damageAfterTrack = damageAfterTrack;
-		this.damageAfterSpot = damageAfterSpot;
-		this.damageReceived = damageReceived;
-	}
-	
 	@Override
-	public void populateWithDataFromJsonDataHolder(WotPlayerData data) {
-		PlayerStatisticsJSONBean statistics = data.getPlayer().getStatistics();
+	public void populateWithDataFromJsonDataHolder(PlayerJSONBean playerJSONBean) {
+		PlayerStatisticsJSONBean statistics = playerJSONBean.getStatistics();
 		damageDealt = statistics.getAll().getDamageDealt();
 		damageAfterTrack = statistics.getDamageAssistedTrack();
 		damageAfterSpot = statistics.getDamageAssistedRadio();
