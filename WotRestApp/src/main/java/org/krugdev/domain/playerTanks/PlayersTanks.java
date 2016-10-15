@@ -17,7 +17,6 @@ import org.krugdev.auxiliary.ResourceNotFoundException;
 import org.krugdev.auxiliary.WotWebsiteRequest;
 import org.krugdev.domain.playerTanks.JSONDataBeans.TankJSONBean;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 @XmlRootElement(name="tanks")
@@ -59,7 +58,7 @@ public class PlayersTanks implements Resource {
 	private List<TankJSONBean> getTanksFromJSONString(String jsonTanksString) throws ResourceNotFoundException {
 		JsonArray tanksJsonArray = 
 				JSONParserUtils.trimJsonFromRedundantData(jsonTanksString, playerId).getAsJsonArray();
-		TankJSONBean[] tanksWotApi = new Gson().fromJson(tanksJsonArray, TankJSONBean[].class);
+		TankJSONBean[] tanksWotApi = JSONParserUtils.getList(tanksJsonArray, new TankJSONBean[1]);
 		return Arrays.asList(tanksWotApi);
 	}
 
