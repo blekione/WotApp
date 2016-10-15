@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.krugdev.auxiliary.JSONParserUtils;
 import org.krugdev.auxiliary.Platform;
-import org.krugdev.auxiliary.RequestingServices;
-import org.krugdev.auxiliary.Resource;
-import org.krugdev.auxiliary.ResourceNotFoundException;
-import org.krugdev.auxiliary.WotWebsiteRequest;
 import org.krugdev.domain.player.JSONDataBeans.PlayerClanJSONBean;
 import org.krugdev.domain.player.JSONDataBeans.PlayerJSONBean;
 import org.krugdev.domain.player.statistics.PlayerDamage;
@@ -22,38 +19,38 @@ import org.krugdev.domain.player.statistics.PlayerKillsDeaths;
 import org.krugdev.domain.player.statistics.PlayerMisc;
 import org.krugdev.domain.player.statistics.PlayerStatistics;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-@XmlRootElement(name="player_profile")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Player implements Resource {
-		
-	private Platform platform;
-	private String playerId;
+@XmlRootElement(name="player")
+@XmlAccessorType(XmlAccessType.NONE)
+public class Player {
 	
+	@XmlAttribute
+	private String playerId;
+	@XmlAttribute	
+	private Platform platform;
+	
+	@XmlElement
 	private PlayerMisc playerMisc;
+	@XmlElement
 	private PlayerDamage playerDamage;
+	@XmlElement
 	private PlayerExperience playerExperience;
+	@XmlElement
 	private PlayerGamesCounters playerGames;
+	@XmlElement
 	private PlayerKillsDeaths playerFrags;
+	@XmlElement
 	private PlayerClanJSONBean playerClan;
 	
-	public Player getFromAPI(Platform platform, String playerId) 
-			throws ResourceNotFoundException {
-		this.platform =platform;
-		this.playerId = trimLeadingZerosFrom(playerId);
-		this.populateWithData();
-		return this;
-	}
-	
-	private String trimLeadingZerosFrom(String s) {
-		return s.replaceFirst("^0+(?!$)", "");
+	//default constructor required by XML parser
+	public Player() {
 	}
 
-	private void populateWithData() throws ResourceNotFoundException {
-		
-		PlayerJSONBean playerJSONBean = getPlayerDataFromWotApi();
+	public Player(Platform platform, String playerId) {
+		this.platform = platform;
+		this.playerId = playerId;
+	}	
+	
+	public void populateWithData(PlayerJSONBean playerJSONBean) {
 		
 		List<PlayerStatistics> statistics= new ArrayList<>();
 		statistics.add(playerMisc = new PlayerMisc());
@@ -62,32 +59,10 @@ public class Player implements Resource {
 		statistics.add(playerDamage = new PlayerDamage());
 		statistics.add(playerExperience = new PlayerExperience());
 		statistics.forEach((v) -> v.populateWithDataFromJsonDataHolder(playerJSONBean));
-		
-		playerClan = getPlayerClanDataFromWotAPI();
-		
-	}
-	
-	private  PlayerJSONBean getPlayerDataFromWotApi() throws ResourceNotFoundException {		
-		JsonObject playerJson = 
-				getJsonFromWot(RequestingServices.PLAYER_PROFILE, playerId).getAsJsonObject();
-		PlayerJSONBean playerJsonBean = JSONParserUtils.getObject(playerJson, new PlayerJSONBean());
-		return playerJsonBean;
-	}
-	
-	private PlayerClanJSONBean getPlayerClanDataFromWotAPI() throws ResourceNotFoundException {
-		JsonObject playerClanJSON = 
-				getJsonFromWot(RequestingServices.PLAYER_CLAN, playerId).getAsJsonObject();
-		PlayerClanJSONBean playerClanJSONBean = 
-				JSONParserUtils.getObject(playerClanJSON, new PlayerClanJSONBean());
-		return playerClanJSONBean;
 	}
 
-	
-	private JsonElement getJsonFromWot(RequestingServices service, String id) 
-			throws ResourceNotFoundException {
-		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);
-		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
-		return JSONParserUtils.trimJsonFromRedundantData(playerProfileJsonAsString, id);
+	public void setPlayerClan(PlayerClanJSONBean playerClanJSONBean) {
+		this.playerClan = playerClanJSONBean;
 	}
 
 	public String getNickname() {
@@ -116,5 +91,13 @@ public class Player implements Resource {
 	
 	public String getPlayerClanId() {
 		return playerClan.getClanId();
+	}
+
+	public Platform getPlatform() {
+		return platform;
+	}
+
+	public String getPlayerId() {
+		return playerId;
 	}
 }

@@ -11,7 +11,7 @@ public class WotApp extends Application {
 	
 	public Set<Class<?>> getClasses() {
 		HashSet<Class<?>> set = new HashSet<>();
-		set.add(WotResource.class);
+		set.add(PlatformResource.class);
 		return set;
 	}
 }

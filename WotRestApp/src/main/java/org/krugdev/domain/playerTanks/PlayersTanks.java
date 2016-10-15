@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.krugdev.auxiliary.JSONParserUtils;
 import org.krugdev.auxiliary.Platform;
 import org.krugdev.auxiliary.RequestingServices;
-import org.krugdev.auxiliary.Resource;
 import org.krugdev.auxiliary.ResourceNotFoundException;
 import org.krugdev.auxiliary.WotWebsiteRequest;
 import org.krugdev.domain.playerTanks.JSONDataBeans.TankJSONBean;
@@ -21,7 +20,7 @@ import com.google.gson.JsonArray;
 
 @XmlRootElement(name="tanks")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PlayersTanks implements Resource {
+public class PlayersTanks{
 	
 	private Platform platform;
 	private String playerId;
