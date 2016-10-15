@@ -57,7 +57,7 @@ public class PlayersTanks{
 	private List<TankJSONBean> getTanksFromJSONString(String jsonTanksString) throws ResourceNotFoundException {
 		JsonArray tanksJsonArray = 
 				JSONParserUtils.trimJsonFromRedundantData(jsonTanksString, playerId).getAsJsonArray();
-		TankJSONBean[] tanksWotApi = JSONParserUtils.getList(tanksJsonArray, new TankJSONBean[1]);
+		TankJSONBean[] tanksWotApi = JSONParserUtils.getElement(tanksJsonArray, new TankJSONBean[1]);
 		return Arrays.asList(tanksWotApi);
 	}
 

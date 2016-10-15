@@ -1,7 +1,6 @@
 package org.krugdev.auxiliary;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,14 +34,9 @@ public class JSONParserUtils {
 		}
 	}
 	
-	public static <T> T getList(JsonArray jsonArray, T reference) {
-		T objects = new Gson().fromJson(jsonArray, reference.getClass());		
+	public static <T> T getElement(JsonElement json, T reference) {
+		T objects = new Gson().fromJson(json, reference.getClass());		
 		return objects;
-	}
-	
-	public static <T> T getObject(JsonObject jsonObject, T reference) {
-		T object = new Gson().fromJson(jsonObject, reference.getClass());		
-		return object;
 	}
 }
  

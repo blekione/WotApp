@@ -33,7 +33,7 @@ public class PlayersBasicSearchProcessor{
 	
 	private static List<PlayerBasic> getPlayersFromJSONString(String jsonPlayersString) {
 		JsonArray playersJsonArray = trimJsonToGetArray(jsonPlayersString);
-		PlayerBasic[] players = JSONParserUtils.getList(playersJsonArray, new PlayerBasic[1]);
+		PlayerBasic[] players = JSONParserUtils.getElement(playersJsonArray, new PlayerBasic[1]);
 		return Arrays.asList(players);
 	}
 	

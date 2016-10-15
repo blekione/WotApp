@@ -31,7 +31,7 @@ public class PlayerProcessor {
 				getJsonFromWot(RequestingServices.PLAYER_PROFILE, platform, playerId).getAsJsonObject();
 		if (playerJson.isJsonNull()) {
 		}
-		PlayerJSONBean playerJsonBean = JSONParserUtils.getObject(playerJson, new PlayerJSONBean());
+		PlayerJSONBean playerJsonBean = JSONParserUtils.getElement(playerJson, new PlayerJSONBean());
 		return playerJsonBean;
 	}
 	
@@ -39,7 +39,7 @@ public class PlayerProcessor {
 		JsonObject playerClanJSON = 
 				getJsonFromWot(RequestingServices.PLAYER_CLAN, platform, playerId).getAsJsonObject();
 		PlayerClanJSONBean playerClanJSONBean = 
-				JSONParserUtils.getObject(playerClanJSON, new PlayerClanJSONBean());
+				JSONParserUtils.getElement(playerClanJSON, new PlayerClanJSONBean());
 		return playerClanJSONBean;
 	}
 
