@@ -23,7 +23,6 @@ import org.krugdev.domain.player.statistics.PlayerKillsDeaths;
 import org.krugdev.domain.player.statistics.PlayerMisc;
 import org.krugdev.domain.player.statistics.PlayerStatistics;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -76,16 +75,16 @@ public class Player implements Resource {
 		
 		JsonObject playerJson = 
 				getJsonFromWot(RequestingServices.PLAYER_PROFILE, playerId).getAsJsonObject();
-		data.setPlayer(new Gson().fromJson(playerJson, PlayerJSONBean.class));
+		data.setPlayer(JSONParserUtils.getObject(playerJson, new PlayerJSONBean()));
 		
 		JsonObject playerClanJSON = 
 				getJsonFromWot(RequestingServices.PLAYER_CLAN, playerId).getAsJsonObject();
-		data.setPlayerClan(new Gson().fromJson(playerClanJSON, PlayerClanJSONBean.class));
+		data.setPlayerClan(JSONParserUtils.getObject(playerClanJSON, new PlayerClanJSONBean()));
 		
 		String clanId = Integer.toString(data.getPlayerClan().getClanId());
 		if (!clanId.equals("0")){
 			JsonObject clanJSON = getJsonFromWot(RequestingServices.CLAN, clanId).getAsJsonObject();
-		data.setClan(new Gson().fromJson(clanJSON, ClanJSONBean.class));
+		data.setClan(JSONParserUtils.getObject(clanJSON, new ClanJSONBean()));
 		}
 		return data;
 	}

@@ -40,5 +40,9 @@ public class JSONParserUtils {
 		return objects;
 	}
 	
+	public static <T> T getObject(JsonObject jsonObject, T reference) {
+		T object = new Gson().fromJson(jsonObject, reference.getClass());		
+		return object;
+	}
 }
  
