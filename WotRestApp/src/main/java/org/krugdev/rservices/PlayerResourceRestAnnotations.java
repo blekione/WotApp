@@ -26,6 +26,7 @@ public interface PlayerResourceRestAnnotations {
 	
 	@GET
 	@Path("{playerId}/tanks")
+	@Wrapped(element="tanks")
 	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerIdString);
 
 }
