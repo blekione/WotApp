@@ -35,7 +35,7 @@ public class JSONParserUtils {
 	}
 	
 	public static <T> T getElement(JsonElement json, T reference) {
-		T objects = new Gson().fromJson(json, reference.getClass());		
+		T objects = (T) new Gson().fromJson(json, reference.getClass());		
 		return objects;
 	}
 }
