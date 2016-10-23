@@ -35,6 +35,7 @@ public class JSONParserUtils {
 	}
 	
 	public static <T> T getElement(JsonElement json, T reference) {
+		@SuppressWarnings("unchecked")
 		T objects = (T) new Gson().fromJson(json, reference.getClass());		
 		return objects;
 	}
