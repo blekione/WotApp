@@ -20,10 +20,9 @@ public interface PlayerResourceRestAnnotations {
 	
 	@GET
 	@Path("{playerId}")
-	public Player getPlayer(@PathParam("playerId") String playerId);
+	public Player getPlayer(@PathParam("playerId") String playerIdString);
 	
 	@GET
 	@Path("{playerId}/tanks")
-	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerId);
-
+	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerIdString);
 }

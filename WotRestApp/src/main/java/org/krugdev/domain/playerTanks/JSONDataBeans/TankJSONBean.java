@@ -8,7 +8,7 @@ public class TankJSONBean {
 	@SerializedName("last_battle_time")
 	private int lastBattleTime;
 	@SerializedName("account_id")
-	private long accountId;
+	private int accountId;
 	@SerializedName("max_xp")
 	private int maxXp;
 	private TankGameModeStatistics company;
@@ -33,7 +33,7 @@ public class TankJSONBean {
 	public int getLastBattleTime() {
 		return lastBattleTime;
 	}
-	public long getAccountId() {
+	public int getAccountId() {
 		return accountId;
 	}
 	public int getMaxXp() {

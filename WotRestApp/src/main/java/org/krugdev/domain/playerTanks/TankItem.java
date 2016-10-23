@@ -10,7 +10,8 @@ import org.krugdev.domain.playerTanks.JSONDataBeans.TankJSONBean;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TankItem {
-
+	
+	private int tankOwner;
 	private int tankId;
 	private String tankName;
 	private int gamesCount;
@@ -23,6 +24,7 @@ public class TankItem {
 	
 	public TankItem populateWithDataFromJSONDataHolder(TankJSONBean dataHolder) {
 		TankGameModeStatistics gameModeStats = dataHolder.getAll();
+		this.tankOwner = dataHolder.getAccountId();
 		this.tankId = dataHolder.getTankId();
 		this.gamesCount = gameModeStats.getBattles();
 		this.frags = gameModeStats.getFrags();
@@ -68,5 +70,9 @@ public class TankItem {
 
 	public double getWinRatio() {
 		return winRatio;
-	}	
+	}
+
+	public int getTankOwner() {
+		return tankOwner;
+	}
 }

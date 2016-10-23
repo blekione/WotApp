@@ -2,30 +2,32 @@ package org.krugdev;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.krugdev.auxiliary.Platform;
 import org.krugdev.auxiliary.ResourceNotFoundException;
-import org.krugdev.domain.playerTanks.PlayersTanks;
+import org.krugdev.domain.playerTanks.TankItemsProcessor;
+import org.krugdev.domain.playerTanks.TankItem;
 
-public class PlayerTanksTest {
+public class TankItemsProcessorTest {
 
-	private static PlayersTanks playersTanks;
+	private static List<TankItem> playersTanks;
 	
 	@BeforeClass
 	public static void setPlayersTanks() throws ResourceNotFoundException {
-		playersTanks = new PlayersTanks();
-		playersTanks.getFromAPI(Platform.XBOX, "6479371");	
+		playersTanks = TankItemsProcessor.getFromAPI(Platform.XBOX, 6479371);	
 	}
 	
 	@Test
 	public void testIfPlayersTanksListIsSet() {
-		assertTrue(29 < playersTanks.getTanksCounter());
+		assertTrue(29 < playersTanks.size());
 	}
 	
 	@Test
 	public void testIfTankWinRatioIsCalculatedProperly() {
-		assertTrue(40.0 < playersTanks.getTanks().get(0).getWinRatio());
+		assertTrue(40.0 < playersTanks.get(0).getWinRatio());
 	}
 
 }
