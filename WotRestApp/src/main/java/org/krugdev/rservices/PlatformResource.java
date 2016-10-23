@@ -11,7 +11,7 @@ public class PlatformResource {
 	@PathParam("platform")
 	Platform platform;
 	
-	@Path("player")
+	@Path("players")
 	public PlayerResource getPlayerResource(){
 		PlayerResource playerResource = new PlayerResource(platform);
 		return playerResource;

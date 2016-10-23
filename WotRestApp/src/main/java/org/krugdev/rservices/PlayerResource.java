@@ -2,6 +2,7 @@ package org.krugdev.rservices;
 
 import java.util.List;
 
+import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.krugdev.auxiliary.Platform;
@@ -21,7 +22,8 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 		this.platform = platform;
 	}
 	
-	@Override 
+	@Override
+	
 	public List<PlayerBasic> getPlayers(String query) {
 		try {
 			return PlayersBasicSearchProcessor.getFromAPI(platform, query);

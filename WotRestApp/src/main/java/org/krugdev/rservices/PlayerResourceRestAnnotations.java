@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 import org.krugdev.domain.player.Player;
 import org.krugdev.domain.playerTanks.TankItem;
 import org.krugdev.domain.searchPlayers.PlayerBasic;
@@ -16,7 +17,8 @@ public interface PlayerResourceRestAnnotations {
 	
 	@GET
 	@Path("search/{query}")
-	public List<PlayerBasic> getPlayers(@PathParam("query") String query);@Produces("application/xml")
+	@Wrapped(element="players")
+	public List<PlayerBasic> getPlayers(@PathParam("query") String query);
 	
 	@GET
 	@Path("{playerId}")
@@ -25,4 +27,5 @@ public interface PlayerResourceRestAnnotations {
 	@GET
 	@Path("{playerId}/tanks")
 	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerIdString);
+
 }
