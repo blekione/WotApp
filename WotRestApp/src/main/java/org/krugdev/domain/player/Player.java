@@ -24,7 +24,7 @@ import org.krugdev.domain.player.statistics.PlayerStatistics;
 public class Player {
 	
 	@XmlAttribute
-	private String playerId;
+	private int playerId;
 	@XmlAttribute	
 	private Platform platform;
 	
@@ -45,7 +45,7 @@ public class Player {
 	public Player() {
 	}
 
-	public Player(Platform platform, String playerId) {
+	public Player(Platform platform, int playerId) {
 		this.platform = platform;
 		this.playerId = playerId;
 	}	
@@ -97,7 +97,7 @@ public class Player {
 		return platform;
 	}
 
-	public String getPlayerId() {
+	public int getPlayerId() {
 		return playerId;
 	}
 }

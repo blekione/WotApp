@@ -23,7 +23,7 @@ public class PlayerTest {
 	@BeforeClass
 	public static void setPlayer() {
 		try {
-			player = PlayerProcessor.getFromAPI(Platform.XBOX, "6479371");
+			player = PlayerProcessor.getFromAPI(Platform.XBOX, 6479371);
 		} catch (ResourceNotFoundException e){
 			fail("player not found");
 		}
@@ -65,6 +65,6 @@ public class PlayerTest {
 	@Test
 	public void testIfExceptionThrownWhenPlayerNotFound() throws ResourceNotFoundException {
 		exception.expect(ResourceNotFoundException.class);
-			PlayerProcessor.getFromAPI(Platform.XBOX, "0000099");
+			PlayerProcessor.getFromAPI(Platform.XBOX, 99);
 	}
 }

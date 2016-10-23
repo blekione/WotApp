@@ -8,9 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.krugdev.domain.player.Player;
+import org.krugdev.domain.playerTanks.TankItem;
 import org.krugdev.domain.searchPlayers.PlayerBasic;
 
-@Path("/resource")
 @Produces("application/xml")
 public interface PlayerResourceRestAnnotations {
 	
@@ -21,5 +21,9 @@ public interface PlayerResourceRestAnnotations {
 	@GET
 	@Path("{playerId}")
 	public Player getPlayer(@PathParam("playerId") String playerId);
+	
+	@GET
+	@Path("{playerId}/tanks")
+	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerId);
 
 }

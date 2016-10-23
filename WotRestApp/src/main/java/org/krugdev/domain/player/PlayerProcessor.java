@@ -13,29 +13,22 @@ import com.google.gson.JsonObject;
 
 public class PlayerProcessor {
 	
-	public static Player getFromAPI(Platform platform, String playerId) 
+	public static Player getFromAPI(Platform platform, int playerId) 
 			throws ResourceNotFoundException {
-		playerId = trimLeadingZeros(playerId);
 		Player player = new Player(platform, playerId);
 		player.populateWithData(getPlayerDataFromWotApi(platform, playerId));
 		player.setPlayerClan(getPlayerClanDataFromWotAPI(platform, playerId));
 		return player;
 	}
 	
-	private static String trimLeadingZeros(String s) {
-		return s.replaceFirst("^0+(?!$)", "");
-	}
-	
-	private static PlayerJSONBean getPlayerDataFromWotApi(Platform platform, String playerId) throws ResourceNotFoundException {		
+	private static PlayerJSONBean getPlayerDataFromWotApi(Platform platform, int playerId) throws ResourceNotFoundException {		
 		JsonObject playerJson = 
 				getJsonFromWot(RequestingServices.PLAYER_PROFILE, platform, playerId).getAsJsonObject();
-		if (playerJson.isJsonNull()) {
-		}
 		PlayerJSONBean playerJsonBean = JSONParserUtils.getElement(playerJson, new PlayerJSONBean());
 		return playerJsonBean;
 	}
 	
-	private static PlayerClanJSONBean getPlayerClanDataFromWotAPI(Platform platform, String playerId) throws ResourceNotFoundException {
+	private static PlayerClanJSONBean getPlayerClanDataFromWotAPI(Platform platform, int playerId) throws ResourceNotFoundException {
 		JsonObject playerClanJSON = 
 				getJsonFromWot(RequestingServices.PLAYER_CLAN, platform, playerId).getAsJsonObject();
 		PlayerClanJSONBean playerClanJSONBean = 
@@ -43,10 +36,10 @@ public class PlayerProcessor {
 		return playerClanJSONBean;
 	}
 
-	private static JsonElement getJsonFromWot(RequestingServices service, Platform platform, String id) 
+	private static JsonElement getJsonFromWot(RequestingServices service, Platform platform, int playerId) 
 			throws ResourceNotFoundException {
 		WotWebsiteRequest request = new WotWebsiteRequest(platform, service);
-		String playerProfileJsonAsString = request.getJsonFromWotAPI(id);
-		return JSONParserUtils.trimJsonFromRedundantData(playerProfileJsonAsString, id);
+		String playerProfileJsonAsString = request.getJsonFromWotAPI(Integer.toString(playerId));
+		return JSONParserUtils.trimJsonFromRedundantData(playerProfileJsonAsString, Integer.toString(playerId));
 	}
 }
