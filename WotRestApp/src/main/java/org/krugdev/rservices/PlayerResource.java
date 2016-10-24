@@ -1,10 +1,8 @@
 package org.krugdev.rservices;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.UriBuilder;
 
 import org.jboss.resteasy.spi.BadRequestException;
 import org.krugdev.auxiliary.Platform;
@@ -26,13 +24,6 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 	
 	@Override
 	public List<PlayerBasic> getPlayers(String query) {
-		UriBuilder builder = UriBuilder.fromPath("/players/{id}");
-		builder.scheme("http")
-			.host("{hostname}")
-			.queryParam("param", "{param}");
-		UriBuilder clone = builder.clone();
-		URI uri = clone.build("example.com", "333", "value");
-		System.out.println(uri.toString());
 		try {
 			return PlayersBasicSearchProcessor.getFromAPI(platform, query);
 		} catch (ResourceNotFoundException e) {
@@ -43,8 +34,6 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 
 	@Override
 	public Player getPlayer(String playerIdString) {
-		URI uri = UriBuilder.fromUri("/{id}").buildFromEncoded("a/b");
-		System.out.println(uri.toString());
 		int playerId = convertPlayerIdToInteger(playerIdString);
 		try {
 			return PlayerProcessor.getFromAPI(platform, playerId);
