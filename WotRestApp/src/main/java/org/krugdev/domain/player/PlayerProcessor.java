@@ -22,6 +22,10 @@ public class PlayerProcessor {
 	private static PlayerJSONBean getPlayerDataFromWotApi(Platform platform, String playerId) 
 			throws ResourceNotFoundException {		
 		String jsonString = getJsonString(platform, RequestingServices.PLAYER_PROFILE, playerId);
+		if (jsonString.equals("{}")) {
+			System.out.println("connection with server problem, may be timeout");
+			throw new ResourceNotFoundException("connection with server problem, may be timeout");
+		}
 		JSONToObjectBuilder<PlayerJSONBean> builder = new JSONToObjectBuilder<>(new PlayerJSONBean());
 		PlayerJSONBean playerJsonBean = builder.fromString(jsonString).withId(playerId).build();
 		return playerJsonBean;

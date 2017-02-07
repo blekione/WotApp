@@ -9,6 +9,7 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("/wotAPI")
 public class WotApp extends Application {
 	
+	@Override
 	public Set<Class<?>> getClasses() {
 		HashSet<Class<?>> set = new HashSet<>();
 		set.add(PlatformResource.class);
