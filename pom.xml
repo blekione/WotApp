@@ -27,5 +27,6 @@
 
   <modules>
     <module>WotRestApp</module>
+    <module>PlayerService</module>
   </modules>
 </project>
