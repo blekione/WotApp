@@ -6,6 +6,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 import org.krugdev.domain.player.Player;
@@ -18,7 +21,7 @@ public interface PlayerResourceRestAnnotations {
 	@GET
 	@Path("search/{query}")
 	@Wrapped(element="players")
-	public List<PlayerBasic> getPlayers(@PathParam("query") String query);
+	public GenericEntity<List<PlayerBasic>> getPlayers(@PathParam("query") String query);
 	
 	@GET
 	@Path("{playerId}")
@@ -27,6 +30,7 @@ public interface PlayerResourceRestAnnotations {
 	@GET
 	@Path("{playerId}/tanks")
 	@Wrapped(element="tanks")
-	public List<TankItem> getPlayerTanks(@PathParam("playerId") String playerIdString);
+	public GenericEntity<List<TankItem>> getPlayerTanks(@PathParam("playerId") String playerIdString);
+
 
 }

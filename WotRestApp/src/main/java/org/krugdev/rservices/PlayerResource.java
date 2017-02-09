@@ -3,6 +3,7 @@ package org.krugdev.rservices;
 import java.util.List;
 
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.GenericEntity;
 
 import org.jboss.resteasy.spi.BadRequestException;
 import org.krugdev.auxiliary.Platform;
@@ -23,9 +24,13 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 	}
 	
 	@Override
-	public List<PlayerBasic> getPlayers(String query) {
+	public GenericEntity<List<PlayerBasic>> getPlayers(String query) {
 		try {
-			return PlayersBasicSearchProcessor.getFromAPI(platform, query);
+			GenericEntity<List<PlayerBasic>> players = 
+					new GenericEntity<List<PlayerBasic>>(
+							PlayersBasicSearchProcessor.getFromAPI(platform, query)
+							) {};
+			return players;
 		} catch (ResourceNotFoundException e) {
 			throw new NotFoundException("No players marching query: " + query 
 					+ " found for platform " + platform);
@@ -44,10 +49,12 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 	}
 
 	@Override
-	public List<TankItem> getPlayerTanks(String playerIdString) {
+	public GenericEntity<List<TankItem>> getPlayerTanks(String playerIdString) {
 		int playerId = convertPlayerIdToInteger(playerIdString);
 		try {
-			return TankItemsProcessor.getFromAPI(platform, playerId);
+			GenericEntity<List<TankItem>> tanks = 
+					new GenericEntity<List<TankItem>>(TankItemsProcessor.getFromAPI(platform, playerId)) {};
+			return tanks;
 		} catch (ResourceNotFoundException e) { 
 			throw new NotFoundException("No player with playerId: " + playerIdString 
 					+ " found for platform " + platform);
