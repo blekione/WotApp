@@ -1,9 +1,18 @@
 package org.krugdev.wn8;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import lombok.Getter;
 
 @Getter
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TankItem {
+
+	@XmlTransient
 	private Player player;
 	private int tankId;
 	private int gamesCount;
@@ -12,6 +21,9 @@ public class TankItem {
 	private int spottedTanks;
 	private int defencePoints;
 	private double winRatio;
+	
+	public TankItem() {
+	}
 
 	protected TankItem(Player player, int tankId, int gamesCount, int frags, long damageDealt, int spottedTanks,
 			int defencePoints, double winRatio) {

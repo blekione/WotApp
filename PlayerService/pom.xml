@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.krugdev.maven</groupId>
+    <artifactId>WotModularApp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>PlayerService</artifactId>
+  <packaging>war</packaging>
+  <name>PlayerService Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+	<repositories>
+		<repository>
+			<id>JBoss repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+	</repositories>
+  
+	<dependencies>
+      
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxrs</artifactId>
+        <version>3.0.19.Final</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-links</artifactId>
+        <version>3.0.19.Final</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxb-provider</artifactId>
+        <version>3.0.19.Final</version>
+      </dependency>
+      
+      <dependency>
+		<groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-client</artifactId>
+        <version>3.0.19.Final</version>
+        <scope>provided</scope>
+      </dependency>
+    
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+    
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.7.1</version>
+      </dependency>
+    
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.16.12</version>
+      </dependency>    
+  
+  </dependencies>
+  <build>
+    <finalName>PlayerService</finalName>
+  </build>
+</project>
