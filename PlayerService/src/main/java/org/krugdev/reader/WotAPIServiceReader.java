@@ -1,6 +1,5 @@
 package org.krugdev.reader;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -18,22 +17,20 @@ public class WotAPIServiceReader implements Reader {
 
 	private static final int CONNECTION_TIMEOUT = 2000;
 	private static final int REQUEST_TIMEOUT = 200;
-	private final URI serviceUriLocation;
+	private final String serviceUriLocation;
 	private Client client;
 	
 
-	public WotAPIServiceReader(URI serviceUriLocation) {
+	public WotAPIServiceReader(String serviceUriLocation) {
 		this.serviceUriLocation = serviceUriLocation;
 		 client = setClient();
 	}
 
 	@Override
 	public List<TankItem> getPlayerTanks(int playerId) {
-		List<TankItem> tankItems = client.target(serviceUriLocation.toString())
+		List<TankItem> tankItems = client.target(serviceUriLocation + playerId + "/tanks" )
 				.request(MediaType.APPLICATION_XML)
 				.get(new GenericType<List<TankItem>>() {});
-		System.out.println(tankItems.isEmpty());
-		System.out.println(tankItems.get(0).getWinRatio());
 		return tankItems;
 	}
 		
