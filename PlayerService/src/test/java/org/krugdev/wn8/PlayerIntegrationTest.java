@@ -32,7 +32,7 @@ public class PlayerIntegrationTest {
 		Parser parser = new XmlParser();
 		Map<Integer, TankExpectedValues> tanksExpectedValues = parser.getTankEx("src/main/resources/expected_tank_values_29.xml");
 		PlayerRepository playerRepository = new PlayerRepository(reader, PLAYER_ID, tanksExpectedValues);
-		double wn8 = playerRepository.calculateIndividualTankWN8(801);
+		double wn8 = playerRepository.calculatePlayersIndividualTankWN8(801);
 		assertEquals(1510.31, wn8, 10.00);
 	}
 }

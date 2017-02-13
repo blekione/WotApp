@@ -21,12 +21,12 @@ public class PlayerRepository {
 	}
 	
 	public double calculatePlayersWN8() {
-		List<TankItem> tankItems = readPlayerTanks();
+		List<TankItem> tankItems = readPlayersTanks();
 		return wn8Formula(tankItems);
 	}
 	
-	public double calculateIndividualTankWN8(int tankId) {
-		List<TankItem> tankItems =  readPlayerTanks();
+	public double calculatePlayersIndividualTankWN8(int tankId) {
+		List<TankItem> tankItems =  readPlayersTanks();
 		for (TankItem tankItem: tankItems) {
 			if(tankItem.getTankId() == tankId) {
 				return wn8Formula(Arrays.asList(tankItem));
@@ -35,7 +35,7 @@ public class PlayerRepository {
 		throw new IllegalArgumentException("Could not find tank with ID: " + tankId + " for player: " + PLAYER_ID);
 	}
 	
-	private List<TankItem> readPlayerTanks() {
+	private List<TankItem> readPlayersTanks() {
 		if (tankItems == null) {
 			return tankItems = READER.getPlayerTanks(PLAYER_ID);
 		} else {
@@ -46,16 +46,10 @@ public class PlayerRepository {
 	private double wn8Formula(List<TankItem> tankItems) {
 		
 		double playerTamageTotal = 0.0;
-		int playerFragsTotal = 0;
-		int playerSpottedTotal = 0;
-		int playerDefTotal = 0;
-		int playerWinBattlesTotal = 0;
+		int playerFragsTotal = 0, playerSpottedTotal = 0, playerDefTotal = 0, playerWinBattlesTotal = 0;
 		
 		double expectedDamageTotal = 0.0;
-		int expectedFragsTotal = 0;
-		int expectedSpottedTotal = 0;
-		int expectedDefTotal = 0;
-		double expectedWinBattlesTotal = 0;
+		int expectedFragsTotal = 0, expectedSpottedTotal = 0, expectedDefTotal = 0, expectedWinBattlesTotal = 0;
 		
 		for (TankItem tankItem : tankItems) {
 			int gameTank = tankItem.getGamesCount();
@@ -94,6 +88,5 @@ public class PlayerRepository {
 					+ 145 * Math.min(1.8, rWinC);
 		
 		return WN8;
-	}
-	
+	}	
 }

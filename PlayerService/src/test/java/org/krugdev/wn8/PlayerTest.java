@@ -2,7 +2,7 @@ package org.krugdev.wn8;
 
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.krugdev.reader.Reader;
@@ -13,22 +13,28 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlayerTest {
 	
-	private static final int PLAYER_ID = 6479371;
-
 	@Rule
 	public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
-	@Test
-	@Ignore
-	public void shouldCalculatePlayerWN8() {
-		
-		Player player = mock(Player.class);
-		
-		TankItem tankitemA = new TankItemBuilder(player, 801)
+	private static final int PLAYER_ID = 6479371;
+	private static final Player ANY_PLAYER = mock(Player.class);
+	private static final Reader READER = mock(Reader.class);
+	private List<TankItem> tankItems;
+	private Map<Integer, TankExpectedValues> tanksExpectedVal;
+
+	private TankItem tankItemA;
+	private TankItem tankItemB; 
+	
+	
+	@Before
+	public void setUp() {
+
+		 tankItemA = new TankItemBuilder(ANY_PLAYER, 801)
 				.gamesCount(250)
 				.frags(269)
 				.damageDealt(203644)
@@ -36,7 +42,7 @@ public class PlayerTest {
 				.defencePoints(415)
 				.winRatio(51.2)
 				.build();
-		TankItem tankitemB = new TankItemBuilder(player, 769)
+		tankItemB = new TankItemBuilder(ANY_PLAYER, 769)
 				.gamesCount(76)
 				.frags(64)
 				.damageDealt(16276)
@@ -44,7 +50,7 @@ public class PlayerTest {
 				.defencePoints(131)
 				.winRatio(52.63)
 				.build();
-		TankItem tankitemC = new TankItemBuilder(player, 10785)
+		TankItem tankItemC = new TankItemBuilder(ANY_PLAYER, 10785)
 				.gamesCount(93)
 				.frags(91)
 				.damageDealt(193873)
@@ -52,11 +58,9 @@ public class PlayerTest {
 				.defencePoints(87)
 				.winRatio(46.23)
 				.build();
+		tankItems = Arrays.asList(tankItemA,tankItemB, tankItemC);
 		
-		Reader reader = mock(Reader.class);
-		when(reader.getPlayerTanks(PLAYER_ID)).thenReturn(Arrays.asList(tankitemA, tankitemB, tankitemC));
-		
-		Map<Integer, TankExpectedValues> tanksExpectedVal = new HashMap<>();
+		tanksExpectedVal = new HashMap<>();
 		TankExpectedValues tankExpVal1 = new TankExpectedValues(1.00, 824.92, 1.07, 0.85, 53.75);
 		TankExpectedValues tankExpVal2 = new TankExpectedValues(0.81, 208.34, 2.00, 0.98, 54.05);
 		TankExpectedValues tankExpVal3 = new TankExpectedValues(0.91, 1888.88, 1.27, 0.69, 48.75);
@@ -64,9 +68,44 @@ public class PlayerTest {
 		tanksExpectedVal.put(769, tankExpVal2);
 		tanksExpectedVal.put(10785, tankExpVal3);
 		
-		PlayerRepository playerRepository = new PlayerRepository(reader, PLAYER_ID, tanksExpectedVal);
+	}
+	
+	@Test
+	public void shouldCalculatePlayerWN8() {
+		
+		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
+		
+		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
 		
 		double playerWn8 = playerRepository.calculatePlayersWN8();
 		assertEquals(1679.83, playerWn8, 5.00);
 	}
+	
+	@Test
+	public void shouldCalculateWN8ForIndividualTank() {
+		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
+		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		
+		double tankWN8 = playerRepository.calculatePlayersIndividualTankWN8(801);
+		assertEquals(1510.35, tankWN8, 2.00);
+	}
+	
+	@Test
+	public void shouldCalculateWN8ForManyINdividualTanks() {
+		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
+		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		
+		assertEquals(1510.35, playerRepository.calculatePlayersIndividualTankWN8(801), 2.00);
+		assertEquals(1652.35, playerRepository.calculatePlayersIndividualTankWN8(769), 2.00);
+		assertEquals(1800.18, playerRepository.calculatePlayersIndividualTankWN8(10785), 2.00);
+	}
+	
+	@Test(expected = IllegalArgumentException.class) 
+	public void shouldThrowIllegalArgumentExcIfCantFindTankExpectedValue() {
+		List<TankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
+		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
+		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		playerRepository.calculatePlayersIndividualTankWN8(10785);
+	}
+	
 }
