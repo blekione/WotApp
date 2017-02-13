@@ -9,11 +9,11 @@ public class WN8Formula {
 
 public static double calculate(List<TankItem> tankItems, Map<Integer, TankExpectedValues> tanksExpectedVal) {
 		
-		double playerTamageTotal = 0.0;
-		int playerFragsTotal = 0, playerSpottedTotal = 0, playerDefTotal = 0, playerWinBattlesTotal = 0;
+		double playerTamageTotal = 0.0, playerWinBattlesTotal = 0;
+		int playerFragsTotal = 0, playerSpottedTotal = 0, playerDefTotal = 0;
 		
-		double expectedDamageTotal = 0.0;
-		int expectedFragsTotal = 0, expectedSpottedTotal = 0, expectedDefTotal = 0, expectedWinBattlesTotal = 0;
+		double expectedDamageTotal = 0.0, expectedWinBattlesTotal = 0;
+		int expectedFragsTotal = 0, expectedSpottedTotal = 0, expectedDefTotal = 0;
 		
 		for (TankItem tankItem : tankItems) {
 			int gameTank = tankItem.getGamesCount();

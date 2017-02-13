@@ -78,7 +78,7 @@ public class PlayerTest {
 		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
 		
 		double playerWn8 = playerRepository.calculatePlayersWN8();
-		assertEquals(1679.83, playerWn8, 5.00);
+		assertEquals(1679.83, playerWn8, 2.00);
 	}
 	
 	@Test
@@ -101,11 +101,10 @@ public class PlayerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class) 
-	public void shouldThrowIllegalArgumentExcIfCantFindTankExpectedValue() {
+	public void shouldThrowIllegalArgumentExcIfCantFindTankWithID() {
 		List<TankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
 		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
 		playerRepository.calculatePlayersIndividualTankWN8(10785);
 	}
-	
 }

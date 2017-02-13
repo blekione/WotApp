@@ -1,5 +1,6 @@
 package org.krugdev.wn8;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class PlayerRepository {
 		List<TankItem> tankItems =  readPlayersTanks();
 		for (TankItem tankItem: tankItems) {
 			if(tankItem.getTankId() == tankId) {
-				return WN8Formula.calculate(tankItems, tanksExpectedVal);
+				return WN8Formula.calculate(Arrays.asList(tankItem), tanksExpectedVal);
 			}
 		}
 		throw new IllegalArgumentException("Could not find tank with ID: " + tankId + " for player: " + PLAYER_ID);
