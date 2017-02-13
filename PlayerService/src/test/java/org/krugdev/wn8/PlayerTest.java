@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.krugdev.reader.Reader;
+import org.krugdev.wn8.expected.TankExpectedValues;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;

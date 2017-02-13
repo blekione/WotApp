@@ -1,20 +1,33 @@
-package org.krugdev.wn8;
+package org.krugdev.wn8.expected;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 
+@Getter
 public class TankExpectedValues {
 
-	@Getter
+	@XmlAttribute
 	private double expFrag;
-	@Getter
+	@XmlAttribute
 	private double expDamage;
-	@Getter
+	@XmlAttribute
 	private double expSpot;
-	@Getter
+	@XmlAttribute
 	private double expDef;
-	@Getter
+	@XmlAttribute
 	private double expWinRate;
+	@XmlAttribute(name="IDNum")
+	private int IDNum;
+	@XmlAttribute(name="countryid")
+	private int countryId;
+	@XmlAttribute(name="tankid")
+	private int tankId;
 
+	public TankExpectedValues() {
+	}
+	
 	public TankExpectedValues(double expFrag, double expDamage, double expSpot, double expDef, double expWinRate) {
 		this.expFrag = expFrag;
 		this.expDamage = expDamage;

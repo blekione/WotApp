@@ -1,5 +1,7 @@
 package org.krugdev.wn8;
 
+import org.krugdev.wn8.expected.TankExpectedValues;
+
 public class TankUtils {
 
 	/**
