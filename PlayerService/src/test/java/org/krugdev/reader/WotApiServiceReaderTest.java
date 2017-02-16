@@ -1,6 +1,8 @@
 package org.krugdev.reader;
 
 import org.junit.Test;
+import org.krugdev.io.Reader;
+import org.krugdev.io.WotAPIServiceReader;
 import org.krugdev.wn8.TankItem;
 
 import java.util.List;

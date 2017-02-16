@@ -1,7 +1,6 @@
 package org.krugdev.wn8.expected;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 

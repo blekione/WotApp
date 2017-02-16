@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.krugdev.reader.Reader;
+import org.krugdev.io.Reader;
 import org.krugdev.wn8.expected.TankExpectedValues;
 
 public class PlayerRepository {

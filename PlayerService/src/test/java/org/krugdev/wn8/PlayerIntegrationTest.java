@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Map;
 
 import org.junit.Test;
-import org.krugdev.reader.Reader;
-import org.krugdev.reader.WotAPIServiceReader;
+import org.krugdev.io.Reader;
+import org.krugdev.io.WotAPIServiceReader;
 import org.krugdev.wn8.expected.Parser;
 import org.krugdev.wn8.expected.TankExpectedValues;
 import org.krugdev.wn8.expected.XmlParser;

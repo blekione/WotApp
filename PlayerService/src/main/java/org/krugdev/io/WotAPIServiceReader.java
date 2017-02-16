@@ -1,4 +1,4 @@
-package org.krugdev.reader;
+package org.krugdev.io;
 
 import java.util.List;
 
