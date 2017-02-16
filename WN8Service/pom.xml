@@ -7,9 +7,9 @@
     <artifactId>WotModularApp</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>PlayerService</artifactId>
+  <artifactId>WN8Service</artifactId>
   <packaging>war</packaging>
-  <name>PlayerService Maven Webapp</name>
+  <name>WN8Service Maven Webapp</name>
   <url>http://maven.apache.org</url>
 	<repositories>
 		<repository>
@@ -63,9 +63,33 @@
         <artifactId>lombok</artifactId>
         <version>1.16.12</version>
       </dependency>    
+      
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>6.0.5</version>
+      </dependency>
+      
+      <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>4.3.11.Final</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-c3p0</artifactId>
+    <version>4.3.11.Final</version>
+</dependency>
+    <dependency>
+    <groupId>com.mchange</groupId>
+    <artifactId>c3p0</artifactId>
+    <version>0.9.5.2</version>
+</dependency>
+    
   
   </dependencies>
   <build>
-    <finalName>PlayerService</finalName>
+    <finalName>WN8Service</finalName>
   </build>
 </project>

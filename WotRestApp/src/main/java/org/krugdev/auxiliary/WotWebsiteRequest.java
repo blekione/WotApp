@@ -10,22 +10,11 @@ import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.omg.CORBA.TIMEOUT;
-
 public class WotWebsiteRequest {
 
 	private Platform platform;
 	private RequestingServices requestingService;
 	private final static String APP_ID_URL_PARAMETER = "?application_id=9d54f44c84a927987630b25b62efdd2c";
-	private static final int TIMEOUT = 100;
 
 	public WotWebsiteRequest(Platform platform, RequestingServices requestingService) {
 		this.platform = platform;

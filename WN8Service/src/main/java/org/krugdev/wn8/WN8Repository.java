@@ -7,25 +7,25 @@ import java.util.Map;
 import org.krugdev.io.Reader;
 import org.krugdev.wn8.expected.TankExpectedValues;
 
-public class PlayerRepository {
+public class WN8Repository {
 
 	private final Reader READER;
 	private final int PLAYER_ID;
 	private Map<Integer, TankExpectedValues> tanksExpectedVal;
 	private List<TankItem> tankItems;
 	
-	public PlayerRepository(Reader reader, int playerId, Map<Integer, TankExpectedValues> tanksExpectedVal) {
+	public WN8Repository(Reader reader, int playerId, Map<Integer, TankExpectedValues> tanksExpectedVal) {
 		this.READER = reader;
 		this.PLAYER_ID = playerId;
 		this.tanksExpectedVal = tanksExpectedVal;
 	}
 	
-	public double calculatePlayersWN8() {
+	public double calculateForPlayers() {
 		List<TankItem> tankItems = readPlayersTanks();
 		return WN8Formula.calculate(tankItems, tanksExpectedVal);
 	}
 	
-	public double calculatePlayersIndividualTankWN8(int tankId) {
+	public double calculateForIndividualTank(int tankId) {
 		List<TankItem> tankItems =  readPlayersTanks();
 		for (TankItem tankItem: tankItems) {
 			if(tankItem.getTankId() == tankId) {

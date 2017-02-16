@@ -13,7 +13,7 @@ import lombok.Getter;
 public class TankItem {
 
 	@XmlTransient
-	private Player player;
+	private PlayerTanks player;
 	private int tankId;
 	private int gamesCount;
 	private int frags;
@@ -25,7 +25,7 @@ public class TankItem {
 	public TankItem() {
 	}
 
-	protected TankItem(Player player, int tankId, int gamesCount, int frags, long damageDealt, int spottedTanks,
+	protected TankItem(PlayerTanks player, int tankId, int gamesCount, int frags, long damageDealt, int spottedTanks,
 			int defencePoints, double winRatio) {
 				this.player = player;
 				this.tankId = tankId;

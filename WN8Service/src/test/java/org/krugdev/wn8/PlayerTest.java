@@ -22,7 +22,7 @@ public class PlayerTest {
 	public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	private static final int PLAYER_ID = 6479371;
-	private static final Player ANY_PLAYER = mock(Player.class);
+	private static final PlayerTanks ANY_PLAYER = mock(PlayerTanks.class);
 	private static final Reader READER = mock(Reader.class);
 	private List<TankItem> tankItems;
 	private Map<Integer, TankExpectedValues> tanksExpectedVal;
@@ -75,36 +75,36 @@ public class PlayerTest {
 		
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
 		
-		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
 		
-		double playerWn8 = playerRepository.calculatePlayersWN8();
+		double playerWn8 = playerRepository.calculateForPlayers();
 		assertEquals(1679.83, playerWn8, 2.00);
 	}
 	
 	@Test
 	public void shouldCalculateWN8ForIndividualTank() {
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
-		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
 		
-		double tankWN8 = playerRepository.calculatePlayersIndividualTankWN8(801);
+		double tankWN8 = playerRepository.calculateForIndividualTank(801);
 		assertEquals(1510.35, tankWN8, 2.00);
 	}
 	
 	@Test
 	public void shouldCalculateWN8ForManyINdividualTanks() {
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
-		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
+		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
 		
-		assertEquals(1510.35, playerRepository.calculatePlayersIndividualTankWN8(801), 2.00);
-		assertEquals(1652.35, playerRepository.calculatePlayersIndividualTankWN8(769), 2.00);
-		assertEquals(1800.18, playerRepository.calculatePlayersIndividualTankWN8(10785), 2.00);
+		assertEquals(1510.35, playerRepository.calculateForIndividualTank(801), 2.00);
+		assertEquals(1652.35, playerRepository.calculateForIndividualTank(769), 2.00);
+		assertEquals(1800.18, playerRepository.calculateForIndividualTank(10785), 2.00);
 	}
 	
 	@Test(expected = IllegalArgumentException.class) 
 	public void shouldThrowIllegalArgumentExcIfCantFindTankWithID() {
 		List<TankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
-		PlayerRepository playerRepository = new PlayerRepository(READER, PLAYER_ID, tanksExpectedVal);
-		playerRepository.calculatePlayersIndividualTankWN8(10785);
+		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
+		playerRepository.calculateForIndividualTank(10785);
 	}
 }

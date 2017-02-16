@@ -17,7 +17,7 @@ public class TankTest {
 	
 	@Before
 	public void setUp() {
-		Player player = mock(Player.class);
+		PlayerTanks player = mock(PlayerTanks.class);
 		tankItemBuilder = new TankItemBuilder(player, 801)
 				.gamesCount(250)
 				.frags(269)

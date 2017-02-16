@@ -21,8 +21,8 @@ public class PlayerIntegrationTest {
 		Reader reader = new WotAPIServiceReader("http://localhost:8080/WotRestApp/wotAPI/XBOX-plt/players/");
 		Parser parser = new XmlParser();
 		Map<Integer, TankExpectedValues> tanksExpectedValues = parser.getTankEx("src/main/resources/expected_tank_values_29.xml");
-		PlayerRepository playerRepository = new PlayerRepository(reader, PLAYER_ID, tanksExpectedValues);
-		assertEquals(1638.89, playerRepository.calculatePlayersWN8(), 10.00);
+		WN8Repository playerRepository = new WN8Repository(reader, PLAYER_ID, tanksExpectedValues);
+		assertEquals(1638.89, playerRepository.calculateForPlayers(), 10.00);
 	}
 	
 	@Test // integrationTest
@@ -31,8 +31,8 @@ public class PlayerIntegrationTest {
 		Reader reader = new WotAPIServiceReader("http://localhost:8080/WotRestApp/wotAPI/XBOX-plt/players/");
 		Parser parser = new XmlParser();
 		Map<Integer, TankExpectedValues> tanksExpectedValues = parser.getTankEx("src/main/resources/expected_tank_values_29.xml");
-		PlayerRepository playerRepository = new PlayerRepository(reader, PLAYER_ID, tanksExpectedValues);
-		double wn8 = playerRepository.calculatePlayersIndividualTankWN8(801);
+		WN8Repository playerRepository = new WN8Repository(reader, PLAYER_ID, tanksExpectedValues);
+		double wn8 = playerRepository.calculateForIndividualTank(801);
 		assertEquals(1510.31, wn8, 10.00);
 	}
 }

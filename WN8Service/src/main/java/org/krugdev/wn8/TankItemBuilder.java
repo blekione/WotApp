@@ -2,7 +2,7 @@ package org.krugdev.wn8;
 
 public class TankItemBuilder {
 
-	private final Player player;
+	private final PlayerTanks player;
 	private final int tankId;
 	private int gamesCount;
 	private int frags;
@@ -11,7 +11,7 @@ public class TankItemBuilder {
 	private int defencePoints;
 	private double winRatio;
 
-	public TankItemBuilder(Player player, int tankId) {
+	public TankItemBuilder(PlayerTanks player, int tankId) {
 		this.player = player;
 		this.tankId = tankId;
 	}
