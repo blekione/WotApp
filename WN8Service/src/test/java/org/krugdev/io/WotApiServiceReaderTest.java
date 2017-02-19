@@ -1,4 +1,4 @@
-package org.krugdev.reader;
+package org.krugdev.io;
 
 import org.junit.Test;
 import org.krugdev.io.Reader;
