@@ -1,5 +1,6 @@
 package org.krugdev.io;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -49,5 +50,17 @@ public class WN8Service implements Reader, Writer {
 		PlayerTanksTimestamp latestPlayerTanks = findLatestPlayerTanks(playerId);
 		session.delete(latestPlayerTanks);
 		tx.commit();
+	}
+
+	public List<PlayerTanksTimestamp> findPlayerTanks(int playerId) {
+		Query query = session.createQuery("select p from tanks_timestamp p where p.playerId=:playerId");
+		query.setParameter("playerId", playerId);
+		@SuppressWarnings("unchecked")
+		List<PlayerTanksTimestamp> playerTanksList = query.list();
+		if (playerTanksList == null || playerTanksList.isEmpty()) {
+			return Collections.emptyList();
+		} else {
+			return playerTanksList;
+		}
 	}
 }

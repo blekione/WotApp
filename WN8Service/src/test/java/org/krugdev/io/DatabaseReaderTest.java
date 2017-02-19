@@ -79,15 +79,17 @@ public class DatabaseReaderTest {
 	@Test
 	public void shouldGetAllPlayerTanks() {
 		addTanksTimeStampsInDB(3, PLAYER_ID, 123654);
+		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanks(PLAYER_ID);
+		assertEquals(3, testPlayerTanksList.size());
 	}
 	
 	@Test
-	@Ignore
 	public void shouldRemoveLatestPlayerTanks() {
 		//TODO complete the test - need first implement shouldGetAllPlayerTanks() test
 		addTanksTimeStampsInDB(3, PLAYER_ID);
 		service.removeLatestPlayerTanks(PLAYER_ID);
-		
+		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanks(PLAYER_ID);
+		assertEquals(2, testPlayerTanksList.size());
 	}
 	
 	private List<PlayerTanks> addTanksTimeStampsInDB(int amount, int... playerIds) {
