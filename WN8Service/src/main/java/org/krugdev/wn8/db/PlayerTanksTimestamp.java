@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.krugdev.wn8.PlayerTanks;
-import org.krugdev.wn8.TankItem;
+import org.krugdev.wn8.XML.XMLTankItem;
 
 import lombok.Getter;
 
@@ -39,15 +39,15 @@ public class PlayerTanksTimestamp implements PlayerTanks {
 		this.timestamp = LocalDateTime.now();
 	}
 	
-	public List<TankItem> getTankItems() {
-		List<TankItem> tankItems = new ArrayList<>();
+	public List<XMLTankItem> getTankItems() {
+		List<XMLTankItem> tankItems = new ArrayList<>();
 		dbTankItems.forEach(v -> {
 			tankItems.add(v.convertToTankItem());
 		});
 		return tankItems;
 	}
 	
-	public void setPlayerTanks(List<TankItem> tankItems) {
+	public void setPlayerTanks(List<XMLTankItem> tankItems) {
 		tankItems.forEach(v -> {
 			dbTankItems.add(DBTankItem.instanceOf(v));
 		});

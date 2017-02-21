@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.XMLTankItemBuilder;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;
@@ -13,12 +15,12 @@ public class TankTest {
 	
 	@Rule
 	public MockitoRule mockitoRule = MockitoJUnit.rule();
-	private TankItemBuilder tankItemBuilder;
+	private XMLTankItemBuilder tankItemBuilder;
 	
 	@Before
 	public void setUp() {
 		PlayerTanks player = mock(PlayerTanks.class);
-		tankItemBuilder = new TankItemBuilder(player, 801)
+		tankItemBuilder = new XMLTankItemBuilder(player, 801)
 				.gamesCount(250)
 				.frags(269)
 				.damageDealt(203644)
@@ -29,8 +31,8 @@ public class TankTest {
 	
 	@Test
 	public void shouldCreateTankItemFromBuilder() {
-		TankItem tankitem = tankItemBuilder.build();
-		assertTrue(tankitem instanceof TankItem);
+		XMLTankItem tankitem = tankItemBuilder.build();
+		assertTrue(tankitem instanceof XMLTankItem);
 	}
 	
 }

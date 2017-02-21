@@ -3,11 +3,12 @@ package org.krugdev.wn8;
 import java.util.List;
 import java.util.Map;
 
+import org.krugdev.wn8.XML.XMLTankItem;
 import org.krugdev.wn8.expected.TankExpectedValues;
 
 public class WN8Formula {
 
-public static double calculate(List<TankItem> tankItems, Map<Integer, TankExpectedValues> tanksExpectedVal) {
+public static double calculate(List<XMLTankItem> tankItems, Map<Integer, TankExpectedValues> tanksExpectedVal) {
 		
 		double playerTamageTotal = 0.0, playerWinBattlesTotal = 0;
 		int playerFragsTotal = 0, playerSpottedTotal = 0, playerDefTotal = 0;
@@ -15,7 +16,7 @@ public static double calculate(List<TankItem> tankItems, Map<Integer, TankExpect
 		double expectedDamageTotal = 0.0, expectedWinBattlesTotal = 0;
 		int expectedFragsTotal = 0, expectedSpottedTotal = 0, expectedDefTotal = 0;
 		
-		for (TankItem tankItem : tankItems) {
+		for (XMLTankItem tankItem : tankItems) {
 			int gameTank = tankItem.getGamesCount();
 			
 			playerTamageTotal += tankItem.getDamageDealt();

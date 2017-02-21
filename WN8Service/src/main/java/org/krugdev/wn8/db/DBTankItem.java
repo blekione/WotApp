@@ -6,8 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.krugdev.wn8.TankItem;
-import org.krugdev.wn8.TankItemBuilder;
+import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.XMLTankItemBuilder;
 
 import lombok.Getter;
 
@@ -32,7 +32,7 @@ public class DBTankItem {
 	public DBTankItem() {
 	}
 
-	public static DBTankItem instanceOf(TankItem tankItem) {
+	public static DBTankItem instanceOf(XMLTankItem tankItem) {
 		DBTankItem persistenceTankItem = new DBTankItem();	
 		persistenceTankItem.tankId = tankItem.getTankId();
 		persistenceTankItem.gamesCount = tankItem.getGamesCount();
@@ -44,8 +44,8 @@ public class DBTankItem {
 		return persistenceTankItem;
 	}
 
-	public TankItem convertToTankItem() {
-		return new TankItemBuilder(this.player, this.tankId)
+	public XMLTankItem convertToTankItem() {
+		return new XMLTankItemBuilder(this.player, this.tankId)
 				.gamesCount(this.gamesCount)
 				.frags(this.frags)
 				.damageDealt(this.damageDealt)

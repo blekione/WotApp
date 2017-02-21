@@ -9,7 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.krugdev.wn8.PlayerTanks;
-import org.krugdev.wn8.TankItem;
+import org.krugdev.wn8.XML.XMLTankItem;
 import org.krugdev.wn8.db.PlayerTanksTimestamp;
 
 public class WN8DBService implements Reader, Writer {
@@ -21,7 +21,7 @@ public class WN8DBService implements Reader, Writer {
 	}
 
 	@Override
-	public List<TankItem> getPlayerTanks(int playerId) {
+	public List<XMLTankItem> getPlayerTanks(int playerId) {
 		return findLatestPlayerTanksTimestamp(playerId).getTankItems();
 	}
 	

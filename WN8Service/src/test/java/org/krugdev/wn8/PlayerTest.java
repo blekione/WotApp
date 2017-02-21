@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.krugdev.io.Reader;
+import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.XMLTankItemBuilder;
 import org.krugdev.wn8.expected.TankExpectedValues;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -24,17 +26,17 @@ public class PlayerTest {
 	private static final int PLAYER_ID = 6479371;
 	private static final PlayerTanks ANY_PLAYER = mock(PlayerTanks.class);
 	private static final Reader READER = mock(Reader.class);
-	private List<TankItem> tankItems;
+	private List<XMLTankItem> tankItems;
 	private Map<Integer, TankExpectedValues> tanksExpectedVal;
 
-	private TankItem tankItemA;
-	private TankItem tankItemB; 
+	private XMLTankItem tankItemA;
+	private XMLTankItem tankItemB; 
 	
 	
 	@Before
 	public void setUp() {
 
-		 tankItemA = new TankItemBuilder(ANY_PLAYER, 801)
+		 tankItemA = new XMLTankItemBuilder(ANY_PLAYER, 801)
 				.gamesCount(250)
 				.frags(269)
 				.damageDealt(203644)
@@ -42,7 +44,7 @@ public class PlayerTest {
 				.defencePoints(415)
 				.winRatio(51.2)
 				.build();
-		tankItemB = new TankItemBuilder(ANY_PLAYER, 769)
+		tankItemB = new XMLTankItemBuilder(ANY_PLAYER, 769)
 				.gamesCount(76)
 				.frags(64)
 				.damageDealt(16276)
@@ -50,7 +52,7 @@ public class PlayerTest {
 				.defencePoints(131)
 				.winRatio(52.63)
 				.build();
-		TankItem tankItemC = new TankItemBuilder(ANY_PLAYER, 10785)
+		XMLTankItem tankItemC = new XMLTankItemBuilder(ANY_PLAYER, 10785)
 				.gamesCount(93)
 				.frags(91)
 				.damageDealt(193873)
@@ -102,7 +104,7 @@ public class PlayerTest {
 	
 	@Test(expected = IllegalArgumentException.class) 
 	public void shouldThrowIllegalArgumentExcIfCantFindTankWithID() {
-		List<TankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
+		List<XMLTankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
 		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
 		playerRepository.calculateForIndividualTank(10785);

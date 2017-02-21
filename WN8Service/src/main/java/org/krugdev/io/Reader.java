@@ -2,10 +2,10 @@ package org.krugdev.io;
 
 import java.util.List;
 
-import org.krugdev.wn8.TankItem;
+import org.krugdev.wn8.XML.XMLTankItem;
 
 public interface Reader {
 
-	public List<TankItem> getPlayerTanks(int playerId);
+	public List<XMLTankItem> getPlayerTanks(int playerId);
 
 }

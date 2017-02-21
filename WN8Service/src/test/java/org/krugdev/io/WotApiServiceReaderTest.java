@@ -3,7 +3,7 @@ package org.krugdev.io;
 import org.junit.Test;
 import org.krugdev.io.Reader;
 import org.krugdev.io.WotAPIServiceReader;
-import org.krugdev.wn8.TankItem;
+import org.krugdev.wn8.XML.XMLTankItem;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class WotApiServiceReaderTest {
 	@Test
 	public void shouldReturnListOfPlayersTanks() {
  		Reader serviceReader = new WotAPIServiceReader(SERVICE_URI_LOCATION);
-		List<TankItem> playerTanks = serviceReader.getPlayerTanks(PLAYER_ID);
+		List<XMLTankItem> playerTanks = serviceReader.getPlayerTanks(PLAYER_ID);
 		assertFalse(playerTanks.isEmpty());
 	}
 
