@@ -5,7 +5,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 
   version="2.1">
   <persistence-unit name="testwn8">
-  	<class>org.krugdev.wn8.PlayerTanksTimestamp</class>
+  	<class>org.krugdev.wn8.db.PlayerTanksTimestamp</class>
 
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.2:3306/test_wn8?useSSL=false" />
