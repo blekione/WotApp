@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
+import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.krugdev.io.Reader;
 import org.krugdev.io.WN8DBService;
@@ -86,13 +89,12 @@ public class DatabaseReaderTest {
 	
 	@Test
 	public void shouldRemoveLatestPlayerTanks() {
-		//TODO complete the test - need first implement shouldGetAllPlayerTanks() test
 		addTanksTimeStampsInDB(3, PLAYER_ID);
 		service.removeLatestPlayerTanks(PLAYER_ID);
 		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanksTimestamps(PLAYER_ID);
 		assertEquals(2, testPlayerTanksList.size());
 	}
-		
+
 	private List<PlayerTanks> addTanksTimeStampsInDB(int amount, int... playerIds) {
 		List<PlayerTanks> playerTanksList = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {
