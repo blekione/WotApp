@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.krugdev.io.Reader;
-import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.TankItem;
 import org.krugdev.wn8.XML.XMLTankItemBuilder;
 import org.krugdev.wn8.expected.TankExpectedValues;
 import org.mockito.junit.MockitoJUnit;
@@ -26,11 +26,11 @@ public class PlayerTest {
 	private static final int PLAYER_ID = 6479371;
 	private static final PlayerTanks ANY_PLAYER = mock(PlayerTanks.class);
 	private static final Reader READER = mock(Reader.class);
-	private List<XMLTankItem> tankItems;
+	private List<TankItem> tankItems;
 	private Map<Integer, TankExpectedValues> tanksExpectedVal;
 
-	private XMLTankItem tankItemA;
-	private XMLTankItem tankItemB; 
+	private TankItem tankItemA;
+	private TankItem tankItemB; 
 	
 	
 	@Before
@@ -52,7 +52,7 @@ public class PlayerTest {
 				.defencePoints(131)
 				.winRatio(52.63)
 				.build();
-		XMLTankItem tankItemC = new XMLTankItemBuilder(ANY_PLAYER, 10785)
+		TankItem tankItemC = new XMLTankItemBuilder(ANY_PLAYER, 10785)
 				.gamesCount(93)
 				.frags(91)
 				.damageDealt(193873)
@@ -104,7 +104,7 @@ public class PlayerTest {
 	
 	@Test(expected = IllegalArgumentException.class) 
 	public void shouldThrowIllegalArgumentExcIfCantFindTankWithID() {
-		List<XMLTankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
+		List<TankItem> tankItems = Arrays.asList(tankItemA, tankItemB);
 		when(READER.getPlayerTanks(PLAYER_ID)).thenReturn(tankItems);
 		WN8Repository playerRepository = new WN8Repository(READER, PLAYER_ID, tanksExpectedVal);
 		playerRepository.calculateForIndividualTank(10785);

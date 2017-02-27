@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.TankItem;
 import org.krugdev.wn8.XML.XMLTankItemBuilder;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -31,8 +31,8 @@ public class TankTest {
 	
 	@Test
 	public void shouldCreateTankItemFromBuilder() {
-		XMLTankItem tankitem = tankItemBuilder.build();
-		assertTrue(tankitem instanceof XMLTankItem);
+		TankItem tankitem = tankItemBuilder.build();
+		assertTrue(tankitem instanceof TankItem);
 	}
 	
 }

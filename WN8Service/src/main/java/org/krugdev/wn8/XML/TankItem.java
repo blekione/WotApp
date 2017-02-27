@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XMLTankItem {
+public class TankItem {
 
 	@XmlTransient
 	private PlayerTanks player;
@@ -24,10 +24,10 @@ public class XMLTankItem {
 	private int defencePoints;
 	private double winRatio;
 	
-	public XMLTankItem() {
+	public TankItem() {
 	}
 
-	protected XMLTankItem(PlayerTanks player, int tankId, int gamesCount, int frags, long damageDealt, int spottedTanks,
+	protected TankItem(PlayerTanks player, int tankId, int gamesCount, int frags, long damageDealt, int spottedTanks,
 			int defencePoints, double winRatio) {
 				this.player = player;
 				this.tankId = tankId;

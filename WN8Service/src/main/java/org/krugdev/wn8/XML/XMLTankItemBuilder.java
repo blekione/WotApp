@@ -48,8 +48,8 @@ public class XMLTankItemBuilder {
 		return this;
 	}
 
-	public XMLTankItem build() {
-		return new XMLTankItem(player, tankId, gamesCount, frags, damageDealt, spottedTanks, defencePoints, winRatio);
+	public TankItem build() {
+		return new TankItem(player, tankId, gamesCount, frags, damageDealt, spottedTanks, defencePoints, winRatio);
 	}
 	
 	

@@ -11,7 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine;
-import org.krugdev.wn8.XML.XMLTankItem;
+import org.krugdev.wn8.XML.TankItem;
 
 public class WotAPIServiceReader implements Reader {
 
@@ -27,10 +27,10 @@ public class WotAPIServiceReader implements Reader {
 	}
 
 	@Override
-	public List<XMLTankItem> getPlayerTanks(int playerId) {
-		List<XMLTankItem> tankItems = client.target(serviceUriLocation + playerId + "/tanks" )
+	public List<TankItem> getPlayerTanks(int playerId) {
+		List<TankItem> tankItems = client.target(serviceUriLocation + playerId + "/tanks" )
 				.request(MediaType.APPLICATION_XML)
-				.get(new GenericType<List<XMLTankItem>>() {});
+				.get(new GenericType<List<TankItem>>() {});
 		return tankItems;
 	}
 		
