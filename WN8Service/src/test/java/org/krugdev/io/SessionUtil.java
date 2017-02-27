@@ -1,4 +1,4 @@
-package org.krugdev.io.utility;
+package org.krugdev.io;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

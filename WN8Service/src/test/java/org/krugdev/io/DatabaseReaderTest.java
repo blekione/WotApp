@@ -6,20 +6,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.krugdev.io.Reader;
 import org.krugdev.io.WN8DBService;
-import org.krugdev.io.utility.SessionUtil;
+import org.krugdev.io.SessionUtil;
 import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.db.DBTankItem;
 import org.krugdev.wn8.db.PlayerTanksTimestamp;
