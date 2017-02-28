@@ -2,8 +2,7 @@ package org.krugdev.io;
 
 import java.util.Collections;
 import java.util.List;
-
-import javax.persistence.NoResultException;
+import java.util.Optional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,7 +21,7 @@ public class WN8DBService implements Reader, Writer {
 
 	@Override
 	public List<TankItem> getPlayerTanks(int playerId) {
-		return findLatestPlayerTanksTimestamp(playerId).getTankItems();
+		return findLatestPlayerTanksTimestamp(playerId).get().getTankItems();
 	}
 	
 	@Override
@@ -33,21 +32,21 @@ public class WN8DBService implements Reader, Writer {
 		
 	}
 	
-	public PlayerTanksTimestamp findLatestPlayerTanksTimestamp(int playerId) {
+	public Optional<PlayerTanksTimestamp> findLatestPlayerTanksTimestamp(int playerId) {
 		// TODO try to find out if query might be optimised
 		Query query = session.createQuery("select p from tanks_timestamp p where p.timestamp ="
 				+ "(select max(pp.timestamp) from tanks_timestamp pp where pp.playerId=:playerId)");
 		query.setParameter("playerId", playerId);
 		PlayerTanksTimestamp playerTanksTimestamp = (PlayerTanksTimestamp) query.uniqueResult();
 		if (playerTanksTimestamp == null) {
-			throw new NoResultException("there is no records for playerId = " + playerId + " in database");
+			return Optional.empty();
 		}
-		return playerTanksTimestamp;
+		return Optional.of(playerTanksTimestamp);
 	}
 
 	public void removeLatestPlayerTanks(int playerId) {
 		Transaction tx = session.beginTransaction();
-		PlayerTanksTimestamp latestPlayerTanks = findLatestPlayerTanksTimestamp(playerId);
+		PlayerTanksTimestamp latestPlayerTanks = findLatestPlayerTanksTimestamp(playerId).get();
 		session.delete(latestPlayerTanks);
 		tx.commit();
 	}

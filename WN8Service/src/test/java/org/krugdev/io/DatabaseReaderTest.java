@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import org.hibernate.Session;
@@ -54,9 +54,10 @@ public class DatabaseReaderTest {
 	}
 	
 	@Test
-	public void shouldGetLatestPlayerTanksFromDB() {
+	public void shouldGetOptionalWithLatestPlayerTanksFromDB() {
 		PlayerTanks playerTanks = addTanksTimeStampsInDB(3, PLAYER_ID).get(2);
-		assertEquals(playerTanks, service.findLatestPlayerTanksTimestamp(PLAYER_ID));
+		Optional<PlayerTanksTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(PLAYER_ID);
+		assertEquals(playerTanks, queryResult.get());
 	}
 	
 	@Test
@@ -65,16 +66,17 @@ public class DatabaseReaderTest {
 		addTanksTimeStampsInDB(2, PLAYER_ID, 56478);
 		// adds test entry
 		PlayerTanks testTanks = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);
-		PlayerTanks playerTanksFromDB = service.findLatestPlayerTanksTimestamp(PLAYER_ID);
+		PlayerTanks playerTanksFromDB = service.findLatestPlayerTanksTimestamp(PLAYER_ID).get();
 		assertEquals(testTanks, playerTanksFromDB);
 	}
 	
-	@Test(expected=NoResultException.class)
-	public void shouldThrowNoResultExceptionIfNoPlayersTanksRecordInDatabase() {
+	@Test
+	public void shouldReturnEmptyOptionalIfNoPlayersTanksRecordInDatabase() {
 		// adds any entry
 		addTanksTimeStampsInDB(1, PLAYER_ID);
 		// check for not existing entry
-		service.findLatestPlayerTanksTimestamp(12345);
+		Optional<PlayerTanksTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(12345);
+		assertFalse(queryResult.isPresent());
 	}
 
 	@Test
@@ -83,7 +85,7 @@ public class DatabaseReaderTest {
 		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanksTimestamps(PLAYER_ID);
 		assertEquals(3, testPlayerTanksList.size());
 	}
-	
+
 	@Test
 	public void shouldRemoveLatestPlayerTanks() {
 		addTanksTimeStampsInDB(3, PLAYER_ID);
@@ -112,5 +114,6 @@ public class DatabaseReaderTest {
 			}
 		}		
 		return playerTanksList;
-	}	
+	}
+		
 }
