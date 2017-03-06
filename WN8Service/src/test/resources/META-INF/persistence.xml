@@ -5,7 +5,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 
   version="2.1">
   <persistence-unit name="exValues">
-  	<class>org.krugdev.wn8.db.PlayerTanksTimestamp</class>
+  	<class>org.krugdev.wn8.db.PlayerTimestamp</class>
 	<class>org.krugdev.wn8.db.DBTankItem</class>
 	<class>org.krugdev.wn8.expected.TankExpectedValues</class>
     <properties>

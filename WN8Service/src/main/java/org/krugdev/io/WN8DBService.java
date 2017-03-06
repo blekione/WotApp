@@ -10,7 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.XML.TankItem;
-import org.krugdev.wn8.db.PlayerTanksTimestamp;
+import org.krugdev.wn8.db.PlayerTimestamp;
 
 public class WN8DBService implements Reader, Writer {
 	
@@ -32,30 +32,30 @@ public class WN8DBService implements Reader, Writer {
 		tx.commit();
 	}
 
-	public Optional<PlayerTanksTimestamp> findLatestPlayerTanksTimestamp(int playerId) {
+	public Optional<PlayerTimestamp> findLatestPlayerTanksTimestamp(int playerId) {
 		// TODO try to find out if query might be optimised
 		Query query = session.createQuery("select p from tanks_timestamp p where p.timestamp ="
 				+ "(select max(pp.timestamp) from tanks_timestamp pp where pp.playerId=:playerId)");
 		query.setParameter("playerId", playerId);
-		PlayerTanksTimestamp playerTanksTimestamp = (PlayerTanksTimestamp) query.uniqueResult();
+		PlayerTimestamp playerTanksTimestamp = (PlayerTimestamp) query.uniqueResult();
 		if (playerTanksTimestamp == null) {
 			return Optional.empty();
 		}
 		return Optional.of(playerTanksTimestamp);
 	}
 
-	public void removeLatestPlayerTanks(int playerId) {
+	public void removeLatestPlayerTimestamp(int playerId) {
 		Transaction tx = getSessionTransaction();
-		PlayerTanksTimestamp latestPlayerTanks = findLatestPlayerTanksTimestamp(playerId).get();
+		PlayerTimestamp latestPlayerTanks = findLatestPlayerTanksTimestamp(playerId).get();
 		session.delete(latestPlayerTanks);
 		tx.commit();
 	}
 
-	public List<PlayerTanksTimestamp> findPlayerTanksTimestamps(int playerId) {
+	public List<PlayerTimestamp> findPlayerTanksTimestamps(int playerId) {
 		Query query = session.createQuery("select p from tanks_timestamp p where p.playerId=:playerId");
 		query.setParameter("playerId", playerId);
 		@SuppressWarnings("unchecked")
-		List<PlayerTanksTimestamp> playerTanksList = query.list();
+		List<PlayerTimestamp> playerTanksList = query.list();
 		if (playerTanksList == null || playerTanksList.isEmpty()) {
 			return Collections.emptyList();
 		} else {
@@ -63,12 +63,12 @@ public class WN8DBService implements Reader, Writer {
 		}
 	}
 	
-	public List<PlayerTanksTimestamp> findTwoLastPlayerTanksTimestamps(int playerId) {
+	public List<PlayerTimestamp> findTwoLastPlayerTanksTimestamps(int playerId) {
 		Query query = session.createQuery("select p from tanks_timestamp p where p.playerId =:playerId "
 				+ "order by p.timestamp desc");
 		query.setParameter("playerId", playerId);
 		@SuppressWarnings("unchecked")
-		List<PlayerTanksTimestamp> queryResult = query.setMaxResults(2).list();
+		List<PlayerTimestamp> queryResult = query.setMaxResults(2).list();
 		return queryResult;
 	}
 	
@@ -77,5 +77,11 @@ public class WN8DBService implements Reader, Writer {
 			return session.getTransaction();	
 		}
 		return session.beginTransaction();
+	}
+
+	public void replaceLastPlayerTimestamp(int playerId,
+			PlayerTimestamp newTimestampFromWotAPI) {
+		removeLatestPlayerTimestamp(playerId);
+		savePlayerTanks(newTimestampFromWotAPI);
 	}
 }

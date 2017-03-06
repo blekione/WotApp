@@ -19,7 +19,7 @@ import org.krugdev.io.WN8DBService;
 import org.krugdev.io.SessionUtil;
 import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.db.DBTankItem;
-import org.krugdev.wn8.db.PlayerTanksTimestamp;
+import org.krugdev.wn8.db.PlayerTimestamp;
 
 public class DatabaseReaderTest {
 
@@ -49,73 +49,76 @@ public class DatabaseReaderTest {
 	}
 	
 	@Test
-	public void shouldAddPlayerTanksTimetstampToDB() {		
+	public void shouldAddPlayerTimetstampToDB() {		
 		addTanksTimeStampsInDB(1, PLAYER_ID);
 	}
 	
 	@Test
-	public void shouldGetOptionalWithLatestPlayerTanksFromDB() {
+	public void shouldGetOptionalWithLatestPlayerTimestampFromDB() {
 		PlayerTanks playerTanks = addTanksTimeStampsInDB(3, PLAYER_ID).get(2);
-		Optional<PlayerTanksTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(PLAYER_ID);
+		Optional<PlayerTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(PLAYER_ID);
 		assertEquals(playerTanks, queryResult.get());
 	}
 	
 	@Test
-	public void shouldGetLatestPlayerTanksIfMoreThanOnePlayer() {
+	public void shouldGetLatestPlayerTimestampIfMoreThanOnePlayer() {
 		// adds some db entries
 		addTanksTimeStampsInDB(2, PLAYER_ID, 56478);
 		// adds test entry
 		PlayerTanks testTanks = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);
-		PlayerTanks playerTanksFromDB = service.findLatestPlayerTanksTimestamp(PLAYER_ID).get();
-		assertEquals(testTanks, playerTanksFromDB);
+		PlayerTanks playerTimestampFromDB = service.findLatestPlayerTanksTimestamp(PLAYER_ID).get();
+		assertEquals(testTanks, playerTimestampFromDB);
 	}
 	
 	@Test
-	public void shouldReturnEmptyOptionalIfNoPlayersTanksRecordInDatabase() {
+	public void shouldReturnEmptyOptionalIfNoPlayersTimestampInDatabase() {
 		// adds any entry
 		addTanksTimeStampsInDB(1, PLAYER_ID);
 		// check for not existing entry
-		Optional<PlayerTanksTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(12345);
+		Optional<PlayerTimestamp> queryResult = service.findLatestPlayerTanksTimestamp(12345);
 		assertFalse(queryResult.isPresent());
 	}
 
 	@Test
-	public void shouldGetAllPlayerTanks() {
+	public void shouldGetAllPlayerTimestamp() {
 		addTanksTimeStampsInDB(3, PLAYER_ID, 123654);
-		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanksTimestamps(PLAYER_ID);
-		assertEquals(3, testPlayerTanksList.size());
+		List<PlayerTimestamp> testPlayerTimestamps = service.findPlayerTanksTimestamps(PLAYER_ID);
+		assertEquals(3, testPlayerTimestamps.size());
 	}
 
 	@Test
-	public void shouldRemoveLatestPlayerTanks() {
+	public void shouldRemoveLatestPlayerTimestamp() {
 		addTanksTimeStampsInDB(3, PLAYER_ID);
-		service.removeLatestPlayerTanks(PLAYER_ID);
-		List<PlayerTanksTimestamp> testPlayerTanksList = service.findPlayerTanksTimestamps(PLAYER_ID);
-		assertEquals(2, testPlayerTanksList.size());
+		service.removeLatestPlayerTimestamp(PLAYER_ID);
+		List<PlayerTimestamp> testPlayerTimestamps= service.findPlayerTanksTimestamps(PLAYER_ID);
+		assertEquals(2, testPlayerTimestamps.size());
 	}
 
 	@Test
-	public void shouldGetLastTwoPlayerTanks() {
+	public void shouldGetLastTwoPlayerTimestamps() {
 		addTanksTimeStampsInDB(1, PLAYER_ID, 12345);
 		PlayerTanks tanksTimestampBeforeLast = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);
 		PlayerTanks tanksTimestampLast = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);		
-		List<PlayerTanksTimestamp> lastTwoPlayerTanksTimestamps = 
+		List<PlayerTimestamp> lastTwoPlayerTanksTimestamps = 
 				service.findTwoLastPlayerTanksTimestamps(PLAYER_ID);
 		assertEquals(2, lastTwoPlayerTanksTimestamps.size());
 		assertEquals(tanksTimestampLast, lastTwoPlayerTanksTimestamps.get(0));
 		assertEquals(tanksTimestampBeforeLast, lastTwoPlayerTanksTimestamps.get(1));
 	}
 	
+	@Test
+	public void shouldReplaceLastPlayerTimestampByTheNewOne() {
+		addTanksTimeStampsInDB(3, PLAYER_ID, 12345);
+		PlayerTanks newPlayerTimestamp = getNewPlayerTimestamp(PLAYER_ID);
+		service.replaceLastPlayerTimestamp(PLAYER_ID, (PlayerTimestamp)newPlayerTimestamp);
+		assertEquals(newPlayerTimestamp, service.findLatestPlayerTanksTimestamp(PLAYER_ID).get());
+	}
+	
 	private List<PlayerTanks> addTanksTimeStampsInDB(int amount, int... playerIds) {
 		List<PlayerTanks> playerTanksList = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {
 			for (int j = 0; j < playerIds.length; j++) {
-				DBTankItem tankItem1 = new DBTankItem();
-				DBTankItem tankItem2 = new DBTankItem();
-				tankItems = Arrays.asList(tankItem1, tankItem2);
-				PlayerTanks playerTanks = new PlayerTanksTimestamp(playerIds[j], tankItems, ANY_WN8);
-				tankItem1.setPlayer((PlayerTanksTimestamp) playerTanks);
-				tankItem2.setPlayer((PlayerTanksTimestamp) playerTanks);				
+				PlayerTanks playerTanks = getNewPlayerTimestamp(playerIds[j]);
 				service.savePlayerTanks(playerTanks);
 				playerTanksList.add(playerTanks);
 				try {
@@ -127,5 +130,14 @@ public class DatabaseReaderTest {
 		}		
 		return playerTanksList;
 	}
-		
+	
+	private PlayerTanks getNewPlayerTimestamp(int playerId) {
+		DBTankItem tankItem1 = new DBTankItem();
+		DBTankItem tankItem2 = new DBTankItem();
+		tankItems = Arrays.asList(tankItem1, tankItem2);
+		PlayerTanks playerTanks = new PlayerTimestamp(playerId, tankItems, ANY_WN8);
+		tankItem1.setPlayer((PlayerTimestamp) playerTanks);
+		tankItem2.setPlayer((PlayerTimestamp) playerTanks);
+		return playerTanks;
+	}
 }

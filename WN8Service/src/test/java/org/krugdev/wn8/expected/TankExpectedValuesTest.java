@@ -20,7 +20,7 @@ public class TankExpectedValuesTest {
 	public void readValuesFromXMLFile() throws IOException {
 		TankExpectedValuesReader parser = new XMLTankExpectedValuesReader();
 		Map<Integer, TankExpectedValues> tankExpValues = parser.getTankEx(tankExpValuesXML);
-		assertEquals(505, tankExpValues.size());
+		assertEquals(556, tankExpValues.size());
 	}
 	
 	@Test
@@ -35,6 +35,6 @@ public class TankExpectedValuesTest {
 		Session session = em.unwrap(Session.class);
 		TankExpectedValuesReader parser = new DBTankExpectedValuesReader();
 		Map<Integer, TankExpectedValues> tankExpValues = parser.getTankEx(session);
-		assertEquals(505, tankExpValues.size());
+		assertEquals(556, tankExpValues.size());
 	}
 }

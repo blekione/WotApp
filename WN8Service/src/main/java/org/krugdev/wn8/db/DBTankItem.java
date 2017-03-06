@@ -20,7 +20,7 @@ public class DBTankItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@ManyToOne
-	private PlayerTanksTimestamp player;
+	private PlayerTimestamp player;
 	private int tankId;
 	private int gamesCount;
 	private int frags;
@@ -28,12 +28,13 @@ public class DBTankItem {
 	private int spottedTanks;
 	private int defencePoints;
 	private double winRatio;
+	private double tankWN8;
 
 	// default constructor required by persistence
 	public DBTankItem() {
 	}
 
-	public static DBTankItem instanceOf(TankItem tankItem) {
+	public static DBTankItem instanceOf(TankItem tankItem, double wn8) {
 		DBTankItem persistenceTankItem = new DBTankItem();	
 		persistenceTankItem.tankId = tankItem.getTankId();
 		persistenceTankItem.gamesCount = tankItem.getGamesCount();
@@ -42,9 +43,14 @@ public class DBTankItem {
 		persistenceTankItem.spottedTanks = tankItem.getSpottedTanks();
 		persistenceTankItem.defencePoints = tankItem.getDefencePoints();
 		persistenceTankItem.winRatio = tankItem.getWinRatio();
+		persistenceTankItem.tankWN8 = wn8;
 		return persistenceTankItem;
 	}
 
+	public static DBTankItem instanceOf(TankItem tankItem) {
+		return DBTankItem.instanceOf(tankItem, 1000);
+	}
+	
 	public TankItem convertToTankItem() {
 		return new XMLTankItemBuilder(this.player, this.tankId)
 				.gamesCount(this.gamesCount)
@@ -56,7 +62,7 @@ public class DBTankItem {
 				.build();
 	}
 	
-	public void setPlayer(PlayerTanksTimestamp player) {
+	public void setPlayer(PlayerTimestamp player) {
 		this.player = player;
 	}
 	@Override
@@ -93,7 +99,7 @@ public class DBTankItem {
 		if (getClass() != obj.getClass())
 			return false;
 		DBTankItem other = (DBTankItem) obj;
-		if(other.player instanceof PlayerTanksTimestamp) {
+		if(other.player instanceof PlayerTimestamp) {
 			if (!player.equals(other.getPlayer())) {
 				return false;
 			}

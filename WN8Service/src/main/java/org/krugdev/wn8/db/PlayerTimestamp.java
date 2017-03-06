@@ -16,15 +16,18 @@ import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.XML.TankItem;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name="tanks_timestamp")
 @Getter
-public class PlayerTanksTimestamp implements PlayerTanks {
+public class PlayerTimestamp implements PlayerTanks {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int recordId;
+	@Setter
 	private int playerId;
+	@Setter
 	private double totalWN8;
 	@Column
 	private LocalDateTime timestamp;
@@ -32,9 +35,11 @@ public class PlayerTanksTimestamp implements PlayerTanks {
 	private List<DBTankItem> dbTankItems;
 	
 	// default constructor required by persistence
-	protected PlayerTanksTimestamp() {}
+	protected PlayerTimestamp() {
+		this.timestamp = LocalDateTime.now();
+	}
 
-	public PlayerTanksTimestamp(int playerId, List<DBTankItem> tankItems, double totalWN8) {
+	public PlayerTimestamp(int playerId, List<DBTankItem> tankItems, double totalWN8) {
 		this.playerId = playerId;
 		this.dbTankItems = tankItems;
 		this.totalWN8 = totalWN8;
@@ -54,6 +59,10 @@ public class PlayerTanksTimestamp implements PlayerTanks {
 			dbTankItems.add(DBTankItem.instanceOf(v));
 		});
 	}
+	
+	public void setPlayerDBTanks(List<DBTankItem> dbTanksList) {
+		this.dbTankItems = dbTanksList;
+	}
 
 	@Override
 	public int hashCode() {
@@ -71,7 +80,7 @@ public class PlayerTanksTimestamp implements PlayerTanks {
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 		
-		PlayerTanksTimestamp other = (PlayerTanksTimestamp) obj;
+		PlayerTimestamp other = (PlayerTimestamp) obj;
 		if (playerId != other.playerId) return false;
 		if (recordId != other.recordId) return false;
 		if (timestamp == null) {
