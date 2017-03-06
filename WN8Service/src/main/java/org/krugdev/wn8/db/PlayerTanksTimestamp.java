@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class PlayerTanksTimestamp implements PlayerTanks {
 	private int recordId;
 	private int playerId;
 	private double totalWN8;
+	@Column
 	private LocalDateTime timestamp;
 	@OneToMany(mappedBy="player", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private List<DBTankItem> dbTankItems;

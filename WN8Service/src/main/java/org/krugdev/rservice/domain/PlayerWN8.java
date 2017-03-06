@@ -12,15 +12,15 @@ import lombok.Getter;
 public class PlayerWN8 {
 	
 	@XmlAttribute
-	private int wn8;
+	private double wn8;
 	@XmlAttribute
 	private String playerId;
 	
 	public PlayerWN8() {
 	}
 
-	public PlayerWN8(int wn8, String playerId) {
-		this.wn8 = wn8;
+	public PlayerWN8(double d, String playerId) {
+		this.wn8 = d;
 		this.playerId = playerId;
 	}
 }

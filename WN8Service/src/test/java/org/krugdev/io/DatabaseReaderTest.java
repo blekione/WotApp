@@ -49,7 +49,7 @@ public class DatabaseReaderTest {
 	}
 	
 	@Test
-	public void shouldAddPlayerTanksTimestampToDB() {		
+	public void shouldAddPlayerTanksTimetstampToDB() {		
 		addTanksTimeStampsInDB(1, PLAYER_ID);
 	}
 	
@@ -94,6 +94,18 @@ public class DatabaseReaderTest {
 		assertEquals(2, testPlayerTanksList.size());
 	}
 
+	@Test
+	public void shouldGetLastTwoPlayerTanks() {
+		addTanksTimeStampsInDB(1, PLAYER_ID, 12345);
+		PlayerTanks tanksTimestampBeforeLast = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);
+		PlayerTanks tanksTimestampLast = addTanksTimeStampsInDB(1, PLAYER_ID).get(0);		
+		List<PlayerTanksTimestamp> lastTwoPlayerTanksTimestamps = 
+				service.findTwoLastPlayerTanksTimestamps(PLAYER_ID);
+		assertEquals(2, lastTwoPlayerTanksTimestamps.size());
+		assertEquals(tanksTimestampLast, lastTwoPlayerTanksTimestamps.get(0));
+		assertEquals(tanksTimestampBeforeLast, lastTwoPlayerTanksTimestamps.get(1));
+	}
+	
 	private List<PlayerTanks> addTanksTimeStampsInDB(int amount, int... playerIds) {
 		List<PlayerTanks> playerTanksList = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {

@@ -26,7 +26,9 @@ public static double calculate(List<TankItem> tankItems, Map<Integer, TankExpect
 			playerWinBattlesTotal += tankItem.getWinRatio() * gameTank;
 			
 			TankExpectedValues tankEV = tanksExpectedVal.get(tankItem.getTankId());
-			
+			if (tankEV == null) {
+				throw new RuntimeException("no expected values for tankid= " + tankItem.getTankId());
+			}
 			expectedDamageTotal += tankEV.getExpDamage() * gameTank;
 			expectedFragsTotal += tankEV.getExpFrag() * gameTank;
 			expectedSpottedTotal += tankEV.getExpSpot() * gameTank;

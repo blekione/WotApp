@@ -1,12 +1,15 @@
 package org.krugdev.wn8.expected;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import lombok.Getter;
 
 @Getter
+@Entity
 public class TankExpectedValues {
-
+	
 	@XmlAttribute
 	private double expFrag;
 	@XmlAttribute
@@ -18,7 +21,8 @@ public class TankExpectedValues {
 	@XmlAttribute
 	private double expWinRate;
 	@XmlAttribute(name="IDNum")
-	private int IDNum;
+	@Id
+	private int idNum;
 	@XmlAttribute(name="countryid")
 	private int countryId;
 	@XmlAttribute(name="tankid")

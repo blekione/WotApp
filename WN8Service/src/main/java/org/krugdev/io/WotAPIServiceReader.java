@@ -3,6 +3,7 @@ package org.krugdev.io;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
@@ -35,14 +36,15 @@ public class WotAPIServiceReader implements Reader {
 	}
 		
 	private Client setClient() {
-		RequestConfig reqConfig = RequestConfig.custom()
-				.setConnectTimeout(CONNECTION_TIMEOUT)
-				.setSocketTimeout(CONNECTION_TIMEOUT)
-				.setConnectionRequestTimeout(REQUEST_TIMEOUT)
-				.build();
-		CloseableHttpClient httpClient = HttpClientBuilder.create()
-				.setDefaultRequestConfig(reqConfig)
-				.build();
-		return new ResteasyClientBuilder().httpEngine(new ApacheHttpClient4Engine(httpClient, true)).build();
+//		RequestConfig reqConfig = RequestConfig.custom()
+//				.setConnectTimeout(CONNECTION_TIMEOUT)
+//				.setSocketTimeout(CONNECTION_TIMEOUT)
+//				.setConnectionRequestTimeout(REQUEST_TIMEOUT)
+//				.build();
+//		CloseableHttpClient httpClient = HttpClientBuilder.create()
+//				.setDefaultRequestConfig(reqConfig)
+//				.build();
+//		return new ResteasyClientBuilder().httpEngine(new ApacheHttpClient4Engine(httpClient, true)).build();
+		return ClientBuilder.newClient();
 	}
 }

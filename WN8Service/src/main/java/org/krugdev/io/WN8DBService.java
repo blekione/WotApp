@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.XML.TankItem;
 import org.krugdev.wn8.db.PlayerTanksTimestamp;
@@ -26,12 +27,11 @@ public class WN8DBService implements Reader, Writer {
 	
 	@Override
 	public void savePlayerTanks(PlayerTanks player) {
-		Transaction tx = session.beginTransaction();
+		Transaction tx = getSessionTransaction();
 		session.save(player);
 		tx.commit();
-		
 	}
-	
+
 	public Optional<PlayerTanksTimestamp> findLatestPlayerTanksTimestamp(int playerId) {
 		// TODO try to find out if query might be optimised
 		Query query = session.createQuery("select p from tanks_timestamp p where p.timestamp ="
@@ -45,7 +45,7 @@ public class WN8DBService implements Reader, Writer {
 	}
 
 	public void removeLatestPlayerTanks(int playerId) {
-		Transaction tx = session.beginTransaction();
+		Transaction tx = getSessionTransaction();
 		PlayerTanksTimestamp latestPlayerTanks = findLatestPlayerTanksTimestamp(playerId).get();
 		session.delete(latestPlayerTanks);
 		tx.commit();
@@ -61,5 +61,21 @@ public class WN8DBService implements Reader, Writer {
 		} else {
 			return playerTanksList;
 		}
+	}
+	
+	public List<PlayerTanksTimestamp> findTwoLastPlayerTanksTimestamps(int playerId) {
+		Query query = session.createQuery("select p from tanks_timestamp p where p.playerId =:playerId "
+				+ "order by p.timestamp desc");
+		query.setParameter("playerId", playerId);
+		@SuppressWarnings("unchecked")
+		List<PlayerTanksTimestamp> queryResult = query.setMaxResults(2).list();
+		return queryResult;
+	}
+	
+	private Transaction getSessionTransaction() {
+		if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE) {
+			return session.getTransaction();	
+		}
+		return session.beginTransaction();
 	}
 }

@@ -11,17 +11,37 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
       <class>org.krugdev.wn8.db.PlayerTanksTimestamp</class>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-         <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-<!-- 
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.2:3306/servicewn8?useSSL=false" />
+	     <!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
+	     
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="testwn8">
+  	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+  	<class>org.krugdev.wn8.db.PlayerTanksTimestamp</class>
+	<class>org.krugdev.wn8.db.DBTankItem</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.2:3306/test_wn8?useSSL=false" />
       <property name="javax.persistence.jdbc.user" value="root" />
       <property name="javax.persistence.jdbc.password" value="pass" />
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.format_sql" value="true" /> -->
+      <property name="hibernate.format_sql" value="true" />
     </properties>
   </persistence-unit>
-
+  <!-- <persistence-unit name="exValues">
+  	<class>org.krugdev.wn8.db.PlayerTanksTimestamp</class>
+	<class>org.krugdev.wn8.db.DBTankItem</class>
+	<class>org.krugdev.wn8.expected.TankExpectedValues</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.2:3306/servicewn8?useSSL=false" />
+      <property name="javax.persistence.jdbc.user" value="root" />
+      <property name="javax.persistence.jdbc.password" value="pass" />
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.format_sql" value="true" />
+    </properties>
+  </persistence-unit>-->
 </persistence>
