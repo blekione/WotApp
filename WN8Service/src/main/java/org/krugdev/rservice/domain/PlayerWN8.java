@@ -1,7 +1,5 @@
 package org.krugdev.rservice.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,12 +12,12 @@ public class PlayerWN8 {
 	@XmlAttribute
 	private double wn8;
 	@XmlAttribute
-	private String playerId;
+	private int playerId;
 	
 	public PlayerWN8() {
 	}
 
-	public PlayerWN8(double d, String playerId) {
+	public PlayerWN8(double d, int playerId) {
 		this.wn8 = d;
 		this.playerId = playerId;
 	}

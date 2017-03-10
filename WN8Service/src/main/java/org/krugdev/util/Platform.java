@@ -1,8 +1,14 @@
 package org.krugdev.util;
 
 public enum Platform {
-	XBOX,
-	PLAY_STATION;
+	XBOX("http://localhost:8080/WotRestApp/wotAPI/XBOX-plt/players/"),
+	PLAY_STATION("http://localhost:8080/WotRestApp/wotAPI/PLAY_STATION-plt/players/");
+	
+	private String url;
+	
+	private Platform(String url) {
+		this.url = url;
+	}
 	
 	public static Platform setPlatform(String platform) {
 		switch(platform) {
@@ -12,5 +18,9 @@ public enum Platform {
 		default:
 			return Platform.XBOX;
 		}	
+	}
+	
+	public String getUrl() {
+		return this.url;
 	}
 }
