@@ -13,8 +13,8 @@ public static double calculate(List<TankItem> tankItems, Map<Integer, TankExpect
 		double playerTamageTotal = 0.0, playerWinBattlesTotal = 0;
 		int playerFragsTotal = 0, playerSpottedTotal = 0, playerDefTotal = 0;
 		
-		double expectedDamageTotal = 0.0, expectedWinBattlesTotal = 0;
-		int expectedFragsTotal = 0, expectedSpottedTotal = 0, expectedDefTotal = 0;
+		double expectedDamageTotal = 0.0001, expectedWinBattlesTotal = 0.0001;
+		double expectedFragsTotal = 0.0001, expectedSpottedTotal = 0.0001, expectedDefTotal = 0.0001;
 		
 		for (TankItem tankItem : tankItems) {
 			int gameTank = tankItem.getGamesCount();

@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.krugdev.io.Reader;
 import org.krugdev.wn8.XML.TankItem;
-import org.krugdev.wn8.XML.XMLTankItemBuilder;
+import org.krugdev.wn8.XML.TankItemBuilder;
 import org.krugdev.wn8.expected.TankExpectedValues;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -36,7 +36,7 @@ public class PlayerTest {
 	@Before
 	public void setUp() {
 
-		 tankItemA = new XMLTankItemBuilder(ANY_PLAYER, 801)
+		 tankItemA = new TankItemBuilder(ANY_PLAYER, 801)
 				.gamesCount(250)
 				.frags(269)
 				.damageDealt(203644)
@@ -44,7 +44,7 @@ public class PlayerTest {
 				.defencePoints(415)
 				.winRatio(51.2)
 				.build();
-		tankItemB = new XMLTankItemBuilder(ANY_PLAYER, 769)
+		tankItemB = new TankItemBuilder(ANY_PLAYER, 769)
 				.gamesCount(76)
 				.frags(64)
 				.damageDealt(16276)
@@ -52,7 +52,7 @@ public class PlayerTest {
 				.defencePoints(131)
 				.winRatio(52.63)
 				.build();
-		TankItem tankItemC = new XMLTankItemBuilder(ANY_PLAYER, 10785)
+		TankItem tankItemC = new TankItemBuilder(ANY_PLAYER, 10785)
 				.gamesCount(93)
 				.frags(91)
 				.damageDealt(193873)

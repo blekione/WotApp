@@ -32,7 +32,7 @@ public class PlayerTimestampRepository {
 		setApiReader(apiReader);
 		List<PlayerTimestamp> dbLastTwoPlayerTanksTimestamps = 
 				dbReader.findTwoLastPlayerTanksTimestamps(playerId);
-		if (lastPlayerTimestampIsYoungerThan30min(dbLastTwoPlayerTanksTimestamps)) {
+		if (lastPlayerTimestampIsYoungerThan10min(dbLastTwoPlayerTanksTimestamps)) {
 			PlayerTimestamp newTimestampFromWotAPI = getNewPlayerTimestampFromWotAPI(SESSION, playerId);
 			if(timeDifferenceBetweenLastTwoPlayerTimestapsLessThanAWeek(dbLastTwoPlayerTanksTimestamps)) {
 				dbReader.replaceLastPlayerTimestamp(playerId, newTimestampFromWotAPI);
@@ -73,9 +73,9 @@ public class PlayerTimestampRepository {
 		return newPlayerTimestamp;
 	}
 
-	private boolean lastPlayerTimestampIsYoungerThan30min(List<PlayerTimestamp> dbLastPlayerTanksTimestamps) {
+	private boolean lastPlayerTimestampIsYoungerThan10min(List<PlayerTimestamp> dbLastPlayerTanksTimestamps) {
 		if(dbLastPlayerTanksTimestamps.isEmpty()						
-				|| dbLastPlayerTanksTimestamps.get(0).getTimestamp().compareTo(LocalDateTime.now().minusMinutes(30)) < 0
+				|| dbLastPlayerTanksTimestamps.get(0).getTimestamp().compareTo(LocalDateTime.now().minusMinutes(10)) < 0
 				) {
 			return true;
 		}

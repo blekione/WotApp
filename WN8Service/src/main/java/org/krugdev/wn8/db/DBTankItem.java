@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.krugdev.wn8.XML.TankItem;
-import org.krugdev.wn8.XML.XMLTankItemBuilder;
+import org.krugdev.wn8.XML.TankItemBuilder;
 
 import lombok.Getter;
 
@@ -51,7 +51,7 @@ public class DBTankItem {
 	}
 	
 	public TankItem convertToTankItem() {
-		return new XMLTankItemBuilder(this.player, this.tankId)
+		return new TankItemBuilder(this.player, this.tankId)
 				.gamesCount(this.gamesCount)
 				.frags(this.frags)
 				.damageDealt(this.damageDealt)

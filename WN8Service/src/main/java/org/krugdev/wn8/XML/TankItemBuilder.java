@@ -2,7 +2,7 @@ package org.krugdev.wn8.XML;
 
 import org.krugdev.wn8.PlayerTanks;
 
-public class XMLTankItemBuilder {
+public class TankItemBuilder {
 
 	private final PlayerTanks player;
 	private final int tankId;
@@ -13,37 +13,37 @@ public class XMLTankItemBuilder {
 	private int defencePoints;
 	private double winRatio;
 
-	public XMLTankItemBuilder(PlayerTanks player, int tankId) {
+	public TankItemBuilder(PlayerTanks player, int tankId) {
 		this.player = player;
 		this.tankId = tankId;
 	}
 
-	public XMLTankItemBuilder gamesCount(int gamesCount) {
+	public TankItemBuilder gamesCount(int gamesCount) {
 		this.gamesCount = gamesCount;
 		return this;
 	}
 
-	public XMLTankItemBuilder frags(int frags) {
+	public TankItemBuilder frags(int frags) {
 		this.frags = frags;
 		return this;
 	}
 
-	public XMLTankItemBuilder damageDealt(long damageDealt) {
+	public TankItemBuilder damageDealt(long damageDealt) {
 		this.damageDealt = damageDealt;
 		return this;
 	}
 
-	public XMLTankItemBuilder spottedTanks(int spottedTanks) {
+	public TankItemBuilder spottedTanks(int spottedTanks) {
 		this.spottedTanks = spottedTanks;
 		return this;
 	}
 
-	public XMLTankItemBuilder defencePoints(int defencePoints) {
+	public TankItemBuilder defencePoints(int defencePoints) {
 		this.defencePoints = defencePoints;
 		return this;
 	}
 
-	public XMLTankItemBuilder winRatio(double winRatio) {
+	public TankItemBuilder winRatio(double winRatio) {
 		this.winRatio = winRatio;
 		return this;
 	}

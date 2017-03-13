@@ -3,15 +3,18 @@ package org.krugdev.rservice;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
 
 import org.krugdev.rservice.domain.PlayerTankWN8;
 import org.krugdev.rservice.domain.PlayerWN8;
+import org.krugdev.rservice.domain.SessionWN8;
 
 @Path("/playerWN8")
 @Produces("application/xml")
@@ -28,9 +31,13 @@ public interface PlayerWN8ResourceRESTAnnotations {
 	
 	@PUT
 	@Path("/{platform}-plt/{playerId}/{sessionId}-session")
-	public void startNewWN8Session(@PathParam("platform") String platform, @PathParam("playerId") int playerId, @PathParam("sessionId") int sessionId);
+	public Response startNewWN8Session(@PathParam("platform") String platform, @PathParam("playerId") int playerId, @PathParam("sessionId") int sessionId);
 
 	@GET
 	@Path("/{platform}-plt/{playerId}/{sessionId}-session")
-	public void getWN8Session(@PathParam("platform") String platform, @PathParam("playerId") int playerId, @PathParam("sessionId") int sessionId);
+	public SessionWN8 getWN8Session(@PathParam("platform") String platform, @PathParam("playerId") int playerId, @PathParam("sessionId") int sessionId);
+	
+	@DELETE
+	@Path("/{platform}-plt/{playerId}/{sessionId}-session")
+	public SessionWN8 finaliseWN8Session(@PathParam("platform") String platform, @PathParam("playerId") int playerId, @PathParam("sessionId") int sessionId);
 }
