@@ -41,6 +41,9 @@ public class JSONToObjectBuilder<T> {
 
 	private JsonElement trimJsonFromRedundantData(String jsonString, String id) throws ResourceNotFoundException {
 		JsonObject jsonObject = getDataJSONObject(jsonString).getAsJsonObject();
+		if (jsonObject == null) {
+			throw new ResourceNotFoundException("player with id: " + id + " has no clan information associated with it");
+		}
 		return getIdElementFromJson(jsonObject, id);
 	}
 	
@@ -71,6 +74,6 @@ public class JSONToObjectBuilder<T> {
 	
 	@SuppressWarnings("unchecked")
 	private void getElement(JsonElement json) {
-		object = (T)new Gson().fromJson(json, ref.getClass());		
+		object = (T)new Gson().fromJson(json, ref.getClass());
 	}
 }

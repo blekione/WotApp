@@ -35,8 +35,12 @@ public class PlayerProcessor {
 			throws ResourceNotFoundException {
 		String jsonString = getJsonString(platform, RequestingServices.PLAYER_CLAN, playerId);
 		JSONToObjectBuilder<PlayerClanJSONBean> builder = new JSONToObjectBuilder<>(new PlayerClanJSONBean());
+		try {
 		PlayerClanJSONBean playerClanJSONBean = builder.fromString(jsonString).withId(playerId).build();
 		return playerClanJSONBean;
+		} catch (ResourceNotFoundException e) {
+			return null;
+		}
 	}
 	
 	private static String getJsonString(Platform platform, RequestingServices service, String id) {

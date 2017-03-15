@@ -9,12 +9,12 @@ import org.krugdev.auxiliary.Platform;
 public class PlatformResource {
 	
 	@PathParam("platform")
-	Platform platform;
+	String platformString;
 	
 	@Path("players")
 	public PlayerResource getPlayerResource(){
+		Platform platform = Platform.setPlatform(platformString);
 		PlayerResource playerResource = new PlayerResource(platform);
 		return playerResource;
 	}
-	
 }

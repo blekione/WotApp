@@ -41,7 +41,8 @@ public class PlayerResource implements PlayerResourceRestAnnotations {
 	public Player getPlayer(String playerIdString) {
 		int playerId = convertPlayerIdToInteger(playerIdString);
 		try {
-			return PlayerProcessor.getFromAPI(platform, playerId);
+			Player player = PlayerProcessor.getFromAPI(platform, playerId);
+			return player;
 		} catch (ResourceNotFoundException e) {
 			throw new NotFoundException("No player with playerId: " + playerIdString 
 					+ " found for platform " + platform);
