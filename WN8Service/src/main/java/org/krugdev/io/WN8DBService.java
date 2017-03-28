@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.krugdev.rservice.domain.TankDescription;
 import org.krugdev.wn8.PlayerTanks;
 import org.krugdev.wn8.XML.TankItem;
 import org.krugdev.wn8.db.PlayerTimestamp;
@@ -83,5 +84,12 @@ public class WN8DBService implements Reader, Writer {
 			PlayerTimestamp newTimestampFromWotAPI) {
 		removeLatestPlayerTimestamp(playerId);
 		savePlayerTanks(newTimestampFromWotAPI);
+	}
+	
+	public List<TankDescription> getTankDescriptions() {
+		Query query = session.createQuery("select p from TankDescription p");
+		@SuppressWarnings("unchecked")
+		List<TankDescription> queryResult = query.list();
+		return queryResult;
 	}
 }

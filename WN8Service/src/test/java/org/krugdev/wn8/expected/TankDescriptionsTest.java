@@ -16,6 +16,7 @@ import javax.persistence.Persistence;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
+import org.krugdev.rservice.domain.TankDescription;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -39,7 +40,7 @@ public class TankDescriptionsTest {
 		Map<Integer, TankDescription> tankDescriptions = new Gson().fromJson(data, mapType);
 		System.out.println(tankDescriptions.size());
 		List<TankDescription> descriptionList = new ArrayList<TankDescription>(tankDescriptions.values());
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("testwn8");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("exValues");
 		EntityManager em = emf.createEntityManager();
 		Session session = em.unwrap(Session.class);
 		Transaction tx = session.beginTransaction();

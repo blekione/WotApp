@@ -14,17 +14,17 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
-import org.krugdev.io.Reader;
 import org.krugdev.io.WN8DBService;
 import org.krugdev.io.WotAPIServiceReader;
 import org.krugdev.rservice.domain.PlayerTankWN8;
 import org.krugdev.rservice.domain.PlayerWN8;
 import org.krugdev.rservice.domain.SessionWN8;
 import org.krugdev.rservice.domain.SessionWN8Repository;
+import org.krugdev.rservice.domain.TankDescription;
+import org.krugdev.rservice.domain.TankDescriptionReposiotory;
+import org.krugdev.rservice.domain.TankDescriptionXML;
 import org.krugdev.util.Platform;
-import org.krugdev.wn8.WN8Repository;
 import org.krugdev.wn8.XML.TankItem;
-import org.krugdev.wn8.XML.TankItemBuilder;
 import org.krugdev.wn8.db.DBTankItem;
 import org.krugdev.wn8.db.PlayerTimestamp;
 import org.krugdev.wn8.db.PlayerTimestampRepository;
@@ -37,7 +37,7 @@ public class PlayerWN8Resource implements PlayerWN8ResourceRESTAnnotations {
 	
 	private Platform requestPlatform;
 	
-	Map<Integer, Map<Integer, TankItem>> sessionWN8PlayerTankItems = new HashMap<>();
+	Map<String, Map<Integer, TankItem>> sessionWN8PlayerTankItems = new HashMap<>();
 	
 	@PersistenceContext(unitName="servicewn8")
 	private EntityManager em;
@@ -78,7 +78,7 @@ public class PlayerWN8Resource implements PlayerWN8ResourceRESTAnnotations {
 
 	
 	@Override
-	public Response startNewWN8Session(String platform, int playerId, int sessionId) {
+	public Response startNewWN8Session(String platform, int playerId, String sessionId) {
 		this.requestPlatform = Platform.setPlatform(platform);
 		PlayerTimestamp sessionStartPlayerTimestamp = getLatestPlayerTimestamp(playerId);
 		Map<Integer, TankItem> sessionTankItems = 
@@ -91,23 +91,40 @@ public class PlayerWN8Resource implements PlayerWN8ResourceRESTAnnotations {
 
 	
 	@Override
-	public SessionWN8 getWN8Session(String platform, int playerId, int sessionId) {
+	public SessionWN8 getRunningWN8Session(String platform, int playerId, String sessionId) {
 		this.requestPlatform = Platform.setPlatform(platform);
-		Map<Integer, TankItem> sessionStartTankItems = sessionWN8PlayerTankItems.get(sessionId);
-		List<TankItem> latestTankItems = getLatestPlayerTimestamp(playerId).getTankItems();
-		TankExpectedValuesReader parser = new DBTankExpectedValuesReader();		
-		Map<Integer, TankExpectedValues> tankExpectedValues = parser.getTankEx(em.unwrap(Session.class));
-		SessionWN8Repository sessionWN8Repository = new SessionWN8Repository(tankExpectedValues, playerId);
-		SessionWN8 sessionWN8 = sessionWN8Repository.getSessionWN8(sessionStartTankItems, latestTankItems);
+		Map<Integer, TankItem> sessionTankItems = sessionWN8PlayerTankItems.get(sessionId);
+		SessionWN8 sessionWN8 = getWN8Session(platform, playerId, sessionTankItems);
 		return sessionWN8;
 	}
 
 	@Override
-	public SessionWN8 finaliseWN8Session(String platform, int playerId, int sessionId) {
+	public SessionWN8 finaliseWN8Session(String platform, int playerId, String sessionId) {
 		this.requestPlatform = Platform.setPlatform(platform);
-		sessionWN8PlayerTankItems.remove(sessionId);
-		System.out.println(sessionWN8PlayerTankItems.size());
-		return null;
+		Map<Integer, TankItem> sessionTankItems = sessionWN8PlayerTankItems.remove(sessionId);
+		SessionWN8 sessionWN8 = getWN8Session(platform, playerId, sessionTankItems);
+		return sessionWN8;
 	}
 
+	@Override
+	public GenericEntity<List<TankDescriptionXML>> getTankDescriptions() {
+		this.session = em.unwrap(Session.class);
+		WN8DBService dbReader = new WN8DBService(session);
+		List<TankDescription> tankDescriptions = dbReader.getTankDescriptions();
+		List<TankDescriptionXML> tankDescriptionsXML = TankDescriptionReposiotory.convertToTankDescriptionXML(tankDescriptions);
+		System.out.println("in tank descriptions ");
+		System.out.println(tankDescriptionsXML.size());
+		System.out.println(tankDescriptions.get(0).getImages().size());
+		GenericEntity<List<TankDescriptionXML>> list = new GenericEntity<List<TankDescriptionXML>>(tankDescriptionsXML) {};
+		return list;
+	}	
+	
+	private SessionWN8 getWN8Session(String platform, int playerId, Map<Integer, TankItem> sessionTankItems) {
+		List<TankItem> latestTankItems = getLatestPlayerTimestamp(playerId).getTankItems();
+		TankExpectedValuesReader parser = new DBTankExpectedValuesReader();		
+		Map<Integer, TankExpectedValues> tankExpectedValues = parser.getTankEx(em.unwrap(Session.class));
+		SessionWN8Repository sessionWN8Repository = new SessionWN8Repository(tankExpectedValues, playerId);
+		SessionWN8 sessionWN8 = sessionWN8Repository.getSessionWN8(sessionTankItems, latestTankItems);
+		return sessionWN8;
+	}
 }

@@ -1,8 +1,7 @@
-package org.krugdev.wn8.expected;
+package org.krugdev.rservice.domain;
 
 import java.util.Map;
 
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;

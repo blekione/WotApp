@@ -1,8 +1,8 @@
 package org.krugdev.util;
 
 public enum Platform {
-	XBOX("http://localhost:8080/WotRestApp/wotAPI/XBOX-plt/players/"),
-	PLAY_STATION("http://localhost:8080/WotRestApp/wotAPI/PLAY_STATION-plt/players/");
+	XBOX("http://localhost:8080/WotRestApp/wotAPI/xbox-plt/players/"),
+	PLAY_STATION("http://localhost:8080/WotRestApp/wotAPI/playstation-plt/players/");
 	
 	private String url;
 	

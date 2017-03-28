@@ -108,6 +108,7 @@
   <tank expFrag="0.66" expDamage="225.92" expSpot="0.75" expDef="0.96" expWinRate="52.79" IDNum="2881" countryid="4" tankid="11"/>
   <tank expFrag="1.1" expDamage="611.27" expSpot="0.87" expDef="1.24" expWinRate="54.76" IDNum="2897" countryid="5" tankid="11"/>
   <tank expFrag="1.15" expDamage="416.67" expSpot="1.74" expDef="1.25" expWinRate="57.48" IDNum="2913" countryid="6" tankid="11"/>
+  <tank expFrag="1.15" expDamage="416.67" expSpot="1.74" expDef="1.25" expWinRate="57.48" IDNum="33361" countryid="6" tankid="11"/>
   <tank expFrag="1.4" expDamage="398.69" expSpot="0.94" expDef="1.39" expWinRate="58.89" IDNum="2945" countryid="8" tankid="11"/>
   <tank expFrag="1.02" expDamage="253.74" expSpot="1.32" expDef="1.02" expWinRate="55.64" IDNum="3073" countryid="0" tankid="12"/>
   <tank expFrag="1.86" expDamage="252" expSpot="1.96" expDef="1.5" expWinRate="59.11" IDNum="3089" countryid="1" tankid="12"/>
