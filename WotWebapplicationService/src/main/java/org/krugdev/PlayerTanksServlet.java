@@ -32,8 +32,8 @@ public class PlayerTanksServlet extends HttpServlet {
 		Integer pageNumber = Integer.parseInt(request.getParameter("page"));
 		String playerId = request.getParameter("id");
 		String platform = request.getParameter("platform");
-		WN8ServiceReader wn8ServiceReader = new WN8ServiceReader();
-		List<TankWN8> tanksWN8 = wn8ServiceReader.getTanksWN8(playerId, platform);
+		WN8ServiceReader wn8ServiceReader = WN8ServiceReader.getInstance(platform);
+		List<TankWN8> tanksWN8 = wn8ServiceReader.getTanksWN8(playerId);
 		int numberOfPages = getNumberOfPages(tanksWN8);
 		List<TankWN8> tanksWN8ForPage = getTanksWN8ForPage(pageNumber, numberOfPages, tanksWN8);
 		Map<Integer, TankDescription> tankDescriptions = getTankDescriptions(tanksWN8ForPage);

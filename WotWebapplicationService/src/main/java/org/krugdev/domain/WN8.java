@@ -9,6 +9,16 @@ public class WN8 {
 	private String wn8Color;
 	private String wn8Rank; 
 
+	public static String getColor(double wn8value) {
+		WN8 wn8 = new WN8();
+		return wn8.getWN8Color(wn8value);
+	}
+	
+	public static String getRank(double wn8value) {
+		WN8 wn8 = new WN8();
+		return wn8.getWN8Rank(wn8value);		
+	}
+	
 	public String getWN8Color(double wn8) {
 		if (ranksSet) {
 			return wn8Color;

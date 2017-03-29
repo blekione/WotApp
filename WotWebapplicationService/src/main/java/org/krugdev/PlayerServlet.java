@@ -32,8 +32,8 @@ public class PlayerServlet extends HttpServlet{
 			request.getRequestDispatcher("/WEB-INF/jsp/view/playerProfileNotFound.jsp").forward(request, response);
 			return;
 		}
-		WN8ServiceReader wn8ServiceReader = new WN8ServiceReader();
-		request.setAttribute("playerWN8", wn8ServiceReader.getPlayerWN8(playerId,platform));
+		WN8ServiceReader wn8ServiceReader = WN8ServiceReader.getInstance(platform);
+		request.setAttribute("playerWN8", wn8ServiceReader.getPlayerWN8(playerId));
 		request.setAttribute("playerProfile", playerProfile.get());
 		request.getRequestDispatcher("/WEB-INF/jsp/view/playerProfile.jsp").forward(request, response);	
 	}
