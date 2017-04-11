@@ -59,7 +59,6 @@ public class SessionWN8Servlet extends HttpServlet {
 
 		WN8ServiceReader wn8ServiceReader = WN8ServiceReader.getInstance(platform);
 		SessionWN8 sessionWN8 = wn8ServiceReader.closeRunningSessionWN8(playerId, sessionId);
-
 		request.getSession().setAttribute("sessionStarted", false);
 		request.setAttribute("sessionStarted", false);
 		request.setAttribute("sessionWN8color", WN8.getColor(sessionWN8.getWn8Value()));
