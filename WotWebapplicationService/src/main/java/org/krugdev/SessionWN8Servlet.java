@@ -43,6 +43,8 @@ public class SessionWN8Servlet extends HttpServlet {
 		SessionWN8 sessionWN8 = wn8ServiceReader.startSessionWN8(playerId, sessionId);
 		
 		request.getSession().setAttribute("sessionStarted", true);
+		request.getSession().setAttribute("platform", platform);
+		request.getSession().setAttribute("id", playerId);		
 		request.setAttribute("sessionWN8", sessionWN8);
 		request.setAttribute("playerId", playerId);
 		request.setAttribute("platform", platform);

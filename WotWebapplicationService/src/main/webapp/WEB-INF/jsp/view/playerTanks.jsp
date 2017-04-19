@@ -4,6 +4,7 @@
   <thead>
   <tr>
    <th>Tier</th>
+   <th>Tank ID</th>
    <th>Tank Name</th>
    <th>Tank Nation</th>
    <th>Tank Type</th>
@@ -15,6 +16,7 @@
     <c:set var="tankId" value="${tankWN8.getTankId()}" />
     <tr>
      <td>${tankDescriptions.get(tankId).getTier()}</td>
+     <td>${tankId}</td>
      <td>${tankDescriptions.get(tankId).getName()}</td>
      <td>${tankDescriptions.get(tankId).getNation()}</td>
      <td>${tankDescriptions.get(tankId).getType()}</td>     
